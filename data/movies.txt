@@ -1,0 +1,3 @@
+MV001|Avengers Endgame|Hanh dong|181|13|Sieu anh hung chien dau|Cau chuyen ve cac Avengers|posters/avengers.jpg|1
+MV002|Lat Mat 7|Hanh dong|135|16|Phim Viet|Cau chuyen hanh dong|posters/latmat7.jpg|1
+MV003|Doraemon Stand By Me|Hoat hinh|95|0|Doraemon|Nobita va Doraemon|posters/doraemon.jpg|1

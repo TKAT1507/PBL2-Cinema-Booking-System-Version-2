@@ -1,0 +1,266 @@
+[
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\PBL2-Cinema-Booking-System_autogen\\mocs_compilation.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\build\\PBL2-Cinema-Booking-System_autogen\\mocs_compilation.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build/PBL2-Cinema-Booking-System_autogen/mocs_compilation.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/PBL2-Cinema-Booking-System_autogen/mocs_compilation.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\src\\main.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\src\\main.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/src/main.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/src/main.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\src\\managers\\ComboManager.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\src\\managers\\ComboManager.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/src/managers/ComboManager.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/src/managers/ComboManager.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\src\\managers\\MovieManager.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\src\\managers\\MovieManager.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/src/managers/MovieManager.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/src/managers/MovieManager.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\src\\managers\\RoomManager.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\src\\managers\\RoomManager.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/src/managers/RoomManager.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/src/managers/RoomManager.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\src\\managers\\ShowtimeManager.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\src\\managers\\ShowtimeManager.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/src/managers/ShowtimeManager.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/src/managers/ShowtimeManager.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\src\\managers\\StatisticManager.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\src\\managers\\StatisticManager.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/src/managers/StatisticManager.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/src/managers/StatisticManager.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\src\\managers\\TicketManager.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\src\\managers\\TicketManager.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/src/managers/TicketManager.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/src/managers/TicketManager.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\src\\managers\\UserManager.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\src\\managers\\UserManager.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/src/managers/UserManager.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/src/managers/UserManager.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\src\\models\\Admin.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\src\\models\\Admin.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/src/models/Admin.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/src/models/Admin.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\src\\models\\Cashier.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\src\\models\\Cashier.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/src/models/Cashier.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/src/models/Cashier.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\src\\models\\Combo.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\src\\models\\Combo.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/src/models/Combo.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/src/models/Combo.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\src\\models\\Customer.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\src\\models\\Customer.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/src/models/Customer.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/src/models/Customer.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\src\\models\\Movie.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\src\\models\\Movie.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/src/models/Movie.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/src/models/Movie.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\src\\models\\Room.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\src\\models\\Room.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/src/models/Room.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/src/models/Room.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\src\\models\\SeatMap.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\src\\models\\SeatMap.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/src/models/SeatMap.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/src/models/SeatMap.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\src\\models\\Showtime.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\src\\models\\Showtime.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/src/models/Showtime.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/src/models/Showtime.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\src\\models\\Ticket.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\src\\models\\Ticket.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/src/models/Ticket.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/src/models/Ticket.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\src\\models\\User.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\src\\models\\User.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/src/models/User.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/src/models/User.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\src\\utils\\FileManager.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\src\\utils\\FileManager.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/src/utils/FileManager.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/src/utils/FileManager.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\src\\utils\\IDGenerator.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\src\\utils\\IDGenerator.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/src/utils/IDGenerator.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/src/utils/IDGenerator.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\src\\utils\\PriceCalculator.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\src\\utils\\PriceCalculator.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/src/utils/PriceCalculator.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/src/utils/PriceCalculator.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\src\\utils\\Validator.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\src\\utils\\Validator.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/src/utils/Validator.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/src/utils/Validator.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\ui\\admin\\AdminDashboard.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\ui\\admin\\AdminDashboard.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/ui/admin/AdminDashboard.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/ui/admin/AdminDashboard.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\ui\\admin\\ComboManagementWidget.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\ui\\admin\\ComboManagementWidget.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/ui/admin/ComboManagementWidget.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/ui/admin/ComboManagementWidget.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\ui\\admin\\MovieManagementWidget.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\ui\\admin\\MovieManagementWidget.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/ui/admin/MovieManagementWidget.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/ui/admin/MovieManagementWidget.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\ui\\admin\\RoomManagementWidget.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\ui\\admin\\RoomManagementWidget.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/ui/admin/RoomManagementWidget.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/ui/admin/RoomManagementWidget.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\ui\\admin\\ShowtimeManagementWidget.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\ui\\admin\\ShowtimeManagementWidget.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/ui/admin/ShowtimeManagementWidget.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/ui/admin/ShowtimeManagementWidget.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\ui\\admin\\StatisticsWidget.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\ui\\admin\\StatisticsWidget.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/ui/admin/StatisticsWidget.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/ui/admin/StatisticsWidget.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\ui\\cashier\\CashierDashboard.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\ui\\cashier\\CashierDashboard.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/ui/cashier/CashierDashboard.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/ui/cashier/CashierDashboard.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\ui\\cashier\\CheckTicketWidget.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\ui\\cashier\\CheckTicketWidget.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/ui/cashier/CheckTicketWidget.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/ui/cashier/CheckTicketWidget.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\ui\\cashier\\SaleWidget.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\ui\\cashier\\SaleWidget.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/ui/cashier/SaleWidget.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/ui/cashier/SaleWidget.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\ui\\common\\MainWindow.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\ui\\common\\MainWindow.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/ui/common/MainWindow.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/ui/common/MainWindow.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\ui\\customer\\BookingConfirmWidget.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\ui\\customer\\BookingConfirmWidget.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/ui/customer/BookingConfirmWidget.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/ui/customer/BookingConfirmWidget.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\ui\\customer\\ComboSelectionWidget.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\ui\\customer\\ComboSelectionWidget.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/ui/customer/ComboSelectionWidget.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/ui/customer/ComboSelectionWidget.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\ui\\customer\\CustomerDashboard.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\ui\\customer\\CustomerDashboard.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/ui/customer/CustomerDashboard.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/ui/customer/CustomerDashboard.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\ui\\customer\\MovieDetailWidget.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\ui\\customer\\MovieDetailWidget.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/ui/customer/MovieDetailWidget.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/ui/customer/MovieDetailWidget.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\ui\\customer\\MovieListWidget.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\ui\\customer\\MovieListWidget.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/ui/customer/MovieListWidget.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/ui/customer/MovieListWidget.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\ui\\customer\\MyTicketsWidget.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\ui\\customer\\MyTicketsWidget.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/ui/customer/MyTicketsWidget.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/ui/customer/MyTicketsWidget.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\ui\\customer\\SeatSelectionWidget.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\ui\\customer\\SeatSelectionWidget.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/ui/customer/SeatSelectionWidget.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/ui/customer/SeatSelectionWidget.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\ui\\customer\\ShowtimeListWidget.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\ui\\customer\\ShowtimeListWidget.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/ui/customer/ShowtimeListWidget.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/ui/customer/ShowtimeListWidget.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\ui\\login\\ChangePasswordWindow.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\ui\\login\\ChangePasswordWindow.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/ui/login/ChangePasswordWindow.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/ui/login/ChangePasswordWindow.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\ui\\login\\LoginWindow.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\ui\\login\\LoginWindow.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/ui/login/LoginWindow.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/ui/login/LoginWindow.cpp.obj"
+},
+{
+  "directory": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/build",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -DWINVER=0x0A00 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN32_WINNT=0x0A00 -D_WIN64 @CMakeFiles\\PBL2-Cinema-Booking-System.dir\\includes_CXX.rsp -std=gnu++17 -o CMakeFiles\\PBL2-Cinema-Booking-System.dir\\ui\\login\\RegisterWindow.cpp.obj -c C:\\Users\\Legion\\.gemini\\antigravity\\scratch\\PBL2-Cinema-Booking-System\\ui\\login\\RegisterWindow.cpp",
+  "file": "C:/Users/Legion/.gemini/antigravity/scratch/PBL2-Cinema-Booking-System/ui/login/RegisterWindow.cpp",
+  "output": "CMakeFiles/PBL2-Cinema-Booking-System.dir/ui/login/RegisterWindow.cpp.obj"
+}
+]

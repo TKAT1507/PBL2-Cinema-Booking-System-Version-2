@@ -1,0 +1,1 @@
+admin1|admin123|0999888777|35|ADMIN|QL001|Tran Van B
