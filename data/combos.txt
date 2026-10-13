@@ -1,3 +1,5 @@
 CB001|Combo 1|Bap rang bo + Nuoc ngot|55000|1
 CB002|Combo 2|Bap rang bo lon + 2 Nuoc ngot|85000|1
 CB003|Combo Couple|2 Bap rang bo + 2 Nuoc ngot + 1 Snack|120000|1
+CB004|Combo Family|4 Bap rang bo + 4 Nuoc ngot + 2 Snack|199000|1
+CB005|Combo VIP|Bap rang truffle + Nuoc ep + Snack cao cap|150000|1

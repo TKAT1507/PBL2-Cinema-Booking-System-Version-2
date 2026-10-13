@@ -1,3 +1,10 @@
-MV001|Avengers Endgame|Hanh dong|181|13|Sieu anh hung chien dau|Cau chuyen ve cac Avengers|posters/avengers.jpg|1
-MV002|Lat Mat 7|Hanh dong|135|16|Phim Viet|Cau chuyen hanh dong|posters/latmat7.jpg|1
-MV003|Doraemon Stand By Me|Hoat hinh|95|0|Doraemon|Nobita va Doraemon|posters/doraemon.jpg|1
+MV001|Avengers Endgame|Hanh dong|181|13|Sieu anh hung chien dau voi Thanos de cuu vu tru|Sau su kien Infinity War, cac Avengers tap hop lan cuoi de dau lai Thanos|posters/avengers.jpg|1
+MV002|Lat Mat 7|Hanh dong|135|16|Phim hanh dong Viet Nam|Cau chuyen ve nhung nguoi linh dac nhiem|posters/latmat7.jpg|1
+MV003|Doraemon Stand By Me 2|Hoat hinh|95|0|Doraemon va Nobita tro ve tuong lai|Nobita gap lai ba noi trong chuyen phieu luu cam dong|posters/doraemon.jpg|1
+MV004|Mai|Tam ly|130|16|Phim dien anh Viet Nam cua Tran Thanh|Cau chuyen tinh yeu giua Sai Gon va Da Lat day cam xuc|posters/mai.jpg|1
+MV005|Oppenheimer|Chinh kich|180|16|Cau chuyen ve cha de bom nguyen tu|J. Robert Oppenheimer va du an Manhattan trong The chien II|posters/oppenheimer.jpg|1
+MV006|Spider-Man No Way Home|Hanh dong|148|13|Nguoi Nhen doi mat da vu tru|Peter Parker doi dien voi hau qua khi bi lo danh tinh|posters/spiderman.jpg|1
+MV007|Bo Gia|Hai|128|13|Phim hai gia dinh Viet Nam|Cau chuyen hai huoc va cam dong ve tinh cha con|posters/bogia.jpg|1
+MV008|Dune Part Two|Khoa hoc vien tuong|166|13|Hanh trinh cua Paul Atreides tren hanh tinh Arrakis|Paul Atreides lien minh voi nguoi Fremen de tra thu|posters/dune2.jpg|1
+MV009|Inside Out 2|Hoat hinh|96|0|Cuoc phieu luu ben trong tam tri Riley|Riley buoc vao tuoi day thi voi nhung cam xuc moi|posters/insideout2.jpg|1
+MV010|Joker 2|Chinh kich|138|18|Arthur Fleck tro lai voi cau chuyen moi|Arthur doi mat voi phien toa va gap Harley Quinn|posters/joker2.jpg|1

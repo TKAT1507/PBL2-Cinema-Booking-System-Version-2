@@ -1,1 +1,2 @@
 cashier1|cashier123|0111222333|30|CASHIER|NV001|Nguyen Van A
+cashier2|cashier456|0222333444|27|CASHIER|NV002|Le Thi B

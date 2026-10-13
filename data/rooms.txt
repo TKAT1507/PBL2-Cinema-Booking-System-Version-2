@@ -1,3 +1,5 @@
 RM001|Phong 1|8|10|1
 RM002|Phong 2|6|8|1
 RM003|Phong VIP|5|6|1
+RM004|Phong 3|10|12|1
+RM005|Phong IMAX|12|15|1
