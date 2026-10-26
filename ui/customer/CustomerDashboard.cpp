@@ -12,6 +12,22 @@
 #include "BookingConfirmWidget.h"
 #include "MyTicketsWidget.h"
 
+#include "CustomerDashboard.h"
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QPushButton>
+#include <QLabel>
+#include <QFont>
+#include <QFrame>
+#include "MovieListWidget.h"
+#include "MovieDetailWidget.h"
+#include "ShowtimeListWidget.h"
+#include "SeatSelectionWidget.h"
+#include "ComboSelectionWidget.h"
+#include "BookingConfirmWidget.h"
+#include "MyTicketsWidget.h"
+#include "../common/ChangePasswordDialog.h"
+
 CustomerDashboard::CustomerDashboard(const QString& maKH, UserManager* userMgr, MovieManager* movieMgr, 
                                      ShowtimeManager* showtimeMgr, TicketManager* ticketMgr, 
                                      ComboManager* comboMgr, RoomManager* roomMgr, QWidget *parent)
@@ -19,41 +35,135 @@ CustomerDashboard::CustomerDashboard(const QString& maKH, UserManager* userMgr, 
       showtimeManager(showtimeMgr), ticketManager(ticketMgr), comboManager(comboMgr), roomManager(roomMgr)
 {
     QHBoxLayout *mainLayout = new QHBoxLayout(this);
-    mainLayout->setContentsMargins(10, 10, 10, 10);
-    mainLayout->setSpacing(12);
+    mainLayout->setContentsMargins(12, 12, 12, 12);
+    mainLayout->setSpacing(14);
     
-    // Sidebar container
+    // Left Sidebar: Gold/Mustard #E6B042, rounded
     QWidget *sidebarWidget = new QWidget(this);
-    sidebarWidget->setStyleSheet("background-color: #121224; border-radius: 10px;");
+    sidebarWidget->setFixedWidth(230);
+    sidebarWidget->setStyleSheet(R"(
+        QWidget {
+            background-color: #E6B042;
+            border-radius: 10px;
+        }
+    )");
+
     QVBoxLayout *sidebarLayout = new QVBoxLayout(sidebarWidget);
-    sidebarLayout->setContentsMargins(15, 20, 15, 20);
-    sidebarLayout->setSpacing(12);
+    sidebarLayout->setContentsMargins(12, 16, 12, 16);
+    sidebarLayout->setSpacing(10);
     sidebarLayout->setAlignment(Qt::AlignTop);
 
-    QLabel *lblWelcome = new QLabel("KHACH HANG\n" + maKhachHang, sidebarWidget);
-    lblWelcome->setAlignment(Qt::AlignCenter);
-    lblWelcome->setStyleSheet("color: #ffd700; font-size: 15px; font-weight: bold; border-bottom: 2px solid #0f3460; padding-bottom: 12px;");
+    // Top Header: Dark Red #9E221E
+    QFrame *headerFrame = new QFrame(sidebarWidget);
+    headerFrame->setStyleSheet(R"(
+        QFrame {
+            background-color: #9E221E;
+            border-radius: 8px;
+            padding: 8px;
+        }
+    )");
+    QVBoxLayout *headerLayout = new QVBoxLayout(headerFrame);
+    headerLayout->setContentsMargins(5, 8, 5, 8);
+    headerLayout->setSpacing(4);
 
-    QPushButton *btnMovies = new QPushButton("Danh Sach Phim", sidebarWidget);
-    QPushButton *btnTickets = new QPushButton("Ve Cua Toi", sidebarWidget);
-    QPushButton *btnLogout = new QPushButton("Dang Xuat", sidebarWidget);
-    btnLogout->setStyleSheet("background-color: #5a0c0e; color: #ffcccc; border: 1px solid #7b1113; font-weight: bold; border-radius: 6px;");
+    QLabel *lblGreeting = new QLabel("Xin chào", headerFrame);
+    lblGreeting->setAlignment(Qt::AlignCenter);
+    lblGreeting->setStyleSheet("color: #FFFFFF; font-size: 13px; font-weight: normal; background: transparent; border: none;");
 
-    sidebarLayout->addWidget(lblWelcome);
-    sidebarLayout->addSpacing(10);
+    QLabel *lblUser = new QLabel("Khách hàng\n" + maKhachHang, headerFrame);
+    lblUser->setAlignment(Qt::AlignCenter);
+    lblUser->setStyleSheet("color: #FFFFFF; font-size: 15px; font-weight: bold; background: transparent; border: none;");
+
+    headerLayout->addWidget(lblGreeting);
+    headerLayout->addWidget(lblUser);
+
+    // Navigation Tabs Style
+    QString tabBtnStyle = R"(
+        QPushButton {
+            background-color: #F4DFB6;
+            color: #1A1A1A;
+            border: 1px solid #2B1810;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            min-height: 40px;
+            padding: 6px 12px;
+            text-align: center;
+        }
+        QPushButton:hover {
+            background-color: #FFF2D6;
+            border-color: #9E221E;
+        }
+        QPushButton:pressed {
+            background-color: #D4A034;
+        }
+    )";
+
+    QPushButton *btnMovies = new QPushButton("Danh Sách Phim", sidebarWidget);
+    btnMovies->setCursor(Qt::PointingHandCursor);
+    btnMovies->setStyleSheet(tabBtnStyle);
+
+    QPushButton *btnTickets = new QPushButton("Vé Của Tôi", sidebarWidget);
+    btnTickets->setCursor(Qt::PointingHandCursor);
+    btnTickets->setStyleSheet(tabBtnStyle);
+
+    // Bottom action buttons
+    QPushButton *btnChangePassword = new QPushButton("Đổi Mật Khẩu", sidebarWidget);
+    btnChangePassword->setCursor(Qt::PointingHandCursor);
+    btnChangePassword->setStyleSheet(R"(
+        QPushButton {
+            background-color: #F4DFB6;
+            color: #9E221E;
+            border: 1px solid #9E221E;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: bold;
+            min-height: 38px;
+        }
+        QPushButton:hover {
+            background-color: #9E221E;
+            color: #FFFFFF;
+        }
+    )");
+
+    QPushButton *btnLogout = new QPushButton("Đăng Xuất", sidebarWidget);
+    btnLogout->setCursor(Qt::PointingHandCursor);
+    btnLogout->setStyleSheet(R"(
+        QPushButton {
+            background-color: #9E221E;
+            color: #FFFFFF;
+            border: 1px solid #781A17;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            min-height: 38px;
+        }
+        QPushButton:hover {
+            background-color: #B52A26;
+        }
+    )");
+
+    sidebarLayout->addWidget(headerFrame);
+    sidebarLayout->addSpacing(15);
     sidebarLayout->addWidget(btnMovies);
     sidebarLayout->addWidget(btnTickets);
     sidebarLayout->addStretch();
+    sidebarLayout->addWidget(btnChangePassword);
     sidebarLayout->addWidget(btnLogout);
 
-    // Main Area
+    // Main Content Area (gradient background #1E1F4B -> #121330)
     stackedWidget = new QStackedWidget(this);
+    stackedWidget->setStyleSheet(R"(
+        QStackedWidget {
+            background: transparent;
+        }
+    )");
     
     // Sub-widgets
-    movieListWidget = new MovieListWidget(movieManager, this);
+    movieListWidget = new MovieListWidget(movieManager, showtimeManager, this);
     movieDetailWidget = new MovieDetailWidget(movieManager, this);
     showtimeListWidget = new ShowtimeListWidget(showtimeManager, movieManager, this);
-    seatSelectionWidget = new SeatSelectionWidget(showtimeManager, this);
+    seatSelectionWidget = new SeatSelectionWidget(showtimeManager, ticketManager, this);
     comboSelectionWidget = new ComboSelectionWidget(comboManager, this);
     bookingConfirmWidget = new BookingConfirmWidget(maKhachHang, ticketManager, showtimeManager, comboManager, this);
     myTicketsWidget = new MyTicketsWidget(maKhachHang, ticketManager, showtimeManager, movieManager, this);
@@ -66,10 +176,10 @@ CustomerDashboard::CustomerDashboard(const QString& maKH, UserManager* userMgr, 
     stackedWidget->addWidget(bookingConfirmWidget);   // 5
     stackedWidget->addWidget(myTicketsWidget);        // 6
 
-    mainLayout->addWidget(sidebarWidget, 1);
-    mainLayout->addWidget(stackedWidget, 4);
+    mainLayout->addWidget(sidebarWidget, 0);
+    mainLayout->addWidget(stackedWidget, 1);
 
-    // 1. Sidebar Navigation
+    // Sidebar Navigation
     connect(btnMovies, &QPushButton::clicked, this, [this]() { 
         movieListWidget->loadMovies();
         stackedWidget->setCurrentWidget(movieListWidget); 
@@ -78,15 +188,22 @@ CustomerDashboard::CustomerDashboard(const QString& maKH, UserManager* userMgr, 
         myTicketsWidget->loadTickets();
         stackedWidget->setCurrentWidget(myTicketsWidget); 
     });
+    connect(btnChangePassword, &QPushButton::clicked, this, [this]() {
+        std::string taiKhoan = maKhachHang.toStdString();
+        Customer* c = userManager ? userManager->findCustomerById(taiKhoan) : nullptr;
+        if (c) taiKhoan = c->getTaiKhoan();
+        ChangePasswordDialog dlg(userManager, taiKhoan, this);
+        dlg.exec();
+    });
     connect(btnLogout, &QPushButton::clicked, this, &CustomerDashboard::logout);
 
-    // 2. MovieList -> MovieDetail
+    // MovieList -> MovieDetail / Direct Booking
     connect(movieListWidget, &MovieListWidget::movieSelected, this, [this](const QString& maPhim) {
         movieDetailWidget->showMovie(maPhim);
         stackedWidget->setCurrentWidget(movieDetailWidget);
     });
 
-    // 3. MovieDetail Navigation
+    // MovieDetail Navigation
     connect(movieDetailWidget, &MovieDetailWidget::goBack, this, [this]() {
         stackedWidget->setCurrentWidget(movieListWidget);
     });
@@ -96,7 +213,7 @@ CustomerDashboard::CustomerDashboard(const QString& maKH, UserManager* userMgr, 
         stackedWidget->setCurrentWidget(showtimeListWidget);
     });
 
-    // 4. ShowtimeList Navigation
+    // ShowtimeList Navigation
     connect(showtimeListWidget, &ShowtimeListWidget::goBack, this, [this]() {
         stackedWidget->setCurrentWidget(movieDetailWidget);
     });
@@ -106,7 +223,7 @@ CustomerDashboard::CustomerDashboard(const QString& maKH, UserManager* userMgr, 
         stackedWidget->setCurrentWidget(seatSelectionWidget);
     });
 
-    // 5. SeatSelection Navigation
+    // SeatSelection Navigation
     connect(seatSelectionWidget, &SeatSelectionWidget::goBack, this, [this]() {
         stackedWidget->setCurrentWidget(showtimeListWidget);
     });
@@ -117,7 +234,7 @@ CustomerDashboard::CustomerDashboard(const QString& maKH, UserManager* userMgr, 
         stackedWidget->setCurrentWidget(comboSelectionWidget);
     });
 
-    // 6. ComboSelection Navigation
+    // ComboSelection Navigation
     connect(comboSelectionWidget, &ComboSelectionWidget::goBack, this, [this]() {
         stackedWidget->setCurrentWidget(seatSelectionWidget);
     });
@@ -126,7 +243,7 @@ CustomerDashboard::CustomerDashboard(const QString& maKH, UserManager* userMgr, 
         stackedWidget->setCurrentWidget(bookingConfirmWidget);
     });
 
-    // 7. BookingConfirm Navigation
+    // BookingConfirm Navigation
     connect(bookingConfirmWidget, &BookingConfirmWidget::goBack, this, [this]() {
         stackedWidget->setCurrentWidget(comboSelectionWidget);
     });

@@ -1,10 +1,10 @@
 #include "../../include/models/Ticket.h"
 #include <sstream>
 
-Ticket::Ticket() : hang(0), cot(0), giaVe(0.0), trangThai("VALID") {}
+Ticket::Ticket() : hang(0), cot(0), giaVe(0.0), trangThai("PENDING") {}
 
-Ticket::Ticket(const std::string& maVe, const std::string& maSuatChieu, const std::string& maKhachHang, const std::string& maNhanVien, int hang, int cot, double giaVe, const std::string& maCombo, const std::string& ngayMua, const std::string& trangThai)
-    : maVe(maVe), maSuatChieu(maSuatChieu), maKhachHang(maKhachHang), maNhanVien(maNhanVien), hang(hang), cot(cot), giaVe(giaVe), maCombo(maCombo), ngayMua(ngayMua), trangThai(trangThai) {}
+Ticket::Ticket(const std::string& maVe, const std::string& maSuatChieu, const std::string& maKhachHang, const std::string& maNhanVien, int hang, int cot, double giaVe, const std::string& maCombo, const std::string& ngayMua, const std::string& trangThai, const std::string& maCumVe)
+    : maVe(maVe), maSuatChieu(maSuatChieu), maKhachHang(maKhachHang), maNhanVien(maNhanVien), hang(hang), cot(cot), giaVe(giaVe), maCombo(maCombo), ngayMua(ngayMua), trangThai(trangThai), maCumVe(maCumVe) {}
 
 std::string Ticket::getMaVe() const { return maVe; }
 void Ticket::setMaVe(const std::string& maVe) { this->maVe = maVe; }
@@ -36,6 +36,9 @@ void Ticket::setNgayMua(const std::string& ngayMua) { this->ngayMua = ngayMua; }
 std::string Ticket::getTrangThai() const { return trangThai; }
 void Ticket::setTrangThai(const std::string& trangThai) { this->trangThai = trangThai; }
 
+std::string Ticket::getMaCumVe() const { return maCumVe; }
+void Ticket::setMaCumVe(const std::string& maCumVe) { this->maCumVe = maCumVe; }
+
 void Ticket::markUsed() {
     trangThai = "USED";
 }
@@ -48,15 +51,19 @@ bool Ticket::isValid() const {
     return trangThai == "VALID";
 }
 
+bool Ticket::isPending() const {
+    return trangThai == "PENDING";
+}
+
 std::string Ticket::toString() const {
     std::ostringstream oss;
-    oss << maVe << "|" << maSuatChieu << "|" << maKhachHang << "|" << maNhanVien << "|" << hang << "|" << cot << "|" << giaVe << "|" << maCombo << "|" << ngayMua << "|" << trangThai;
+    oss << maVe << "|" << maSuatChieu << "|" << maKhachHang << "|" << maNhanVien << "|" << hang << "|" << cot << "|" << giaVe << "|" << maCombo << "|" << ngayMua << "|" << trangThai << "|" << maCumVe;
     return oss.str();
 }
 
 Ticket Ticket::fromString(const std::string& line) {
     std::istringstream iss(line);
-    std::string maVe, maSuatChieu, maKhachHang, maNhanVien, hangStr, cotStr, giaVeStr, maCombo, ngayMua, trangThai;
+    std::string maVe, maSuatChieu, maKhachHang, maNhanVien, hangStr, cotStr, giaVeStr, maCombo, ngayMua, trangThai, maCumVe;
     int hang = 0, cot = 0;
     double giaVe = 0.0;
 
@@ -70,6 +77,10 @@ Ticket Ticket::fromString(const std::string& line) {
     std::getline(iss, maCombo, '|');
     std::getline(iss, ngayMua, '|');
     std::getline(iss, trangThai, '|');
+    // Backward compatible: old data has 10 fields, new has 11
+    if (!std::getline(iss, maCumVe, '|')) {
+        maCumVe = "";
+    }
 
-    return Ticket(maVe, maSuatChieu, maKhachHang, maNhanVien, hang, cot, giaVe, maCombo, ngayMua, trangThai);
+    return Ticket(maVe, maSuatChieu, maKhachHang, maNhanVien, hang, cot, giaVe, maCombo, ngayMua, trangThai, maCumVe);
 }

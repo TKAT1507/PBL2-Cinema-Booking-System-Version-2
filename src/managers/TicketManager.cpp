@@ -1,4 +1,5 @@
 #include "managers/TicketManager.h"
+#include "managers/ShowtimeManager.h"
 #include "utils/FileManager.h"
 #include "utils/IDGenerator.h"
 
@@ -19,7 +20,7 @@ void TicketManager::save() {
     FileManager::writeLines(FileManager::getDataPath("tickets.txt"), lines);
 }
 
-std::string TicketManager::createTicket(const std::string& maSuatChieu, const std::string& maKhachHang, const std::string& maNhanVien, int hang, int cot, double giaVe, const std::string& maCombo, const std::string& ngayMua) {
+std::string TicketManager::createTicket(const std::string& maSuatChieu, const std::string& maKhachHang, const std::string& maNhanVien, int hang, int cot, double giaVe, const std::string& maCombo, const std::string& ngayMua, const std::string& maCumVe, const std::string& trangThai) {
     DynamicArray<std::string> existingIDs;
     for (int i = 0; i < tickets.size(); ++i) {
         existingIDs.push_back(tickets[i].getMaVe());
@@ -36,11 +37,82 @@ std::string TicketManager::createTicket(const std::string& maSuatChieu, const st
     t.setGiaVe(giaVe);
     t.setMaCombo(maCombo);
     t.setNgayMua(ngayMua);
-    t.setTrangThai("VALID");
+    t.setTrangThai(trangThai);
+    t.setMaCumVe(maCumVe);
     
     tickets.push_back(t);
     save();
     return maVe;
+}
+
+std::string TicketManager::generateOrderId() {
+    DynamicArray<std::string> existingOrderIDs;
+    for (int i = 0; i < tickets.size(); ++i) {
+        std::string oid = tickets[i].getMaCumVe();
+        if (!oid.empty() && !existingOrderIDs.contains(oid)) {
+            existingOrderIDs.push_back(oid);
+        }
+    }
+    return IDGenerator::generateID("ORD", existingOrderIDs);
+}
+
+bool TicketManager::approveOrder(const std::string& maCumVe) {
+    bool found = false;
+    for (int i = 0; i < tickets.size(); ++i) {
+        if (tickets[i].getMaCumVe() == maCumVe && tickets[i].getTrangThai() == "PENDING") {
+            tickets[i].setTrangThai("VALID");
+            found = true;
+        }
+    }
+    if (found) save();
+    return found;
+}
+
+bool TicketManager::cancelOrder(const std::string& maCumVe, ShowtimeManager* showtimeMgr) {
+    bool found = false;
+    for (int i = 0; i < tickets.size(); ++i) {
+        if (tickets[i].getMaCumVe() == maCumVe && tickets[i].getTrangThai() == "PENDING") {
+            tickets[i].cancel();
+            // Release the seat back on the seatmap
+            if (showtimeMgr) {
+                SeatMap* sm = showtimeMgr->findSeatMap(tickets[i].getMaSuatChieu());
+                if (sm) {
+                    sm->cancelSeat(tickets[i].getHang(), tickets[i].getCot());
+                }
+            }
+            found = true;
+        }
+    }
+    if (found) {
+        save();
+        if (showtimeMgr) showtimeMgr->saveSeatMaps();
+    }
+    return found;
+}
+
+DynamicArray<Ticket> TicketManager::getPendingOrders() const {
+    // Return one ticket per unique maCumVe that has PENDING status (as representative)
+    DynamicArray<Ticket> res;
+    DynamicArray<std::string> seenOrders;
+    for (int i = 0; i < tickets.size(); ++i) {
+        if (tickets[i].getTrangThai() == "PENDING" && !tickets[i].getMaCumVe().empty()) {
+            if (!seenOrders.contains(tickets[i].getMaCumVe())) {
+                seenOrders.push_back(tickets[i].getMaCumVe());
+                res.push_back(tickets[i]);
+            }
+        }
+    }
+    return res;
+}
+
+DynamicArray<Ticket> TicketManager::getTicketsByOrder(const std::string& maCumVe) const {
+    DynamicArray<Ticket> res;
+    for (int i = 0; i < tickets.size(); ++i) {
+        if (tickets[i].getMaCumVe() == maCumVe) {
+            res.push_back(tickets[i]);
+        }
+    }
+    return res;
 }
 
 bool TicketManager::markUsed(const std::string& maVe) {

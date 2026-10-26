@@ -2,16 +2,18 @@
 #define MOVIELISTWIDGET_H
 
 #include <QWidget>
-#include <QTableWidget>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QScrollArea>
+#include <QGridLayout>
 #include "managers/MovieManager.h"
+#include "managers/ShowtimeManager.h"
 
 class MovieListWidget : public QWidget {
     Q_OBJECT
 
 public:
-    explicit MovieListWidget(MovieManager* movieManager, QWidget *parent = nullptr);
+    explicit MovieListWidget(MovieManager* movieManager, ShowtimeManager* showtimeManager = nullptr, QWidget *parent = nullptr);
 
 signals:
     void movieSelected(const QString& maPhim);
@@ -21,14 +23,18 @@ public slots:
 
 private slots:
     void onSearch();
-    void onMovieSelected();
 
 private:
     MovieManager* movieManager;
+    ShowtimeManager* showtimeManager;
     QLineEdit *txtSearch;
     QPushButton *btnSearch;
-    QTableWidget *tableMovies;
-    QPushButton *btnDetail;
+    QScrollArea *scrollArea;
+    QWidget *cardsContainer;
+    QGridLayout *gridLayout;
+
+    void populateGrid(const DynamicArray<Movie>& movies);
+    QWidget* createMovieCard(const Movie& movie);
 };
 
 #endif // MOVIELISTWIDGET_H

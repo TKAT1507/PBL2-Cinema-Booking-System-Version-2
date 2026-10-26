@@ -49,12 +49,28 @@ void CheckTicketWidget::checkTicket() {
     }
     
     bool isValid = (t->getTrangThai() == "VALID");
-    QString status = isValid ? "<font color='green'>HOP LE (CHUA SU DUNG)</font>" : "<font color='red'>DA SU DUNG HOAC HUY</font>";
+    QString status;
+    if (t->getTrangThai() == "VALID") {
+        status = "<font color='#28A745'><b>HỢP LỆ (ĐÃ DUYỆT / CHƯA SỬ DỤNG)</b></font>";
+    } else if (t->getTrangThai() == "PENDING") {
+        status = "<font color='#F5C542'><b>ĐANG CHỜ DUYỆT (PENDING)</b></font>";
+    } else if (t->getTrangThai() == "USED") {
+        status = "<font color='#AAAAAA'><b>ĐÃ SỬ DỤNG</b></font>";
+    } else {
+        status = "<font color='#FF4D4D'><b>ĐÃ HỦY</b></font>";
+    }
     
-    QString info = QString("Phim: %1\nGhe: %2%3\nGia: %4\nTrang Thai: %5")
+    QString info = QString("<b>Phim:</b> %1<br>"
+                           "<b>Mã Đơn:</b> %2<br>"
+                           "<b>Ghế:</b> %3%4<br>"
+                           "<b>Combo:</b> %5<br>"
+                           "<b>Giá Vé:</b> %L6 VND<br>"
+                           "<b>Trạng Thái:</b> %7")
         .arg(QString::fromStdString(movieName))
+        .arg(t->getMaCumVe().empty() ? "(Không)" : QString::fromStdString(t->getMaCumVe()))
         .arg((char)('A' + t->getHang())).arg(t->getCot() + 1)
-        .arg(t->getGiaVe())
+        .arg(t->getMaCombo().empty() ? "(Không)" : QString::fromStdString(t->getMaCombo()))
+        .arg(t->getGiaVe(), 0, 'f', 0)
         .arg(status);
         
     resultLabel->setText(info);

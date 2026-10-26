@@ -12,12 +12,14 @@ class RoomManager;
 class ShowtimeManager;
 class TicketManager;
 class ComboManager;
+class UserManager;
+class TicketApprovalWidget;
 
 class CashierDashboard : public QWidget {
     Q_OBJECT
 public:
     explicit CashierDashboard(const std::string& maNhanVien, const std::string& tenNhanVien,
-                              MovieManager* movieMgr, RoomManager* roomMgr,
+                              UserManager* userMgr, MovieManager* movieMgr, RoomManager* roomMgr,
                               ShowtimeManager* showtimeMgr, TicketManager* ticketMgr,
                               ComboManager* comboMgr, QWidget* parent = nullptr);
 
@@ -29,12 +31,14 @@ private:
     std::string tenNhanVien;
 
     QStackedWidget* stackedWidget;
+    UserManager* userManager;
     MovieManager* movieManager;
     RoomManager* roomManager;
     ShowtimeManager* showtimeManager;
     TicketManager* ticketManager;
     ComboManager* comboManager;
 
+    TicketApprovalWidget* ticketApprovalWidget;
+
     void setupUI();
-    void setupConnections();
 };

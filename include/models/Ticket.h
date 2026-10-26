@@ -14,11 +14,12 @@ private:
     double giaVe;
     std::string maCombo;
     std::string ngayMua; // dd/MM/yyyy
-    std::string trangThai; // VALID, USED, CANCELLED
+    std::string trangThai; // PENDING, VALID, USED, CANCELLED
+    std::string maCumVe; // Batch/Order ID (e.g. ORD001)
 
 public:
     Ticket();
-    Ticket(const std::string& maVe, const std::string& maSuatChieu, const std::string& maKhachHang, const std::string& maNhanVien, int hang, int cot, double giaVe, const std::string& maCombo, const std::string& ngayMua, const std::string& trangThai);
+    Ticket(const std::string& maVe, const std::string& maSuatChieu, const std::string& maKhachHang, const std::string& maNhanVien, int hang, int cot, double giaVe, const std::string& maCombo, const std::string& ngayMua, const std::string& trangThai, const std::string& maCumVe = "");
 
     std::string getMaVe() const;
     void setMaVe(const std::string& maVe);
@@ -50,9 +51,13 @@ public:
     std::string getTrangThai() const;
     void setTrangThai(const std::string& trangThai);
 
+    std::string getMaCumVe() const;
+    void setMaCumVe(const std::string& maCumVe);
+
     void markUsed();
     void cancel();
     bool isValid() const;
+    bool isPending() const;
 
     std::string toString() const;
     static Ticket fromString(const std::string& line);

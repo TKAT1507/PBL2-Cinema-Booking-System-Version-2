@@ -174,7 +174,7 @@ void SaleWidget::loadSeats() {
         for(int j = 0; j < sm->getSoCot(); ++j) {
             QPushButton* btn = new QPushButton(QString("%1%2").arg((char)('A' + i)).arg(j + 1), seatGridWidget);
             int status = sm->getSeatStatus(i, j);
-            btn->setFixedSize(45, 45);
+            btn->setFixedSize(38, 36);
             if(status == 1 || status == 3) {
                 btn->setEnabled(false);
                 btn->setStyleSheet("background-color: #444444; color: #777777; border: 1px solid #333333; border-radius: 6px; font-size: 11px;");
@@ -366,8 +366,10 @@ void SaleWidget::createTickets() {
         double finalPrice = seatPrice + comboPricePerTicket;
         
         std::string ngayMua = QDate::currentDate().toString("dd/MM/yyyy").toStdString();
-        ticketManager->createTicket(selectedShowtimeId, "", maNhanVien, r, c, finalPrice, comboStr, ngayMua);
+        // Counter sales are paid and valid immediately
+        ticketManager->createTicket(selectedShowtimeId, "", maNhanVien, r, c, finalPrice, comboStr, ngayMua, "", "VALID");
         sm->bookSeat(r, c);
     }
     showtimeManager->saveSeatMaps();
+    ticketManager->save();
 }

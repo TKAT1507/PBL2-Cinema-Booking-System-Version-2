@@ -17,96 +17,134 @@ MainWindow::MainWindow(QWidget *parent)
     setWindowTitle("PBL2 - He Thong Dat Ve Xem Phim");
     setMinimumSize(1200, 800);
 
-    // Global Stylesheet — Cinema theme
+    // Global Stylesheet — Refactored Theme (Gradients & Consistent Palette)
     setStyleSheet(R"(
         QMainWindow {
-            background-color: #1a1a2e;
+            background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #1E1F4B, stop:1 #121330);
         }
         QWidget {
             font-family: "Segoe UI", Arial, sans-serif;
             font-size: 13px;
-            color: #e0e0e0;
+            color: #FFFFFF;
         }
+        /* Default buttons */
         QPushButton {
-            background-color: #16213e;
-            color: #e0e0e0;
-            border: 1px solid #0f3460;
+            background-color: #9E221E;
+            color: #FFFFFF;
+            border: 1px solid #781A17;
             border-radius: 6px;
             padding: 8px 16px;
             font-weight: bold;
-            min-height: 30px;
+            min-height: 32px;
         }
         QPushButton:hover {
-            background-color: #0f3460;
-            border-color: #e94560;
+            background-color: #B52A26;
+            border-color: #E6B042;
         }
         QPushButton:pressed {
-            background-color: #e94560;
-            color: white;
+            background-color: #7A1916;
         }
         QPushButton:disabled {
-            background-color: #333;
-            color: #777;
+            background-color: #4A4A6A;
+            color: #8E8EA8;
+            border-color: #3B3B55;
         }
+        /* Tables */
         QTableWidget {
-            background-color: #16213e;
-            alternate-background-color: #1a1a2e;
-            gridline-color: #0f3460;
-            border: 1px solid #0f3460;
-            border-radius: 4px;
-            selection-background-color: #e94560;
-            color: #e0e0e0;
+            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #2C2E6A, stop:1 #20224F);
+            alternate-background-color: #1A1B41;
+            gridline-color: #3D4080;
+            border: 1px solid #4A4D94;
+            border-radius: 6px;
+            selection-background-color: #9E221E;
+            selection-color: #FFFFFF;
+            color: #FFFFFF;
         }
         QTableWidget::item {
-            padding: 4px 8px;
+            padding: 6px 10px;
+            border-bottom: 1px solid #33366E;
         }
         QHeaderView::section {
-            background-color: #0f3460;
-            color: #ffd700;
-            padding: 6px;
-            border: 1px solid #16213e;
+            background-color: #9E221E;
+            color: #FFFFFF;
+            padding: 8px 10px;
+            border: none;
             font-weight: bold;
+            font-size: 13px;
         }
+        /* Input fields */
         QLineEdit, QSpinBox, QDoubleSpinBox, QComboBox, QDateEdit, QTimeEdit {
-            background-color: #16213e;
-            color: #e0e0e0;
-            border: 1px solid #0f3460;
-            border-radius: 4px;
-            padding: 6px;
-            min-height: 24px;
+            background-color: #E6B042;
+            color: #1A1B41;
+            font-weight: bold;
+            border: 1px solid #C49129;
+            border-radius: 5px;
+            padding: 6px 10px;
+            min-height: 26px;
+            selection-background-color: #9E221E;
+            selection-color: #FFFFFF;
         }
         QLineEdit:focus, QSpinBox:focus, QComboBox:focus {
-            border-color: #e94560;
+            border: 2px solid #FFFFFF;
+            background-color: #EDB952;
+        }
+        QComboBox::drop-down {
+            subcontrol-origin: padding;
+            subcontrol-position: top right;
+            width: 25px;
+            border-left: 1px solid #C49129;
+        }
+        QComboBox QAbstractItemView {
+            background-color: #1E1F4B;
+            color: #FFFFFF;
+            selection-background-color: #9E221E;
+            selection-color: #FFFFFF;
+            border: 1px solid #4A4D94;
         }
         QLabel {
-            color: #e0e0e0;
+            color: #FFFFFF;
         }
         QGroupBox {
-            border: 1px solid #0f3460;
-            border-radius: 6px;
-            margin-top: 10px;
-            padding-top: 15px;
-            color: #ffd700;
+            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #2C2E6A, stop:1 #20224F);
+            border: 1px solid #4A4D94;
+            border-radius: 8px;
+            margin-top: 15px;
+            padding-top: 18px;
+            color: #F5C542;
             font-weight: bold;
         }
         QGroupBox::title {
             subcontrol-origin: margin;
-            left: 10px;
-            padding: 0 5px;
+            left: 14px;
+            padding: 0 6px;
+            color: #F5C542;
         }
-        QMessageBox {
-            background-color: #1a1a2e;
-        }
-        QDialog {
-            background-color: #1a1a2e;
+        QMessageBox, QDialog {
+            background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #1E1F4B, stop:1 #121330);
+            color: #FFFFFF;
         }
         QScrollBar:vertical {
-            background-color: #16213e;
-            width: 12px;
+            background-color: #1A1B41;
+            width: 10px;
+            border-radius: 5px;
         }
         QScrollBar::handle:vertical {
-            background-color: #0f3460;
-            border-radius: 6px;
+            background-color: #4A4D94;
+            border-radius: 5px;
+            min-height: 20px;
+        }
+        QScrollBar::handle:vertical:hover {
+            background-color: #E6B042;
+        }
+        QScrollBar:horizontal {
+            background-color: #1A1B41;
+            height: 10px;
+            border-radius: 5px;
+        }
+        QScrollBar::handle:horizontal {
+            background-color: #4A4D94;
+            border-radius: 5px;
+            min-width: 20px;
         }
     )");
 
@@ -201,7 +239,7 @@ void MainWindow::showCashierDashboard(const QString& maNV) {
     Cashier* c = userManager->findCashierById(id);
     if (c) tenNV = c->getTenNhanVien();
     
-    cashierDashboard = new CashierDashboard(id, tenNV, movieManager, roomManager, showtimeManager, ticketManager, comboManager);
+    cashierDashboard = new CashierDashboard(id, tenNV, userManager, movieManager, roomManager, showtimeManager, ticketManager, comboManager);
     connect(cashierDashboard, &CashierDashboard::logout, this, &MainWindow::logout);
     stackedWidget->addWidget(cashierDashboard);
     stackedWidget->setCurrentWidget(cashierDashboard);
@@ -219,7 +257,7 @@ void MainWindow::showAdminDashboard(const QString& maQL) {
     Admin* a = userManager->findAdminById(id);
     if (a) tenQL = a->getTenQuanLy();
     
-    adminDashboard = new AdminDashboard(id, tenQL, movieManager, roomManager, showtimeManager, ticketManager, comboManager);
+    adminDashboard = new AdminDashboard(id, tenQL, userManager, movieManager, roomManager, showtimeManager, ticketManager, comboManager);
     connect(adminDashboard, &AdminDashboard::logout, this, &MainWindow::logout);
     stackedWidget->addWidget(adminDashboard);
     stackedWidget->setCurrentWidget(adminDashboard);

@@ -1,50 +1,135 @@
 #include "RegisterWindow.h"
 #include <QVBoxLayout>
-#include <QFormLayout>
+#include <QHBoxLayout>
 #include <QMessageBox>
 #include <QLabel>
 #include <QFont>
+#include <QFrame>
 
 RegisterWindow::RegisterWindow(UserManager *userManager, QWidget *parent)
     : QWidget(parent), userManager(userManager)
 {
-    QVBoxLayout *mainLayout = new QVBoxLayout(this);
-    mainLayout->setAlignment(Qt::AlignCenter);
+    QVBoxLayout *rootLayout = new QVBoxLayout(this);
+    rootLayout->setAlignment(Qt::AlignCenter);
 
-    QLabel *lblTitle = new QLabel("DANG KY", this);
-    QFont font = lblTitle->font();
-    font.setPointSize(24);
-    font.setBold(true);
-    lblTitle->setFont(font);
+    // Center container card
+    QFrame *card = new QFrame(this);
+    card->setFixedWidth(460);
+    card->setStyleSheet(R"(
+        QFrame {
+            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #2C2E6A, stop:1 #1E1F4B);
+            border: 2px solid #E6B042;
+            border-radius: 12px;
+            padding: 30px;
+        }
+    )");
+
+    QVBoxLayout *cardLayout = new QVBoxLayout(card);
+    cardLayout->setSpacing(12);
+    cardLayout->setAlignment(Qt::AlignCenter);
+
+    // Main system title
+    QLabel *lblSystem = new QLabel("HỆ THỐNG ĐẶT VÉ XEM PHIM", card);
+    lblSystem->setStyleSheet("color: #F5C542; font-size: 20px; font-weight: bold; border: none; background: transparent;");
+    lblSystem->setAlignment(Qt::AlignCenter);
+
+    // Divider line
+    QFrame *line = new QFrame(card);
+    line->setFrameShape(QFrame::HLine);
+    line->setStyleSheet("color: #FFFFFF; background-color: #FFFFFF; max-height: 1px; border: none;");
+
+    // Subtitle
+    QLabel *lblTitle = new QLabel("ĐĂNG KÍ", card);
+    lblTitle->setStyleSheet("color: #FFFFFF; font-size: 24px; font-weight: bold; border: none; background: transparent;");
     lblTitle->setAlignment(Qt::AlignCenter);
 
-    QFormLayout *formLayout = new QFormLayout();
-    
-    txtTaiKhoan = new QLineEdit(this);
-    txtMatKhau = new QLineEdit(this);
+    QString inputStyle = R"(
+        QLineEdit, QSpinBox {
+            background-color: #E6B042;
+            color: #1A1B41;
+            font-size: 14px;
+            font-weight: bold;
+            border: 1px solid #C49129;
+            border-radius: 6px;
+            padding: 0 14px;
+            min-height: 38px;
+        }
+        QLineEdit:focus, QSpinBox:focus {
+            border: 2px solid #FFFFFF;
+        }
+    )";
+
+    txtTaiKhoan = new QLineEdit(card);
+    txtTaiKhoan->setPlaceholderText("Tài khoản");
+    txtTaiKhoan->setStyleSheet(inputStyle);
+
+    txtMatKhau = new QLineEdit(card);
+    txtMatKhau->setPlaceholderText("Mật khẩu");
     txtMatKhau->setEchoMode(QLineEdit::Password);
-    txtXacNhanMatKhau = new QLineEdit(this);
+    txtMatKhau->setStyleSheet(inputStyle);
+
+    txtXacNhanMatKhau = new QLineEdit(card);
+    txtXacNhanMatKhau->setPlaceholderText("Xác nhận mật khẩu");
     txtXacNhanMatKhau->setEchoMode(QLineEdit::Password);
-    txtSoDienThoai = new QLineEdit(this);
-    spinTuoi = new QSpinBox(this);
+    txtXacNhanMatKhau->setStyleSheet(inputStyle);
+
+    txtSoDienThoai = new QLineEdit(card);
+    txtSoDienThoai->setPlaceholderText("Số điện thoại");
+    txtSoDienThoai->setStyleSheet(inputStyle);
+
+    spinTuoi = new QSpinBox(card);
     spinTuoi->setRange(1, 120);
     spinTuoi->setValue(18);
+    spinTuoi->setPrefix("Tuổi: ");
+    spinTuoi->setStyleSheet(inputStyle);
 
-    formLayout->addRow("Tai Khoan:", txtTaiKhoan);
-    formLayout->addRow("Mat Khau:", txtMatKhau);
-    formLayout->addRow("Xac Nhan MK:", txtXacNhanMatKhau);
-    formLayout->addRow("So Dien Thoai:", txtSoDienThoai);
-    formLayout->addRow("Tuoi:", spinTuoi);
+    // Two buttons row
+    QHBoxLayout *btnLayout = new QHBoxLayout();
+    btnLayout->setSpacing(15);
 
-    btnRegister = new QPushButton("Dang Ky", this);
-    btnBack = new QPushButton("Quay Lai", this);
+    QString btnStyle = R"(
+        QPushButton {
+            background-color: #9E221E;
+            color: #FFFFFF;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 6px;
+            border: none;
+            min-height: 40px;
+        }
+        QPushButton:hover {
+            background-color: #B52A26;
+        }
+        QPushButton:pressed {
+            background-color: #7A1916;
+        }
+    )";
 
-    mainLayout->addWidget(lblTitle);
-    mainLayout->addSpacing(20);
-    mainLayout->addLayout(formLayout);
-    mainLayout->addSpacing(20);
-    mainLayout->addWidget(btnRegister);
-    mainLayout->addWidget(btnBack);
+    btnRegister = new QPushButton("Đăng Kí", card);
+    btnRegister->setCursor(Qt::PointingHandCursor);
+    btnRegister->setStyleSheet(btnStyle);
+
+    btnBack = new QPushButton("Quay Lại", card);
+    btnBack->setCursor(Qt::PointingHandCursor);
+    btnBack->setStyleSheet(btnStyle);
+
+    btnLayout->addWidget(btnRegister);
+    btnLayout->addWidget(btnBack);
+
+    cardLayout->addWidget(lblSystem);
+    cardLayout->addWidget(line);
+    cardLayout->addSpacing(5);
+    cardLayout->addWidget(lblTitle);
+    cardLayout->addSpacing(10);
+    cardLayout->addWidget(txtTaiKhoan);
+    cardLayout->addWidget(txtMatKhau);
+    cardLayout->addWidget(txtXacNhanMatKhau);
+    cardLayout->addWidget(txtSoDienThoai);
+    cardLayout->addWidget(spinTuoi);
+    cardLayout->addSpacing(10);
+    cardLayout->addLayout(btnLayout);
+
+    rootLayout->addWidget(card);
 
     connect(btnRegister, &QPushButton::clicked, this, &RegisterWindow::onRegister);
     connect(btnBack, &QPushButton::clicked, this, &RegisterWindow::onBack);

@@ -21,12 +21,26 @@ ShowtimeManagementWidget::ShowtimeManagementWidget(ShowtimeManager* showtimeMgr,
     : QWidget(parent), showtimeManager(showtimeMgr), movieManager(movieMgr), roomManager(roomMgr) {
     
     QVBoxLayout* layout = new QVBoxLayout(this);
+    layout->setContentsMargins(15, 15, 15, 15);
+    layout->setSpacing(12);
+
+    QLabel *lblTitle = new QLabel("QUẢN LÝ SUẤT CHIẾU", this);
+    lblTitle->setStyleSheet("color: #F5C542; font-size: 18px; font-weight: bold;");
+    layout->addWidget(lblTitle);
     
     QHBoxLayout* btnLayout = new QHBoxLayout();
-    btnAdd = new QPushButton("Them Suat Chieu", this);
-    btnDelete = new QPushButton("Huy Suat Chieu", this);
+    btnLayout->setSpacing(10);
+    btnAdd = new QPushButton("Thêm Suất Chiếu", this);
+    btnAdd->setCursor(Qt::PointingHandCursor);
+    btnAdd->setStyleSheet("background-color: #28A745; color: white; font-weight: bold; min-height: 34px; border-radius: 5px;");
+
+    btnDelete = new QPushButton("Hủy Suất Chiếu", this);
+    btnDelete->setCursor(Qt::PointingHandCursor);
+    btnDelete->setStyleSheet("background-color: #9E221E; color: white; font-weight: bold; min-height: 34px; border-radius: 5px;");
+
     btnLayout->addWidget(btnAdd);
     btnLayout->addWidget(btnDelete);
+    btnLayout->addStretch();
     
     table = new QTableWidget(0, 6, this);
     table->setHorizontalHeaderLabels({"Ma SC", "Phim", "Phong", "Ngay", "Gio", "Trang Thai"});

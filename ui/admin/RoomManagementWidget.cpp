@@ -15,14 +15,31 @@ RoomManagementWidget::RoomManagementWidget(RoomManager* roomMgr, QWidget* parent
     : QWidget(parent), roomManager(roomMgr) {
     
     QVBoxLayout* layout = new QVBoxLayout(this);
+    layout->setContentsMargins(15, 15, 15, 15);
+    layout->setSpacing(12);
+
+    QLabel *lblTitle = new QLabel("QUẢN LÝ PHÒNG CHIẾU", this);
+    lblTitle->setStyleSheet("color: #F5C542; font-size: 18px; font-weight: bold;");
+    layout->addWidget(lblTitle);
     
     QHBoxLayout* btnLayout = new QHBoxLayout();
-    btnAdd = new QPushButton("Them Phong", this);
-    btnEdit = new QPushButton("Sua Phong", this);
-    btnDelete = new QPushButton("Ngung Su Dung", this);
+    btnLayout->setSpacing(10);
+    btnAdd = new QPushButton("Thêm Phòng", this);
+    btnAdd->setCursor(Qt::PointingHandCursor);
+    btnAdd->setStyleSheet("background-color: #28A745; color: white; font-weight: bold; min-height: 34px; border-radius: 5px;");
+
+    btnEdit = new QPushButton("Sửa Phòng", this);
+    btnEdit->setCursor(Qt::PointingHandCursor);
+    btnEdit->setStyleSheet("background-color: #E6B042; color: #1A1B41; font-weight: bold; min-height: 34px; border-radius: 5px;");
+
+    btnDelete = new QPushButton("Ngừng Hoạt Động", this);
+    btnDelete->setCursor(Qt::PointingHandCursor);
+    btnDelete->setStyleSheet("background-color: #9E221E; color: white; font-weight: bold; min-height: 34px; border-radius: 5px;");
+
     btnLayout->addWidget(btnAdd);
     btnLayout->addWidget(btnEdit);
     btnLayout->addWidget(btnDelete);
+    btnLayout->addStretch();
     
     table = new QTableWidget(0, 5, this);
     table->setHorizontalHeaderLabels({"Ma Phong", "Ten Phong", "So Hang", "So Cot", "Trang Thai"});
