@@ -49,8 +49,11 @@ private:
     
     // Step 3
     QWidget* seatGridWidget;
+    QGridLayout* seatGridLayout;
+    QLabel* lblSelectedSeats;
     void setupStep3(QWidget* page);
     void loadSeats();
+    void updateSelectedSeatsLabel();
     DynamicArray<std::pair<int, int>> selectedSeats;
     
     // Step 4

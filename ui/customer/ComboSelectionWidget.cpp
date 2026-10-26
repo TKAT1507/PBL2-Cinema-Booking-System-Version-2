@@ -25,7 +25,10 @@ ComboSelectionWidget::ComboSelectionWidget(ComboManager* comboManager, QWidget *
     tableCombos->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
     tableCombos->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
     tableCombos->horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
-    tableCombos->horizontalHeader()->setSectionResizeMode(4, QHeaderView::ResizeToContents);
+    tableCombos->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Fixed);
+    tableCombos->setColumnWidth(4, 130);
+    tableCombos->verticalHeader()->setDefaultSectionSize(48);
+    tableCombos->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     tableCombos->setSelectionBehavior(QAbstractItemView::SelectRows);
     tableCombos->setSelectionMode(QAbstractItemView::SingleSelection);
     tableCombos->setAlternatingRowColors(true);
@@ -131,28 +134,42 @@ void ComboSelectionWidget::loadCombos() {
         itemGia->setForeground(QBrush(QColor("#F5C542")));
         tableCombos->setItem(i, 3, itemGia);
 
-        QSpinBox *spinQty = new QSpinBox(this);
+        QWidget* pWidget = new QWidget();
+        QHBoxLayout* pLayout = new QHBoxLayout(pWidget);
+        pLayout->setContentsMargins(4, 2, 4, 2);
+        pLayout->setAlignment(Qt::AlignCenter);
+
+        QSpinBox *spinQty = new QSpinBox(pWidget);
         spinQty->setRange(0, 20);
         spinQty->setValue(0);
         spinQty->setAlignment(Qt::AlignCenter);
+        spinQty->setFixedSize(85, 30);
         spinQty->setStyleSheet(R"(
             QSpinBox {
                 background-color: #E6B042;
                 color: #1A1B41;
+                font-size: 13px;
                 font-weight: bold;
+                border: 1px solid #C49129;
                 border-radius: 4px;
-                padding: 2px;
-                min-width: 60px;
+                padding: 0px 4px;
+                min-height: 26px;
+                max-height: 28px;
+            }
+            QSpinBox::up-button, QSpinBox::down-button {
+                width: 18px;
             }
         )");
-        tableCombos->setCellWidget(i, 4, spinQty);
+        pLayout->addWidget(spinQty);
+        tableCombos->setCellWidget(i, 4, pWidget);
     }
 }
 
 void ComboSelectionWidget::onContinue() {
     QStringList selected;
     for (int i = 0; i < tableCombos->rowCount(); ++i) {
-        QSpinBox *spin = qobject_cast<QSpinBox*>(tableCombos->cellWidget(i, 4));
+        QWidget* pWidget = tableCombos->cellWidget(i, 4);
+        QSpinBox *spin = pWidget ? pWidget->findChild<QSpinBox*>() : nullptr;
         if (spin && spin->value() > 0) {
             QString maCombo = tableCombos->item(i, 1)->data(Qt::UserRole).toString();
             selected << QString("%1,%2").arg(maCombo).arg(spin->value());
