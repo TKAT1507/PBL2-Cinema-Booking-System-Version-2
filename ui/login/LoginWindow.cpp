@@ -133,12 +133,6 @@ LoginWindow::LoginWindow(UserManager *userManager, QWidget *parent)
     btnLayout->addWidget(btnLogin);
     btnLayout->addWidget(btnRegister);
 
-    // Link: Doi mat khau
-    btnChangePassword = new QPushButton("Quên mật khẩu? Đổi Mật Khẩu", card);
-    btnChangePassword->setFlat(true);
-    btnChangePassword->setCursor(Qt::PointingHandCursor);
-    btnChangePassword->setStyleSheet("QPushButton { color: #F5C542; font-size: 12px; border: none; background: transparent; text-decoration: underline; } QPushButton:hover { color: #FFFFFF; }");
-
     cardLayout->addWidget(lblSystem);
     cardLayout->addWidget(line);
     cardLayout->addSpacing(5);
@@ -148,13 +142,11 @@ LoginWindow::LoginWindow(UserManager *userManager, QWidget *parent)
     cardLayout->addWidget(txtMatKhau);
     cardLayout->addSpacing(10);
     cardLayout->addLayout(btnLayout);
-    cardLayout->addWidget(btnChangePassword, 0, Qt::AlignCenter);
 
     rootLayout->addWidget(card);
 
     connect(btnLogin, &QPushButton::clicked, this, &LoginWindow::onLogin);
     connect(btnRegister, &QPushButton::clicked, this, &LoginWindow::onRegisterClicked);
-    connect(btnChangePassword, &QPushButton::clicked, this, &LoginWindow::onChangePasswordClicked);
 }
 
 void LoginWindow::onLogin() {
@@ -175,8 +167,4 @@ void LoginWindow::onLogin() {
 
 void LoginWindow::onRegisterClicked() {
     emit showRegister();
-}
-
-void LoginWindow::onChangePasswordClicked() {
-    emit showChangePassword();
 }

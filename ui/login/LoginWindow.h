@@ -16,12 +16,10 @@ public:
 signals:
     void loginSuccess(const QString& role, const QString& userId);
     void showRegister();
-    void showChangePassword();
 
 private slots:
     void onLogin();
     void onRegisterClicked();
-    void onChangePasswordClicked();
 
 private:
     UserManager *userManager;
@@ -29,7 +27,6 @@ private:
     QLineEdit *txtMatKhau;
     QPushButton *btnLogin;
     QPushButton *btnRegister;
-    QPushButton *btnChangePassword;
 };
 
 #endif // LOGINWINDOW_H

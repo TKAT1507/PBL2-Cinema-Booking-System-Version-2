@@ -190,7 +190,6 @@ void MainWindow::showLogin() {
             else if (role == "ADMIN") showAdminDashboard(userId);
         });
         connect(loginWindow, &LoginWindow::showRegister, this, &MainWindow::showRegister);
-        connect(loginWindow, &LoginWindow::showChangePassword, this, &MainWindow::showChangePassword);
         stackedWidget->addWidget(loginWindow);
     }
     stackedWidget->setCurrentWidget(loginWindow);

@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include <QDate>
 #include "models/SeatMap.h"
+#include "utils/SystemDate.h"
 
 ShowtimeListWidget::ShowtimeListWidget(ShowtimeManager* showtimeManager, MovieManager* movieManager, QWidget *parent)
     : QWidget(parent), showtimeManager(showtimeManager), movieManager(movieManager), currentDayFilter(-1)
@@ -48,20 +49,41 @@ ShowtimeListWidget::ShowtimeListWidget(ShowtimeManager* showtimeManager, MovieMa
     topBar->addStretch();
     mainLayout->addLayout(topBar);
 
-    // Day-of-week Tabs (Thứ 2 -> Chủ Nhật)
+    // Day Tabs: Tất Cả + 7 Ngày liên tiếp (bắt đầu từ Hôm nay)
+    upcomingDates = SystemDate::getUpcoming7Days();
+
     QHBoxLayout *dayTabsLayout = new QHBoxLayout();
     dayTabsLayout->setSpacing(6);
 
-    QStringList dayNames = { "Tất Cả", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy", "Chủ Nhật" };
-    for (int i = 0; i < dayNames.size(); ++i) {
-        QPushButton *btnDay = new QPushButton(dayNames[i], this);
+    // Tab 0: "Tất Cả"
+    QPushButton *btnAll = new QPushButton("Tất Cả\nLịch Chiếu", this);
+    btnAll->setCursor(Qt::PointingHandCursor);
+    btnAll->setFixedHeight(46);
+    dayButtons.append(btnAll);
+    dayTabsLayout->addWidget(btnAll);
+    connect(btnAll, &QPushButton::clicked, this, [this]() {
+        onDayTabClicked(-1);
+    });
+
+    // Tab 1..7: 7 ngày tới
+    for (int i = 0; i < upcomingDates.size(); ++i) {
+        const QDate& d = upcomingDates[i];
+        QString dayName = SystemDate::getDayOfWeekVN(d);
+        QString labelText;
+        if (i == 0) {
+            labelText = QString("%1\n(Hôm nay - %2)").arg(dayName, d.toString("dd/MM"));
+        } else {
+            labelText = QString("%1\n(%2)").arg(dayName, d.toString("dd/MM"));
+        }
+
+        QPushButton *btnDay = new QPushButton(labelText, this);
         btnDay->setCursor(Qt::PointingHandCursor);
-        btnDay->setFixedHeight(34);
+        btnDay->setFixedHeight(46);
         dayButtons.append(btnDay);
         dayTabsLayout->addWidget(btnDay);
 
         connect(btnDay, &QPushButton::clicked, this, [this, i]() {
-            onDayTabClicked(i - 1); // -1 is all, 0 is Mon (Qt dayOfWeek 1), etc.
+            onDayTabClicked(i);
         });
     }
     mainLayout->addLayout(dayTabsLayout);
@@ -127,15 +149,17 @@ ShowtimeListWidget::ShowtimeListWidget(ShowtimeManager* showtimeManager, MovieMa
 
 void ShowtimeListWidget::updateDayButtonStyles() {
     for (int i = 0; i < dayButtons.size(); ++i) {
-        int dayIndex = i - 1; // -1 is All
-        if (dayIndex == currentDayFilter) {
+        int filterIndex = i - 1; // -1 is All, 0..6 is upcomingDates[0..6]
+        if (filterIndex == currentDayFilter) {
             dayButtons[i]->setStyleSheet(R"(
                 QPushButton {
                     background-color: #9E221E;
                     color: #FFFFFF;
+                    font-size: 11px;
                     font-weight: bold;
                     border: 1px solid #E6B042;
-                    border-radius: 5px;
+                    border-radius: 6px;
+                    padding: 2px 4px;
                 }
             )");
         } else {
@@ -143,9 +167,11 @@ void ShowtimeListWidget::updateDayButtonStyles() {
                 QPushButton {
                     background-color: #F4DFB6;
                     color: #1A1A1A;
+                    font-size: 11px;
                     font-weight: bold;
                     border: 1px solid #333333;
-                    border-radius: 5px;
+                    border-radius: 6px;
+                    padding: 2px 4px;
                 }
                 QPushButton:hover {
                     background-color: #FFF2D6;
@@ -155,8 +181,8 @@ void ShowtimeListWidget::updateDayButtonStyles() {
     }
 }
 
-void ShowtimeListWidget::onDayTabClicked(int dayIndex) {
-    currentDayFilter = dayIndex;
+void ShowtimeListWidget::onDayTabClicked(int tabIndex) {
+    currentDayFilter = tabIndex; // -1 for all, 0..6 for specific day
     updateDayButtonStyles();
     filterByMovie();
 }
@@ -193,18 +219,19 @@ void ShowtimeListWidget::filterByMovie() {
         }
     }
 
-    // Filter by day of week if selected (currentDayFilter: 0=Mon, 1=Tue, ..., 6=Sun)
+    // Filter by specific date if selected (currentDayFilter: -1=All, 0..6=upcomingDates[0..6])
     DynamicArray<Showtime> filtered;
     for (int i = 0; i < showtimes.size(); ++i) {
-        if (currentDayFilter >= 0) {
-            QDate date = QDate::fromString(QString::fromStdString(showtimes[i].getNgayChieu()), "yyyy-MM-dd");
+        if (currentDayFilter >= 0 && currentDayFilter < upcomingDates.size()) {
+            QString targetDateStr = upcomingDates[currentDayFilter].toString("dd/MM/yyyy");
+            QDate date = QDate::fromString(QString::fromStdString(showtimes[i].getNgayChieu()), "dd/MM/yyyy");
             if (!date.isValid()) {
-                date = QDate::fromString(QString::fromStdString(showtimes[i].getNgayChieu()), "dd/MM/yyyy");
+                date = QDate::fromString(QString::fromStdString(showtimes[i].getNgayChieu()), "yyyy-MM-dd");
             }
             if (date.isValid()) {
-                // Qt dayOfWeek: 1 = Mon, 7 = Sun
-                int qtDay = date.dayOfWeek() - 1; // 0 = Mon, 6 = Sun
-                if (qtDay != currentDayFilter) continue;
+                if (date.toString("dd/MM/yyyy") != targetDateStr) continue;
+            } else {
+                if (QString::fromStdString(showtimes[i].getNgayChieu()) != targetDateStr) continue;
             }
         }
         filtered.push_back(showtimes[i]);

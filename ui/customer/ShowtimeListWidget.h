@@ -6,6 +6,8 @@
 #include <QComboBox>
 #include <QPushButton>
 #include <QLabel>
+#include <QDate>
+#include <QList>
 #include "managers/ShowtimeManager.h"
 #include "managers/MovieManager.h"
 
@@ -25,7 +27,7 @@ public slots:
 
 private slots:
     void filterByMovie();
-    void onDayTabClicked(int dayIndex);
+    void onDayTabClicked(int tabIndex);
     void onSelectShowtime();
 
 private:
@@ -35,7 +37,8 @@ private:
     QLabel *lblMovieHeader;
     QComboBox *cbMovies;
     QList<QPushButton*> dayButtons;
-    int currentDayFilter; // -1 for all, 0: Sun, 1: Mon, ..., 6: Sat
+    QList<QDate> upcomingDates;
+    int currentDayFilter; // -1 for all, 0..6 for upcomingDates[0..6]
     QTableWidget *tableShowtimes;
     QPushButton *btnSelect;
     QPushButton *btnBack;
