@@ -4,20 +4,6 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QFont>
-#include "MovieListWidget.h"
-#include "MovieDetailWidget.h"
-#include "ShowtimeListWidget.h"
-#include "SeatSelectionWidget.h"
-#include "ComboSelectionWidget.h"
-#include "BookingConfirmWidget.h"
-#include "MyTicketsWidget.h"
-
-#include "CustomerDashboard.h"
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <QPushButton>
-#include <QLabel>
-#include <QFont>
 #include <QFrame>
 #include "MovieListWidget.h"
 #include "MovieDetailWidget.h"
@@ -35,16 +21,17 @@ CustomerDashboard::CustomerDashboard(const QString& maKH, UserManager* userMgr, 
       showtimeManager(showtimeMgr), ticketManager(ticketMgr), comboManager(comboMgr), roomManager(roomMgr)
 {
     QHBoxLayout *mainLayout = new QHBoxLayout(this);
-    mainLayout->setContentsMargins(12, 12, 12, 12);
+    mainLayout->setContentsMargins(0, 0, 14, 0);
     mainLayout->setSpacing(14);
     
-    // Left Sidebar: Gold/Mustard #E6B042, rounded
+    // Left Sidebar: Dính sát viền trái, vuông vức (border-radius: 0px), màu vàng mù tạt #EAB02F
     QWidget *sidebarWidget = new QWidget(this);
-    sidebarWidget->setFixedWidth(230);
+    sidebarWidget->setFixedWidth(240);
     sidebarWidget->setStyleSheet(R"(
         QWidget {
-            background-color: #E6B042;
-            border-radius: 10px;
+            background-color: #EAB02F;
+            border: none;
+            border-radius: 0px;
         }
     )");
 
@@ -53,11 +40,11 @@ CustomerDashboard::CustomerDashboard(const QString& maKH, UserManager* userMgr, 
     sidebarLayout->setSpacing(10);
     sidebarLayout->setAlignment(Qt::AlignTop);
 
-    // Top Header: Dark Red #9E221E
+    // Top Header: Bo tròn như cũ, màu đỏ gạch #A52C20
     QFrame *headerFrame = new QFrame(sidebarWidget);
     headerFrame->setStyleSheet(R"(
         QFrame {
-            background-color: #9E221E;
+            background-color: #A52C20;
             border-radius: 8px;
             padding: 8px;
         }
@@ -77,10 +64,10 @@ CustomerDashboard::CustomerDashboard(const QString& maKH, UserManager* userMgr, 
     headerLayout->addWidget(lblGreeting);
     headerLayout->addWidget(lblUser);
 
-    // Navigation Tabs Style
+    // Navigation Tabs Style: Bo tròn như cũ, màu kem #F9F1E5
     QString tabBtnStyle = R"(
         QPushButton {
-            background-color: #F4DFB6;
+            background-color: #F9F1E5;
             color: #1A1A1A;
             border: 1px solid #2B1810;
             border-radius: 6px;
@@ -91,11 +78,11 @@ CustomerDashboard::CustomerDashboard(const QString& maKH, UserManager* userMgr, 
             text-align: center;
         }
         QPushButton:hover {
-            background-color: #FFF2D6;
-            border-color: #9E221E;
+            background-color: #FFFFFF;
+            border-color: #A52C20;
         }
         QPushButton:pressed {
-            background-color: #D4A034;
+            background-color: #EAB02F;
         }
     )";
 
@@ -107,21 +94,21 @@ CustomerDashboard::CustomerDashboard(const QString& maKH, UserManager* userMgr, 
     btnTickets->setCursor(Qt::PointingHandCursor);
     btnTickets->setStyleSheet(tabBtnStyle);
 
-    // Bottom action buttons
+    // Bottom action buttons: Bo tròn như cũ
     QPushButton *btnChangePassword = new QPushButton("Đổi Mật Khẩu", sidebarWidget);
     btnChangePassword->setCursor(Qt::PointingHandCursor);
     btnChangePassword->setStyleSheet(R"(
         QPushButton {
-            background-color: #F4DFB6;
-            color: #9E221E;
-            border: 1px solid #9E221E;
+            background-color: #F9F1E5;
+            color: #A52C20;
+            border: 1px solid #A52C20;
             border-radius: 6px;
             font-size: 13px;
             font-weight: bold;
             min-height: 38px;
         }
         QPushButton:hover {
-            background-color: #9E221E;
+            background-color: #A52C20;
             color: #FFFFFF;
         }
     )");
@@ -130,16 +117,16 @@ CustomerDashboard::CustomerDashboard(const QString& maKH, UserManager* userMgr, 
     btnLogout->setCursor(Qt::PointingHandCursor);
     btnLogout->setStyleSheet(R"(
         QPushButton {
-            background-color: #9E221E;
+            background-color: #A52C20;
             color: #FFFFFF;
-            border: 1px solid #781A17;
+            border: 1px solid #822017;
             border-radius: 6px;
             font-size: 14px;
             font-weight: bold;
             min-height: 38px;
         }
         QPushButton:hover {
-            background-color: #B52A26;
+            background-color: #BD362A;
         }
     )");
 
@@ -151,7 +138,7 @@ CustomerDashboard::CustomerDashboard(const QString& maKH, UserManager* userMgr, 
     sidebarLayout->addWidget(btnChangePassword);
     sidebarLayout->addWidget(btnLogout);
 
-    // Main Content Area (gradient background #1E1F4B -> #121330)
+    // Main Content Area (flat background #212156)
     stackedWidget = new QStackedWidget(this);
     stackedWidget->setStyleSheet(R"(
         QStackedWidget {

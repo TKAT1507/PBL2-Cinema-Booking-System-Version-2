@@ -17,10 +17,10 @@ MainWindow::MainWindow(QWidget *parent)
     setWindowTitle("PBL2 - He Thong Dat Ve Xem Phim");
     setMinimumSize(1200, 800);
 
-    // Global Stylesheet — Refactored Theme (Gradients & Consistent Palette)
+    // Global Stylesheet — He mau chuan: #212156, #A52C20, #EAB02F, #F9F1E5
     setStyleSheet(R"(
         QMainWindow {
-            background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #1E1F4B, stop:1 #121330);
+            background-color: #212156;
         }
         QWidget {
             font-family: "Segoe UI", Arial, sans-serif;
@@ -29,20 +29,20 @@ MainWindow::MainWindow(QWidget *parent)
         }
         /* Default buttons */
         QPushButton {
-            background-color: #9E221E;
+            background-color: #A52C20;
             color: #FFFFFF;
-            border: 1px solid #781A17;
+            border: 1px solid #7A1F16;
             border-radius: 6px;
             padding: 8px 16px;
             font-weight: bold;
             min-height: 32px;
         }
         QPushButton:hover {
-            background-color: #B52A26;
-            border-color: #E6B042;
+            background-color: #BD362A;
+            border-color: #EAB02F;
         }
         QPushButton:pressed {
-            background-color: #7A1916;
+            background-color: #822017;
         }
         QPushButton:disabled {
             background-color: #4A4A6A;
@@ -51,12 +51,12 @@ MainWindow::MainWindow(QWidget *parent)
         }
         /* Tables */
         QTableWidget {
-            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #2C2E6A, stop:1 #20224F);
-            alternate-background-color: #1A1B41;
+            background-color: #28295C;
+            alternate-background-color: #1F204A;
             gridline-color: #3D4080;
             border: 1px solid #4A4D94;
             border-radius: 6px;
-            selection-background-color: #9E221E;
+            selection-background-color: #A52C20;
             selection-color: #FFFFFF;
             color: #FFFFFF;
         }
@@ -65,7 +65,7 @@ MainWindow::MainWindow(QWidget *parent)
             border-bottom: 1px solid #33366E;
         }
         QHeaderView::section {
-            background-color: #9E221E;
+            background-color: #A52C20;
             color: #FFFFFF;
             padding: 8px 10px;
             border: none;
@@ -74,30 +74,30 @@ MainWindow::MainWindow(QWidget *parent)
         }
         /* Input fields */
         QLineEdit, QSpinBox, QDoubleSpinBox, QComboBox, QDateEdit, QTimeEdit {
-            background-color: #E6B042;
-            color: #1A1B41;
+            background-color: #EAB02F;
+            color: #1A1A1A;
             font-weight: bold;
-            border: 1px solid #C49129;
+            border: 1px solid #C89422;
             border-radius: 5px;
             padding: 6px 10px;
             min-height: 26px;
-            selection-background-color: #9E221E;
+            selection-background-color: #A52C20;
             selection-color: #FFFFFF;
         }
         QLineEdit:focus, QSpinBox:focus, QComboBox:focus {
             border: 2px solid #FFFFFF;
-            background-color: #EDB952;
+            background-color: #F0BC40;
         }
         QComboBox::drop-down {
             subcontrol-origin: padding;
             subcontrol-position: top right;
             width: 25px;
-            border-left: 1px solid #C49129;
+            border-left: 1px solid #C89422;
         }
         QComboBox QAbstractItemView {
-            background-color: #1E1F4B;
+            background-color: #212156;
             color: #FFFFFF;
-            selection-background-color: #9E221E;
+            selection-background-color: #A52C20;
             selection-color: #FFFFFF;
             border: 1px solid #4A4D94;
         }
@@ -105,26 +105,26 @@ MainWindow::MainWindow(QWidget *parent)
             color: #FFFFFF;
         }
         QGroupBox {
-            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #2C2E6A, stop:1 #20224F);
+            background-color: #28295C;
             border: 1px solid #4A4D94;
             border-radius: 8px;
             margin-top: 15px;
             padding-top: 18px;
-            color: #F5C542;
+            color: #EAB02F;
             font-weight: bold;
         }
         QGroupBox::title {
             subcontrol-origin: margin;
             left: 14px;
             padding: 0 6px;
-            color: #F5C542;
+            color: #EAB02F;
         }
         QMessageBox, QDialog {
-            background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #1E1F4B, stop:1 #121330);
+            background-color: #212156;
             color: #FFFFFF;
         }
         QScrollBar:vertical {
-            background-color: #1A1B41;
+            background-color: #212156;
             width: 10px;
             border-radius: 5px;
         }
@@ -134,10 +134,10 @@ MainWindow::MainWindow(QWidget *parent)
             min-height: 20px;
         }
         QScrollBar::handle:vertical:hover {
-            background-color: #E6B042;
+            background-color: #EAB02F;
         }
         QScrollBar:horizontal {
-            background-color: #1A1B41;
+            background-color: #212156;
             height: 10px;
             border-radius: 5px;
         }

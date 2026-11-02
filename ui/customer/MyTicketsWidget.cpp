@@ -16,7 +16,7 @@ MyTicketsWidget::MyTicketsWidget(const QString& maKH, TicketManager* ticketManag
     QHBoxLayout *topLayout = new QHBoxLayout();
     
     QLabel *lblTitle = new QLabel("VÉ CỦA TÔI", this);
-    lblTitle->setStyleSheet("color: #F5C542; font-size: 20px; font-weight: bold;");
+    lblTitle->setStyleSheet("color: #EAB02F; font-size: 20px; font-weight: bold;");
     topLayout->addWidget(lblTitle);
     topLayout->addStretch();
 
@@ -25,8 +25,8 @@ MyTicketsWidget::MyTicketsWidget(const QString& maKH, TicketManager* ticketManag
     txtSearch->setFixedWidth(280);
     txtSearch->setStyleSheet(R"(
         QLineEdit {
-            background-color: #E6B042;
-            color: #1A1B41;
+            background-color: #EAB02F;
+            color: #1A1A1A;
             font-size: 13px;
             font-weight: bold;
             border-radius: 5px;
@@ -39,7 +39,7 @@ MyTicketsWidget::MyTicketsWidget(const QString& maKH, TicketManager* ticketManag
     btnSearch->setCursor(Qt::PointingHandCursor);
     btnSearch->setStyleSheet(R"(
         QPushButton {
-            background-color: #9E221E;
+            background-color: #A52C20;
             color: #FFFFFF;
             font-size: 13px;
             font-weight: bold;
@@ -49,7 +49,7 @@ MyTicketsWidget::MyTicketsWidget(const QString& maKH, TicketManager* ticketManag
             padding: 4px 16px;
         }
         QPushButton:hover {
-            background-color: #B52A26;
+            background-color: #BD362A;
         }
     )");
 
@@ -121,7 +121,7 @@ void MyTicketsWidget::loadTickets() {
         std::string status = t.getTrangThai();
         if (status == "PENDING") {
             trangThaiStr = "Đang chờ duyệt";
-            statusColor = QColor("#F5C542"); // Yellow-gold
+            statusColor = QColor("#EAB02F"); // Yellow-gold
         } else if (status == "VALID") {
             trangThaiStr = "Hợp lệ";
             statusColor = QColor("#28A745"); // Green
@@ -147,7 +147,7 @@ void MyTicketsWidget::loadTickets() {
         // Ma Cum Ve / Don
         QTableWidgetItem* itemMaDon = new QTableWidgetItem(maCumVe.isEmpty() ? "-" : maCumVe);
         itemMaDon->setTextAlignment(Qt::AlignCenter);
-        itemMaDon->setForeground(QBrush(QColor("#F5C542")));
+        itemMaDon->setForeground(QBrush(QColor("#EAB02F")));
         tableTickets->setItem(rowCount, 2, itemMaDon);
 
         // Ten Phim
@@ -167,7 +167,7 @@ void MyTicketsWidget::loadTickets() {
         // Gia
         QTableWidgetItem* priceItem = new QTableWidgetItem(QString("%L1 VND").arg(t.getGiaVe(), 0, 'f', 0));
         priceItem->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
-        priceItem->setForeground(QBrush(QColor("#F5C542")));
+        priceItem->setForeground(QBrush(QColor("#EAB02F")));
         tableTickets->setItem(rowCount, 6, priceItem);
         
         // Trang Thai

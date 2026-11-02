@@ -12,152 +12,155 @@ RegisterWindow::RegisterWindow(UserManager *userManager, QWidget *parent)
     QVBoxLayout *rootLayout = new QVBoxLayout(this);
     rootLayout->setAlignment(Qt::AlignCenter);
 
-    // Center container card
-    QFrame *card = new QFrame(this);
-    card->setFixedWidth(460);
-    card->setStyleSheet(R"(
-        QFrame {
-            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #2C2E6A, stop:1 #1E1F4B);
-            border: 2px solid #E6B042;
-            border-radius: 12px;
-            padding: 30px;
-        }
-    )");
+    // Center container (no card frame, flat on #212156)
+    QWidget *container = new QWidget(this);
+    container->setStyleSheet("background: transparent; border: none;");
 
-    QVBoxLayout *cardLayout = new QVBoxLayout(card);
-    cardLayout->setSpacing(12);
-    cardLayout->setAlignment(Qt::AlignCenter);
+    QVBoxLayout *containerLayout = new QVBoxLayout(container);
+    containerLayout->setSpacing(14);
+    containerLayout->setAlignment(Qt::AlignCenter);
 
-    // Main system title
-    QLabel *lblSystem = new QLabel("HỆ THỐNG ĐẶT VÉ XEM PHIM", card);
-    lblSystem->setStyleSheet("color: #F5C542; font-size: 20px; font-weight: bold; border: none; background: transparent;");
-    lblSystem->setAlignment(Qt::AlignCenter);
+    // Title: ———— Đăng Kí ————
+    QHBoxLayout *titleRow = new QHBoxLayout();
+    titleRow->setSpacing(14);
+    titleRow->setAlignment(Qt::AlignCenter);
 
-    // Divider line
-    QFrame *line = new QFrame(card);
-    line->setFrameShape(QFrame::HLine);
-    line->setStyleSheet("color: #FFFFFF; background-color: #FFFFFF; max-height: 1px; border: none;");
+    QFrame *lineLeft = new QFrame(container);
+    lineLeft->setFixedHeight(5);
+    lineLeft->setFixedWidth(110);
+    lineLeft->setStyleSheet("background-color: #FFFFFF; border: none;");
 
-    // Subtitle
-    QLabel *lblTitle = new QLabel("ĐĂNG KÍ", card);
-    lblTitle->setStyleSheet("color: #FFFFFF; font-size: 24px; font-weight: bold; border: none; background: transparent;");
+    QLabel *lblTitle = new QLabel("Đăng Kí", container);
+    lblTitle->setStyleSheet("color: #FFFFFF; font-size: 26px; font-weight: bold; border: none; background: transparent;");
     lblTitle->setAlignment(Qt::AlignCenter);
+
+    QFrame *lineRight = new QFrame(container);
+    lineRight->setFixedHeight(5);
+    lineRight->setFixedWidth(110);
+    lineRight->setStyleSheet("background-color: #FFFFFF; border: none;");
+
+    titleRow->addWidget(lineLeft);
+    titleRow->addWidget(lblTitle);
+    titleRow->addWidget(lineRight);
 
     QString inputStyle = R"(
         QLineEdit, QSpinBox {
-            background-color: #E6B042;
-            color: #1A1B41;
+            background-color: #EAB02F;
+            color: #FFFFFF;
             font-size: 14px;
             font-weight: bold;
-            border: 1px solid #C49129;
-            border-radius: 6px;
+            border: none;
+            border-radius: 0px;
             padding: 0 14px;
-            min-height: 38px;
+            min-height: 42px;
         }
         QLineEdit:focus, QSpinBox:focus {
             border: 2px solid #FFFFFF;
         }
     )";
 
-    txtTaiKhoan = new QLineEdit(card);
+    txtTaiKhoan = new QLineEdit(container);
     txtTaiKhoan->setPlaceholderText("Tài khoản");
+    txtTaiKhoan->setFixedSize(420, 42);
     txtTaiKhoan->setStyleSheet(inputStyle);
 
-    txtMatKhau = new QLineEdit(card);
+    txtMatKhau = new QLineEdit(container);
     txtMatKhau->setPlaceholderText("Mật khẩu");
     txtMatKhau->setEchoMode(QLineEdit::Password);
+    txtMatKhau->setFixedSize(420, 42);
     txtMatKhau->setStyleSheet(inputStyle);
 
-    txtXacNhanMatKhau = new QLineEdit(card);
+    txtXacNhanMatKhau = new QLineEdit(container);
     txtXacNhanMatKhau->setPlaceholderText("Xác nhận mật khẩu");
     txtXacNhanMatKhau->setEchoMode(QLineEdit::Password);
+    txtXacNhanMatKhau->setFixedSize(420, 42);
     txtXacNhanMatKhau->setStyleSheet(inputStyle);
 
-    txtSoDienThoai = new QLineEdit(card);
+    txtSoDienThoai = new QLineEdit(container);
     txtSoDienThoai->setPlaceholderText("Số điện thoại");
+    txtSoDienThoai->setFixedSize(420, 42);
     txtSoDienThoai->setStyleSheet(inputStyle);
 
-    spinTuoi = new QSpinBox(card);
+    spinTuoi = new QSpinBox(container);
     spinTuoi->setRange(1, 120);
     spinTuoi->setValue(18);
     spinTuoi->setPrefix("Tuổi: ");
+    spinTuoi->setFixedSize(420, 42);
     spinTuoi->setStyleSheet(inputStyle);
 
     // Two buttons row
     QHBoxLayout *btnLayout = new QHBoxLayout();
-    btnLayout->setSpacing(15);
+    btnLayout->setSpacing(20);
+    btnLayout->setAlignment(Qt::AlignCenter);
 
     QString btnStyle = R"(
         QPushButton {
-            background-color: #9E221E;
+            background-color: #A52C20;
             color: #FFFFFF;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: bold;
-            border-radius: 6px;
+            border-radius: 0px;
             border: none;
-            min-height: 40px;
         }
         QPushButton:hover {
-            background-color: #B52A26;
+            background-color: #BD362A;
         }
         QPushButton:pressed {
-            background-color: #7A1916;
+            background-color: #822017;
         }
     )";
 
-    btnRegister = new QPushButton("Đăng Kí", card);
+    btnRegister = new QPushButton("Đăng Kí", container);
+    btnRegister->setFixedSize(200, 44);
     btnRegister->setCursor(Qt::PointingHandCursor);
     btnRegister->setStyleSheet(btnStyle);
 
-    btnBack = new QPushButton("Quay Lại", card);
+    btnBack = new QPushButton("Quay lại", container);
+    btnBack->setFixedSize(200, 44);
     btnBack->setCursor(Qt::PointingHandCursor);
     btnBack->setStyleSheet(btnStyle);
 
     btnLayout->addWidget(btnRegister);
     btnLayout->addWidget(btnBack);
 
-    cardLayout->addWidget(lblSystem);
-    cardLayout->addWidget(line);
-    cardLayout->addSpacing(5);
-    cardLayout->addWidget(lblTitle);
-    cardLayout->addSpacing(10);
-    cardLayout->addWidget(txtTaiKhoan);
-    cardLayout->addWidget(txtMatKhau);
-    cardLayout->addWidget(txtXacNhanMatKhau);
-    cardLayout->addWidget(txtSoDienThoai);
-    cardLayout->addWidget(spinTuoi);
-    cardLayout->addSpacing(10);
-    cardLayout->addLayout(btnLayout);
+    containerLayout->addLayout(titleRow);
+    containerLayout->addSpacing(10);
+    containerLayout->addWidget(txtTaiKhoan, 0, Qt::AlignCenter);
+    containerLayout->addWidget(txtMatKhau, 0, Qt::AlignCenter);
+    containerLayout->addWidget(txtXacNhanMatKhau, 0, Qt::AlignCenter);
+    containerLayout->addWidget(txtSoDienThoai, 0, Qt::AlignCenter);
+    containerLayout->addWidget(spinTuoi, 0, Qt::AlignCenter);
+    containerLayout->addSpacing(10);
+    containerLayout->addLayout(btnLayout);
 
-    rootLayout->addWidget(card);
+    rootLayout->addWidget(container);
 
     connect(btnRegister, &QPushButton::clicked, this, &RegisterWindow::onRegister);
     connect(btnBack, &QPushButton::clicked, this, &RegisterWindow::onBack);
 }
 
 void RegisterWindow::onRegister() {
-    if (txtMatKhau->text() != txtXacNhanMatKhau->text()) {
-        QMessageBox::warning(this, "Loi", "Mat khau xac nhan khong khop!");
-        return;
-    }
-
     std::string tk = txtTaiKhoan->text().toStdString();
     std::string mk = txtMatKhau->text().toStdString();
+    std::string xnmk = txtXacNhanMatKhau->text().toStdString();
     std::string sdt = txtSoDienThoai->text().toStdString();
     int tuoi = spinTuoi->value();
 
     if (tk.empty() || mk.empty() || sdt.empty()) {
-        QMessageBox::warning(this, "Loi", "Vui long dien day du thong tin!");
+        QMessageBox::warning(this, "Thông báo", "Vui lòng nhập đầy đủ thông tin!");
+        return;
+    }
+
+    if (mk != xnmk) {
+        QMessageBox::warning(this, "Thông báo", "Mật khẩu xác nhận không khớp!");
         return;
     }
 
     if (userManager->dangKy(tk, mk, sdt, tuoi)) {
-        userManager->saveAll();
-        QMessageBox::information(this, "Thanh cong", "Dang ky thanh cong!");
+        QMessageBox::information(this, "Thành công", "Đăng ký tài khoản thành công!");
         emit registerSuccess();
-        emit goBack();
     } else {
-        QMessageBox::critical(this, "Loi", "Tai khoan da ton tai!");
+        QMessageBox::critical(this, "Lỗi", "Tài khoản đã tồn tại!");
     }
 }
 

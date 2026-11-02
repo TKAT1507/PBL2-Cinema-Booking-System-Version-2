@@ -27,7 +27,7 @@ MovieManagementWidget::MovieManagementWidget(MovieManager* movieMgr, QWidget* pa
     layout->setSpacing(12);
 
     QLabel *lblTitle = new QLabel("QUẢN LÝ DANH SÁCH PHIM", this);
-    lblTitle->setStyleSheet("color: #F5C542; font-size: 18px; font-weight: bold;");
+    lblTitle->setStyleSheet("color: #EAB02F; font-size: 18px; font-weight: bold;");
     layout->addWidget(lblTitle);
     
     QHBoxLayout* btnLayout = new QHBoxLayout();
@@ -38,11 +38,11 @@ MovieManagementWidget::MovieManagementWidget(MovieManager* movieMgr, QWidget* pa
 
     btnEdit = new QPushButton("✏️ Sửa Phim", this);
     btnEdit->setCursor(Qt::PointingHandCursor);
-    btnEdit->setStyleSheet("background-color: #E6B042; color: #1A1B41; font-weight: bold; min-height: 34px; padding: 0 15px; border-radius: 5px;");
+    btnEdit->setStyleSheet("background-color: #EAB02F; color: #1A1A1A; font-weight: bold; min-height: 34px; padding: 0 15px; border-radius: 5px;");
 
     btnDelete = new QPushButton("🗑️ Xóa / Ngừng Chiếu", this);
     btnDelete->setCursor(Qt::PointingHandCursor);
-    btnDelete->setStyleSheet("background-color: #9E221E; color: white; font-weight: bold; min-height: 34px; padding: 0 15px; border-radius: 5px;");
+    btnDelete->setStyleSheet("background-color: #A52C20; color: white; font-weight: bold; min-height: 34px; padding: 0 15px; border-radius: 5px;");
 
     btnLayout->addWidget(btnAdd);
     btnLayout->addWidget(btnEdit);
@@ -167,7 +167,7 @@ void MovieManagementWidget::addMovie() {
     QLabel *lblPreview = new QLabel(&dialog);
     lblPreview->setFixedSize(130, 185);
     lblPreview->setAlignment(Qt::AlignCenter);
-    lblPreview->setStyleSheet("background-color: #121330; border: 1px solid #E6B042; border-radius: 6px;");
+    lblPreview->setStyleSheet("background-color: #121330; border: 1px solid #EAB02F; border-radius: 6px;");
     lblPreview->setText("Chưa chọn poster");
     lblPreview->setWordWrap(true);
     lblPreview->setScaledContents(true);
@@ -223,7 +223,7 @@ void MovieManagementWidget::addMovie() {
     QPushButton *btnOk = new QPushButton("Thêm Phim", &dialog);
     btnOk->setStyleSheet("background-color: #28A745; color: white; font-weight: bold; min-height: 32px; border-radius: 5px;");
     QPushButton *btnCancel = new QPushButton("Hủy", &dialog);
-    btnCancel->setStyleSheet("background-color: #9E221E; color: white; font-weight: bold; min-height: 32px; border-radius: 5px;");
+    btnCancel->setStyleSheet("background-color: #A52C20; color: white; font-weight: bold; min-height: 32px; border-radius: 5px;");
 
     QHBoxLayout *btnLayout = new QHBoxLayout();
     btnLayout->addStretch();
@@ -312,7 +312,7 @@ void MovieManagementWidget::editMovie() {
     QLabel *lblPreview = new QLabel(&dialog);
     lblPreview->setFixedSize(130, 185);
     lblPreview->setAlignment(Qt::AlignCenter);
-    lblPreview->setStyleSheet("background-color: #121330; border: 1px solid #E6B042; border-radius: 6px;");
+    lblPreview->setStyleSheet("background-color: #121330; border: 1px solid #EAB02F; border-radius: 6px;");
     lblPreview->setScaledContents(true);
 
     QString currentPoster = QString::fromStdString(m->getPoster());
@@ -373,7 +373,7 @@ void MovieManagementWidget::editMovie() {
     QPushButton *btnOk = new QPushButton("Lưu Thay Đổi", &dialog);
     btnOk->setStyleSheet("background-color: #28A745; color: white; font-weight: bold; min-height: 32px; border-radius: 5px;");
     QPushButton *btnCancel = new QPushButton("Hủy", &dialog);
-    btnCancel->setStyleSheet("background-color: #9E221E; color: white; font-weight: bold; min-height: 32px; border-radius: 5px;");
+    btnCancel->setStyleSheet("background-color: #A52C20; color: white; font-weight: bold; min-height: 32px; border-radius: 5px;");
 
     QHBoxLayout *btnLayout = new QHBoxLayout();
     btnLayout->addStretch();

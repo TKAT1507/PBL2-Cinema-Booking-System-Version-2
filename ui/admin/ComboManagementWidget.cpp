@@ -19,7 +19,7 @@ ComboManagementWidget::ComboManagementWidget(ComboManager* comboMgr, QWidget* pa
     layout->setSpacing(12);
 
     QLabel *lblTitle = new QLabel("QUẢN LÝ COMBO BẮP NƯỚC", this);
-    lblTitle->setStyleSheet("color: #F5C542; font-size: 18px; font-weight: bold;");
+    lblTitle->setStyleSheet("color: #EAB02F; font-size: 18px; font-weight: bold;");
     layout->addWidget(lblTitle);
     
     QHBoxLayout* btnLayout = new QHBoxLayout();
@@ -30,11 +30,11 @@ ComboManagementWidget::ComboManagementWidget(ComboManager* comboMgr, QWidget* pa
 
     btnEdit = new QPushButton("Sửa Combo", this);
     btnEdit->setCursor(Qt::PointingHandCursor);
-    btnEdit->setStyleSheet("background-color: #E6B042; color: #1A1B41; font-weight: bold; min-height: 34px; border-radius: 5px;");
+    btnEdit->setStyleSheet("background-color: #EAB02F; color: #1A1A1A; font-weight: bold; min-height: 34px; border-radius: 5px;");
 
     btnDelete = new QPushButton("Ngừng Bán", this);
     btnDelete->setCursor(Qt::PointingHandCursor);
-    btnDelete->setStyleSheet("background-color: #9E221E; color: white; font-weight: bold; min-height: 34px; border-radius: 5px;");
+    btnDelete->setStyleSheet("background-color: #A52C20; color: white; font-weight: bold; min-height: 34px; border-radius: 5px;");
 
     btnLayout->addWidget(btnAdd);
     btnLayout->addWidget(btnEdit);

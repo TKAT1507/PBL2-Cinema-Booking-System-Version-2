@@ -48,7 +48,7 @@ void SaleWidget::setupStep1(QWidget* page) {
     layout->setSpacing(12);
 
     QLabel *lblTitle = new QLabel("BƯỚC 1: CHỌN PHIM BÁN VÉ", page);
-    lblTitle->setStyleSheet("color: #F5C542; font-size: 16px; font-weight: bold;");
+    lblTitle->setStyleSheet("color: #EAB02F; font-size: 16px; font-weight: bold;");
     layout->addWidget(lblTitle);
 
     movieTable = new QTableWidget(0, 3, page);
@@ -102,7 +102,7 @@ void SaleWidget::setupStep2(QWidget* page) {
     layout->setSpacing(12);
 
     QLabel *lblTitle = new QLabel("BƯỚC 2: CHỌN SUẤT CHIẾU", page);
-    lblTitle->setStyleSheet("color: #F5C542; font-size: 16px; font-weight: bold;");
+    lblTitle->setStyleSheet("color: #EAB02F; font-size: 16px; font-weight: bold;");
     layout->addWidget(lblTitle);
 
     showtimeTable = new QTableWidget(0, 4, page);
@@ -120,7 +120,7 @@ void SaleWidget::setupStep2(QWidget* page) {
     btnLayout->setSpacing(15);
     QPushButton* backBtn = new QPushButton("<- Quay Lại", page);
     backBtn->setCursor(Qt::PointingHandCursor);
-    backBtn->setStyleSheet("background-color: #9E221E; color: white; padding: 8px 20px; font-weight: bold; border-radius: 6px; min-height: 36px;");
+    backBtn->setStyleSheet("background-color: #A52C20; color: white; padding: 8px 20px; font-weight: bold; border-radius: 6px; min-height: 36px;");
 
     QPushButton* nextBtn = new QPushButton("Tiếp Tục ->", page);
     nextBtn->setCursor(Qt::PointingHandCursor);
@@ -202,8 +202,8 @@ void SaleWidget::setupStep3(QWidget* page) {
 
     legendLayout->addWidget(createLegendItem("Thường trống", "background-color: #2E8B57; border-radius: 4px; border: 1px solid #1E5E3A;"));
     legendLayout->addWidget(createLegendItem("Thường đã đặt", "background-color: #3D3D5C; border-radius: 4px; border: 1px solid #28283D;"));
-    legendLayout->addWidget(createLegendItem("VIP trống", "background-color: #E6B042; border-radius: 4px; border: 1px solid #B88626;"));
-    legendLayout->addWidget(createLegendItem("VIP đã đặt", "background-color: #7A1916; border-radius: 4px; border: 1px solid #52100E;"));
+    legendLayout->addWidget(createLegendItem("VIP trống", "background-color: #EAB02F; border-radius: 4px; border: 1px solid #B88626;"));
+    legendLayout->addWidget(createLegendItem("VIP đã đặt", "background-color: #822017; border-radius: 4px; border: 1px solid #52100E;"));
     legendLayout->addWidget(createLegendItem("Đang chọn", "background-color: #2980B9; border-radius: 4px; border: 1px solid #00D2D3;"));
     layout->addLayout(legendLayout);
 
@@ -215,7 +215,7 @@ void SaleWidget::setupStep3(QWidget* page) {
         QLabel {
             background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #B22824, stop:1 #7D1916);
             color: #FFFFFF;
-            border: 1px solid #E6B042;
+            border: 1px solid #EAB02F;
             border-radius: 6px;
             font-weight: bold;
             letter-spacing: 4px;
@@ -243,11 +243,11 @@ void SaleWidget::setupStep3(QWidget* page) {
     bottomLayout->setSpacing(15);
 
     lblSelectedSeats = new QLabel("Ghế đã chọn: 0 ghế", page);
-    lblSelectedSeats->setStyleSheet("font-size: 15px; font-weight: bold; color: #F5C542;");
+    lblSelectedSeats->setStyleSheet("font-size: 15px; font-weight: bold; color: #EAB02F;");
 
     QString btnBackStyle = R"(
         QPushButton {
-            background-color: #9E221E;
+            background-color: #A52C20;
             color: #FFFFFF;
             font-size: 14px;
             font-weight: bold;
@@ -257,8 +257,8 @@ void SaleWidget::setupStep3(QWidget* page) {
             padding: 6px 20px;
         }
         QPushButton:hover {
-            background-color: #B52A26;
-            border: 1px solid #E6B042;
+            background-color: #BD362A;
+            border: 1px solid #EAB02F;
         }
     )";
 
@@ -360,8 +360,8 @@ void SaleWidget::loadSeats() {
             } else if(status == 2) { // VIP trong
                 btn->setStyleSheet(R"(
                     QPushButton {
-                        background-color: #E6B042;
-                        color: #1A1B41;
+                        background-color: #EAB02F;
+                        color: #1A1A1A;
                         border: 1px solid #B88626;
                         border-radius: 4px;
                         font-weight: bold;
@@ -376,7 +376,7 @@ void SaleWidget::loadSeats() {
             } else if(status == 3) { // VIP da dat
                 btn->setStyleSheet(R"(
                     QPushButton {
-                        background-color: #7A1916;
+                        background-color: #822017;
                         color: #B37D7C;
                         border: 1px solid #52100E;
                         border-radius: 4px;
@@ -415,8 +415,8 @@ void SaleWidget::loadSeats() {
                         if(status == 2) {
                             btn->setStyleSheet(R"(
                                 QPushButton {
-                                    background-color: #E6B042;
-                                    color: #1A1B41;
+                                    background-color: #EAB02F;
+                                    color: #1A1A1A;
                                     border: 1px solid #B88626;
                                     border-radius: 4px;
                                     font-weight: bold;
@@ -459,7 +459,7 @@ void SaleWidget::setupStep4(QWidget* page) {
     layout->setSpacing(12);
 
     QLabel *lblTitle = new QLabel("CHỌN COMBO BẮP NƯỚC (NẾU CÓ)", page);
-    lblTitle->setStyleSheet("color: #F5C542; font-size: 16px; font-weight: bold;");
+    lblTitle->setStyleSheet("color: #EAB02F; font-size: 16px; font-weight: bold;");
     layout->addWidget(lblTitle);
 
     comboTable = new QTableWidget(0, 4, page);
@@ -481,11 +481,11 @@ void SaleWidget::setupStep4(QWidget* page) {
     btnLayout->setSpacing(15);
     QPushButton* backBtn = new QPushButton("<- Quay Lại", page);
     backBtn->setCursor(Qt::PointingHandCursor);
-    backBtn->setStyleSheet("background-color: #9E221E; color: white; padding: 8px 20px; font-weight: bold; border-radius: 6px; min-height: 36px;");
+    backBtn->setStyleSheet("background-color: #A52C20; color: white; padding: 8px 20px; font-weight: bold; border-radius: 6px; min-height: 36px;");
 
     QPushButton* skipBtn = new QPushButton("Bỏ Qua Combo", page);
     skipBtn->setCursor(Qt::PointingHandCursor);
-    skipBtn->setStyleSheet("background-color: #E6B042; color: #1A1B41; padding: 8px 16px; font-weight: bold; border-radius: 6px; min-height: 36px;");
+    skipBtn->setStyleSheet("background-color: #EAB02F; color: #1A1A1A; padding: 8px 16px; font-weight: bold; border-radius: 6px; min-height: 36px;");
 
     QPushButton* nextBtn = new QPushButton("Tiếp Tục ->", page);
     nextBtn->setCursor(Qt::PointingHandCursor);
@@ -527,7 +527,7 @@ void SaleWidget::loadCombos() {
         
         QTableWidgetItem* priceItem = new QTableWidgetItem(QString("%L1 VND").arg(combos[i].getGia(), 0, 'f', 0));
         priceItem->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
-        priceItem->setForeground(QBrush(QColor("#F5C542")));
+        priceItem->setForeground(QBrush(QColor("#EAB02F")));
         comboTable->setItem(i, 2, priceItem);
         
         QWidget* pWidget = new QWidget();
@@ -542,8 +542,8 @@ void SaleWidget::loadCombos() {
         spinBox->setFixedSize(85, 30);
         spinBox->setStyleSheet(R"(
             QSpinBox {
-                background-color: #E6B042;
-                color: #1A1B41;
+                background-color: #EAB02F;
+                color: #1A1A1A;
                 font-size: 13px;
                 font-weight: bold;
                 border: 1px solid #C49129;
@@ -571,8 +571,8 @@ void SaleWidget::setupStep5(QWidget* page) {
     card->setMaximumWidth(600);
     card->setStyleSheet(R"(
         QFrame {
-            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #2C2E6A, stop:1 #1E1F4B);
-            border: 2px solid #E6B042;
+            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #2C2E6A, stop:1 #212156);
+            border: 2px solid #EAB02F;
             border-radius: 10px;
             padding: 20px;
         }
@@ -581,7 +581,7 @@ void SaleWidget::setupStep5(QWidget* page) {
     cardLayout->setSpacing(14);
 
     QLabel* title = new QLabel("XÁC NHẬN BÁN VÉ TẠI QUẦY", card);
-    title->setStyleSheet("color: #F5C542; font-size: 18px; font-weight: bold; border: none; background: transparent;");
+    title->setStyleSheet("color: #EAB02F; font-size: 18px; font-weight: bold; border: none; background: transparent;");
     title->setAlignment(Qt::AlignCenter);
     cardLayout->addWidget(title);
 
@@ -595,7 +595,7 @@ void SaleWidget::setupStep5(QWidget* page) {
 
     QPushButton* backBtn = new QPushButton("Hủy Bỏ", card);
     backBtn->setCursor(Qt::PointingHandCursor);
-    backBtn->setStyleSheet("background-color: #9E221E; color: white; padding: 8px 24px; font-weight: bold; border-radius: 6px; min-height: 38px; border: none;");
+    backBtn->setStyleSheet("background-color: #A52C20; color: white; padding: 8px 24px; font-weight: bold; border-radius: 6px; min-height: 38px; border: none;");
 
     QPushButton* nextBtn = new QPushButton("Xác Nhận & Thanh Toán", card);
     nextBtn->setCursor(Qt::PointingHandCursor);
@@ -640,7 +640,7 @@ void SaleWidget::generatePreview() {
         preview += QString(" - Ghế <b>%1%2</b> (%3): %L4 VND<br>")
             .arg((char)('A' + r))
             .arg(c + 1)
-            .arg(isVip ? "<span style='color: #F5C542;'>VIP</span>" : "Thường")
+            .arg(isVip ? "<span style='color: #EAB02F;'>VIP</span>" : "Thường")
             .arg(price, 0, 'f', 0);
     }
     
@@ -659,7 +659,7 @@ void SaleWidget::generatePreview() {
         }
     }
     
-    preview += QString("<br><div style='font-size: 16px; color: #F5C542;'><b>TỔNG CỘNG: %L1 VND</b></div>").arg(total, 0, 'f', 0);
+    preview += QString("<br><div style='font-size: 16px; color: #EAB02F;'><b>TỔNG CỘNG: %L1 VND</b></div>").arg(total, 0, 'f', 0);
     previewLabel->setText(preview);
 }
 
@@ -671,7 +671,7 @@ void SaleWidget::setupStep6(QWidget* page) {
     card->setMaximumWidth(450);
     card->setStyleSheet(R"(
         QFrame {
-            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #2C2E6A, stop:1 #1E1F4B);
+            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #2C2E6A, stop:1 #212156);
             border: 2px solid #28A745;
             border-radius: 10px;
             padding: 25px;

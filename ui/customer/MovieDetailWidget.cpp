@@ -22,7 +22,7 @@ MovieDetailWidget::MovieDetailWidget(MovieManager* movieManager, QWidget *parent
     lblPoster->setStyleSheet(R"(
         QLabel {
             background-color: #121330;
-            border: 2px solid #E6B042;
+            border: 2px solid #EAB02F;
             border-radius: 10px;
         }
     )");
@@ -35,7 +35,7 @@ MovieDetailWidget::MovieDetailWidget(MovieManager* movieManager, QWidget *parent
     infoLayout->setSpacing(12);
 
     lblTenPhim = new QLabel(this);
-    lblTenPhim->setStyleSheet("color: #F5C542; font-size: 22px; font-weight: bold;");
+    lblTenPhim->setStyleSheet("color: #EAB02F; font-size: 22px; font-weight: bold;");
     lblTenPhim->setWordWrap(true);
 
     QHBoxLayout *tagsLayout = new QHBoxLayout();
@@ -48,7 +48,7 @@ MovieDetailWidget::MovieDetailWidget(MovieManager* movieManager, QWidget *parent
     lblThoiLuong->setStyleSheet("color: #FFFFFF; font-size: 13px; font-weight: bold; background-color: #2C2E6A; padding: 4px 10px; border-radius: 4px; border: 1px solid #4A4D94;");
 
     lblDoTuoi = new QLabel(this);
-    lblDoTuoi->setStyleSheet("color: #FFFFFF; font-size: 13px; font-weight: bold; background-color: #9E221E; padding: 4px 10px; border-radius: 4px;");
+    lblDoTuoi->setStyleSheet("color: #FFFFFF; font-size: 13px; font-weight: bold; background-color: #A52C20; padding: 4px 10px; border-radius: 4px;");
 
     tagsLayout->addWidget(lblTheLoai);
     tagsLayout->addWidget(lblThoiLuong);
@@ -70,7 +70,7 @@ MovieDetailWidget::MovieDetailWidget(MovieManager* movieManager, QWidget *parent
     layoutMoTa->setSpacing(6);
 
     QLabel *lblTitleMoTa = new QLabel("MÔ TẢ", boxMoTa);
-    lblTitleMoTa->setStyleSheet("color: #F5C542; font-size: 14px; font-weight: bold; border: none; background: transparent;");
+    lblTitleMoTa->setStyleSheet("color: #EAB02F; font-size: 14px; font-weight: bold; border: none; background: transparent;");
     lblMoTa = new QLabel(boxMoTa);
     lblMoTa->setStyleSheet("color: #E6E6FA; font-size: 13px; border: none; background: transparent;");
     lblMoTa->setWordWrap(true);
@@ -93,7 +93,7 @@ MovieDetailWidget::MovieDetailWidget(MovieManager* movieManager, QWidget *parent
     layoutNoiDung->setSpacing(6);
 
     QLabel *lblTitleNoiDung = new QLabel("NỘI DUNG PHIM", boxNoiDung);
-    lblTitleNoiDung->setStyleSheet("color: #F5C542; font-size: 14px; font-weight: bold; border: none; background: transparent;");
+    lblTitleNoiDung->setStyleSheet("color: #EAB02F; font-size: 14px; font-weight: bold; border: none; background: transparent;");
     lblNoiDung = new QLabel(boxNoiDung);
     lblNoiDung->setStyleSheet("color: #E6E6FA; font-size: 13px; border: none; background: transparent;");
     lblNoiDung->setWordWrap(true);
@@ -107,7 +107,7 @@ MovieDetailWidget::MovieDetailWidget(MovieManager* movieManager, QWidget *parent
 
     QString btnStyle = R"(
         QPushButton {
-            background-color: #9E221E;
+            background-color: #A52C20;
             color: #FFFFFF;
             font-size: 14px;
             font-weight: bold;
@@ -117,8 +117,8 @@ MovieDetailWidget::MovieDetailWidget(MovieManager* movieManager, QWidget *parent
             padding: 6px 20px;
         }
         QPushButton:hover {
-            background-color: #B52A26;
-            border: 1px solid #E6B042;
+            background-color: #BD362A;
+            border: 1px solid #EAB02F;
         }
     )";
 

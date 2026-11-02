@@ -12,8 +12,8 @@ ChangePasswordDialog::ChangePasswordDialog(UserManager *userManager, const std::
     setFixedSize(420, 400);
     setStyleSheet(R"(
         QDialog {
-            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #2C2E6A, stop:1 #1E1F4B);
-            border: 2px solid #E6B042;
+            background-color: #212156;
+            border: 2px solid #EAB02F;
             border-radius: 10px;
         }
     )");
@@ -23,7 +23,7 @@ ChangePasswordDialog::ChangePasswordDialog(UserManager *userManager, const std::
     layout->setContentsMargins(30, 25, 30, 25);
 
     QLabel *lblTitle = new QLabel("ĐỔI MẬT KHẨU", this);
-    lblTitle->setStyleSheet("color: #F5C542; font-size: 20px; font-weight: bold;");
+    lblTitle->setStyleSheet("color: #EAB02F; font-size: 20px; font-weight: bold;");
     lblTitle->setAlignment(Qt::AlignCenter);
 
     QFrame *line = new QFrame(this);
@@ -32,11 +32,11 @@ ChangePasswordDialog::ChangePasswordDialog(UserManager *userManager, const std::
 
     QString inputStyle = R"(
         QLineEdit {
-            background-color: #E6B042;
-            color: #1A1B41;
+            background-color: #EAB02F;
+            color: #1A1A1A;
             font-size: 13px;
             font-weight: bold;
-            border: 1px solid #C49129;
+            border: 1px solid #C89422;
             border-radius: 5px;
             padding: 0 12px;
             min-height: 36px;
@@ -93,7 +93,7 @@ ChangePasswordDialog::ChangePasswordDialog(UserManager *userManager, const std::
     btnCancel->setCursor(Qt::PointingHandCursor);
     btnCancel->setStyleSheet(R"(
         QPushButton {
-            background-color: #9E221E;
+            background-color: #A52C20;
             color: #FFFFFF;
             font-size: 14px;
             font-weight: bold;
@@ -102,7 +102,7 @@ ChangePasswordDialog::ChangePasswordDialog(UserManager *userManager, const std::
             min-height: 38px;
         }
         QPushButton:hover {
-            background-color: #B52A26;
+            background-color: #BD362A;
         }
     )");
 

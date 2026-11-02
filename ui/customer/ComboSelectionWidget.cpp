@@ -15,7 +15,7 @@ ComboSelectionWidget::ComboSelectionWidget(ComboManager* comboManager, QWidget *
 
     QLabel *lblTitle = new QLabel("CHỌN COMBO BẮP NƯỚC", this);
     lblTitle->setAlignment(Qt::AlignCenter);
-    lblTitle->setStyleSheet("color: #F5C542; font-size: 20px; font-weight: bold;");
+    lblTitle->setStyleSheet("color: #EAB02F; font-size: 20px; font-weight: bold;");
     layout->addWidget(lblTitle);
 
     tableCombos = new QTableWidget(this);
@@ -43,8 +43,8 @@ ComboSelectionWidget::ComboSelectionWidget(ComboManager* comboManager, QWidget *
     btnSkip->setCursor(Qt::PointingHandCursor);
     btnSkip->setStyleSheet(R"(
         QPushButton {
-            background-color: #E6B042;
-            color: #1A1B41;
+            background-color: #EAB02F;
+            color: #1A1A1A;
             font-size: 14px;
             font-weight: bold;
             border: 1px solid #C49129;
@@ -62,7 +62,7 @@ ComboSelectionWidget::ComboSelectionWidget(ComboManager* comboManager, QWidget *
     btnBack->setCursor(Qt::PointingHandCursor);
     btnBack->setStyleSheet(R"(
         QPushButton {
-            background-color: #9E221E;
+            background-color: #A52C20;
             color: #FFFFFF;
             font-size: 14px;
             font-weight: bold;
@@ -72,7 +72,7 @@ ComboSelectionWidget::ComboSelectionWidget(ComboManager* comboManager, QWidget *
             padding: 6px 18px;
         }
         QPushButton:hover {
-            background-color: #B52A26;
+            background-color: #BD362A;
         }
     )");
 
@@ -131,7 +131,7 @@ void ComboSelectionWidget::loadCombos() {
         QTableWidgetItem* itemGia = new QTableWidgetItem(QString("%L1 VND").arg(c.getGia(), 0, 'f', 0));
         itemGia->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
         itemGia->setFlags(itemGia->flags() & ~Qt::ItemIsEditable);
-        itemGia->setForeground(QBrush(QColor("#F5C542")));
+        itemGia->setForeground(QBrush(QColor("#EAB02F")));
         tableCombos->setItem(i, 3, itemGia);
 
         QWidget* pWidget = new QWidget();
@@ -146,8 +146,8 @@ void ComboSelectionWidget::loadCombos() {
         spinQty->setFixedSize(85, 30);
         spinQty->setStyleSheet(R"(
             QSpinBox {
-                background-color: #E6B042;
-                color: #1A1B41;
+                background-color: #EAB02F;
+                color: #1A1A1A;
                 font-size: 13px;
                 font-weight: bold;
                 border: 1px solid #C49129;

@@ -21,7 +21,7 @@ TicketApprovalWidget::TicketApprovalWidget(TicketManager* ticketMgr, ShowtimeMan
     QHBoxLayout *topBar = new QHBoxLayout();
     
     QLabel *lblTitle = new QLabel("XÁC NHẬN & DUYỆT ĐƠN VÉ (PENDING)", this);
-    lblTitle->setStyleSheet("color: #F5C542; font-size: 18px; font-weight: bold;");
+    lblTitle->setStyleSheet("color: #EAB02F; font-size: 18px; font-weight: bold;");
     topBar->addWidget(lblTitle);
     topBar->addStretch();
 
@@ -30,8 +30,8 @@ TicketApprovalWidget::TicketApprovalWidget(TicketManager* ticketMgr, ShowtimeMan
     txtSearch->setFixedWidth(240);
     txtSearch->setStyleSheet(R"(
         QLineEdit {
-            background-color: #E6B042;
-            color: #1A1B41;
+            background-color: #EAB02F;
+            color: #1A1A1A;
             font-size: 13px;
             font-weight: bold;
             border-radius: 5px;
@@ -44,8 +44,8 @@ TicketApprovalWidget::TicketApprovalWidget(TicketManager* ticketMgr, ShowtimeMan
     btnRefresh->setCursor(Qt::PointingHandCursor);
     btnRefresh->setStyleSheet(R"(
         QPushButton {
-            background-color: #E6B042;
-            color: #1A1B41;
+            background-color: #EAB02F;
+            color: #1A1A1A;
             font-size: 13px;
             font-weight: bold;
             border-radius: 5px;
@@ -86,7 +86,7 @@ TicketApprovalWidget::TicketApprovalWidget(TicketManager* ticketMgr, ShowtimeMan
 
     // Status label
     lblStatusCount = new QLabel("Đang chờ duyệt: 0 đơn", this);
-    lblStatusCount->setStyleSheet("color: #F5C542; font-size: 13px; font-weight: bold;");
+    lblStatusCount->setStyleSheet("color: #EAB02F; font-size: 13px; font-weight: bold;");
 
     // Action Buttons
     QHBoxLayout *bottomLayout = new QHBoxLayout();
@@ -116,7 +116,7 @@ TicketApprovalWidget::TicketApprovalWidget(TicketManager* ticketMgr, ShowtimeMan
     btnCancel->setCursor(Qt::PointingHandCursor);
     btnCancel->setStyleSheet(R"(
         QPushButton {
-            background-color: #9E221E;
+            background-color: #A52C20;
             color: #FFFFFF;
             font-size: 14px;
             font-weight: bold;
@@ -126,7 +126,7 @@ TicketApprovalWidget::TicketApprovalWidget(TicketManager* ticketMgr, ShowtimeMan
             padding: 6px 18px;
         }
         QPushButton:hover {
-            background-color: #B52A26;
+            background-color: #BD362A;
         }
     )");
 
@@ -134,8 +134,8 @@ TicketApprovalWidget::TicketApprovalWidget(TicketManager* ticketMgr, ShowtimeMan
     btnPrint->setCursor(Qt::PointingHandCursor);
     btnPrint->setStyleSheet(R"(
         QPushButton {
-            background-color: #E6B042;
-            color: #1A1B41;
+            background-color: #EAB02F;
+            color: #1A1A1A;
             font-size: 14px;
             font-weight: bold;
             border-radius: 6px;
@@ -222,7 +222,7 @@ void TicketApprovalWidget::loadPendingOrders() {
         QTableWidgetItem* itDon = new QTableWidgetItem(QString::fromStdString(maCum));
         itDon->setTextAlignment(Qt::AlignCenter);
         itDon->setFont(QFont("Segoe UI", 9, QFont::Bold));
-        itDon->setForeground(QBrush(QColor("#F5C542")));
+        itDon->setForeground(QBrush(QColor("#EAB02F")));
         tableOrders->setItem(rowCount, 1, itDon);
 
         // Khach Hang
@@ -251,14 +251,14 @@ void TicketApprovalWidget::loadPendingOrders() {
         QTableWidgetItem* itTien = new QTableWidgetItem(QString("%L1 VND").arg(totalGia, 0, 'f', 0));
         itTien->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
         itTien->setFont(QFont("Segoe UI", 9, QFont::Bold));
-        itTien->setForeground(QBrush(QColor("#F5C542")));
+        itTien->setForeground(QBrush(QColor("#EAB02F")));
         tableOrders->setItem(rowCount, 7, itTien);
 
         // Trang Thai
         QTableWidgetItem* itTT = new QTableWidgetItem("Đang chờ");
         itTT->setTextAlignment(Qt::AlignCenter);
         itTT->setFont(QFont("Segoe UI", 9, QFont::Bold));
-        itTT->setForeground(QBrush(QColor("#F5C542")));
+        itTT->setForeground(QBrush(QColor("#EAB02F")));
         tableOrders->setItem(rowCount, 8, itTT);
 
         rowCount++;
@@ -345,8 +345,8 @@ void TicketApprovalWidget::onPrintClicked() {
     dlg.setFixedSize(480, 500);
     dlg.setStyleSheet(R"(
         QDialog {
-            background: #1E1F4B;
-            border: 2px solid #E6B042;
+            background: #212156;
+            border: 2px solid #EAB02F;
             border-radius: 8px;
         }
     )");

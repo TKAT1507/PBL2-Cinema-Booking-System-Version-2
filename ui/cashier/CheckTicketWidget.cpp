@@ -53,7 +53,7 @@ void CheckTicketWidget::checkTicket() {
     if (t->getTrangThai() == "VALID") {
         status = "<font color='#28A745'><b>HỢP LỆ (ĐÃ DUYỆT / CHƯA SỬ DỤNG)</b></font>";
     } else if (t->getTrangThai() == "PENDING") {
-        status = "<font color='#F5C542'><b>ĐANG CHỜ DUYỆT (PENDING)</b></font>";
+        status = "<font color='#EAB02F'><b>ĐANG CHỜ DUYỆT (PENDING)</b></font>";
     } else if (t->getTrangThai() == "USED") {
         status = "<font color='#AAAAAA'><b>ĐÃ SỬ DỤNG</b></font>";
     } else {
