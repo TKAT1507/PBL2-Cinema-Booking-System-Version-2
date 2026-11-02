@@ -18,16 +18,17 @@ CashierDashboard::CashierDashboard(const std::string& maNhanVien, const std::str
 
 void CashierDashboard::setupUI() {
     QHBoxLayout* mainLayout = new QHBoxLayout(this);
-    mainLayout->setContentsMargins(12, 12, 12, 12);
+    mainLayout->setContentsMargins(0, 0, 14, 0);
     mainLayout->setSpacing(14);
     
-    // Left Sidebar: Gold #E6B042, rounded
+    // Left Sidebar: Dính sát viền trái, vuông vức (border-radius: 0px), màu vàng mù tạt #EAB02F
     QWidget* sidebar = new QWidget(this);
-    sidebar->setFixedWidth(230);
+    sidebar->setFixedWidth(240);
     sidebar->setStyleSheet(R"(
         QWidget {
-            background-color: #E6B042;
-            border-radius: 10px;
+            background-color: #EAB02F;
+            border: none;
+            border-radius: 0px;
         }
     )");
 
@@ -36,18 +37,18 @@ void CashierDashboard::setupUI() {
     sidebarLayout->setSpacing(10);
     sidebarLayout->setAlignment(Qt::AlignTop);
     
-    // Top Greeting Frame
+    // Top Greeting Frame: Bo tròn như cũ, màu đỏ gạch #A52C20
     QFrame* headerFrame = new QFrame(sidebar);
     headerFrame->setStyleSheet(R"(
         QFrame {
-            background-color: #9E221E;
+            background-color: #A52C20;
             border-radius: 8px;
-            padding: 8px;
+            padding: 0px;
         }
     )");
     QVBoxLayout* headerLayout = new QVBoxLayout(headerFrame);
     headerLayout->setContentsMargins(5, 8, 5, 8);
-    headerLayout->setSpacing(4);
+    headerLayout->setSpacing(0);
 
     QLabel* lblGreeting = new QLabel("Xin chào", headerFrame);
     lblGreeting->setAlignment(Qt::AlignCenter);
@@ -62,10 +63,10 @@ void CashierDashboard::setupUI() {
     sidebarLayout->addWidget(headerFrame);
     sidebarLayout->addSpacing(15);
     
-    // Navigation Tabs
+    // Navigation Tabs: Bo tròn như cũ, màu kem #F9F1E5
     QString tabBtnStyle = R"(
         QPushButton {
-            background-color: #F4DFB6;
+            background-color: #F9F1E5;
             color: #1A1A1A;
             border: 1px solid #2B1810;
             border-radius: 6px;
@@ -76,11 +77,11 @@ void CashierDashboard::setupUI() {
             text-align: center;
         }
         QPushButton:hover {
-            background-color: #FFF2D6;
-            border-color: #9E221E;
+            background-color: #FFFFFF;
+            border-color: #A52C20;
         }
         QPushButton:pressed {
-            background-color: #D4A034;
+            background-color: #EAB02F;
         }
     )";
 
@@ -88,7 +89,7 @@ void CashierDashboard::setupUI() {
     btnBanVe->setCursor(Qt::PointingHandCursor);
     btnBanVe->setStyleSheet(tabBtnStyle);
 
-    QPushButton* btnDuyetVe = new QPushButton("Xác Nhận Vé ⭐", sidebar);
+    QPushButton* btnDuyetVe = new QPushButton("Xác Nhận Vé ", sidebar);
     btnDuyetVe->setCursor(Qt::PointingHandCursor);
     btnDuyetVe->setStyleSheet(tabBtnStyle);
 
@@ -101,21 +102,21 @@ void CashierDashboard::setupUI() {
     sidebarLayout->addWidget(btnKiemTraVe);
     sidebarLayout->addStretch();
     
-    // Bottom Buttons
+    // Bottom Buttons: Bo tròn như cũ
     QPushButton* btnChangePassword = new QPushButton("Đổi Mật Khẩu", sidebar);
     btnChangePassword->setCursor(Qt::PointingHandCursor);
     btnChangePassword->setStyleSheet(R"(
         QPushButton {
-            background-color: #F4DFB6;
-            color: #9E221E;
-            border: 1px solid #9E221E;
+            background-color: #F9F1E5;
+            color: #A52C20;
+            border: 1px solid #A52C20;
             border-radius: 6px;
             font-size: 13px;
             font-weight: bold;
             min-height: 38px;
         }
         QPushButton:hover {
-            background-color: #9E221E;
+            background-color: #A52C20;
             color: #FFFFFF;
         }
     )");
@@ -124,16 +125,16 @@ void CashierDashboard::setupUI() {
     btnDangXuat->setCursor(Qt::PointingHandCursor);
     btnDangXuat->setStyleSheet(R"(
         QPushButton {
-            background-color: #9E221E;
+            background-color: #A52C20;
             color: #FFFFFF;
-            border: 1px solid #781A17;
+            border: 1px solid #822017;
             border-radius: 6px;
             font-size: 14px;
             font-weight: bold;
             min-height: 38px;
         }
         QPushButton:hover {
-            background-color: #B52A26;
+            background-color: #BD362A;
         }
     )");
     

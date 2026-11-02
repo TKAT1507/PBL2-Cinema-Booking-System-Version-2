@@ -1,4 +1,7 @@
 #include "utils/FileManager.h"
+#include <QCoreApplication>
+#include <QDir>
+#include <QFileInfo>
 
 DynamicArray<std::string> FileManager::readLines(const std::string& filePath) {
     DynamicArray<std::string> lines;
@@ -37,5 +40,22 @@ bool FileManager::fileExists(const std::string& filePath) {
 }
 
 std::string FileManager::getDataPath(const std::string& filename) {
-    return "data/" + filename;
+    // 1. Thư mục hiện tại (CWD): "data/" + filename
+    std::string cwdPath = "data/" + filename;
+    if (fileExists(cwdPath)) {
+        return cwdPath;
+    }
+    // 2. Thư mục cùng cấp với file thực thi .exe (build/data/...):
+    QString appDir = QCoreApplication::applicationDirPath();
+    std::string appPath = (appDir + "/data/" + QString::fromStdString(filename)).toStdString();
+    if (fileExists(appPath)) {
+        return appPath;
+    }
+    // 3. Thư mục data gốc của dự án (khi exe chạy trong build/):
+    std::string parentPath = (appDir + "/../data/" + QString::fromStdString(filename)).toStdString();
+    if (fileExists(parentPath)) {
+        return parentPath;
+    }
+    // Mặc định
+    return cwdPath;
 }

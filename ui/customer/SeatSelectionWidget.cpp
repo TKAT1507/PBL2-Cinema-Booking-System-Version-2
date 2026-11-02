@@ -34,8 +34,8 @@ SeatSelectionWidget::SeatSelectionWidget(ShowtimeManager* showtimeManager, Ticke
 
     legendLayout->addWidget(createLegendItem("Thường trống", "background-color: #2E8B57; border-radius: 4px; border: 1px solid #1E5E3A;"));
     legendLayout->addWidget(createLegendItem("Thường đã đặt", "background-color: #3D3D5C; border-radius: 4px; border: 1px solid #28283D;"));
-    legendLayout->addWidget(createLegendItem("VIP trống", "background-color: #E6B042; border-radius: 4px; border: 1px solid #B88626;"));
-    legendLayout->addWidget(createLegendItem("VIP đã đặt", "background-color: #7A1916; border-radius: 4px; border: 1px solid #52100E;"));
+    legendLayout->addWidget(createLegendItem("VIP trống", "background-color: #EAB02F; border-radius: 4px; border: 1px solid #B88626;"));
+    legendLayout->addWidget(createLegendItem("VIP đã đặt", "background-color: #822017; border-radius: 4px; border: 1px solid #52100E;"));
     legendLayout->addWidget(createLegendItem("Đang chọn", "background-color: #2980B9; border-radius: 4px; border: 1px solid #00D2D3;"));
     mainLayout->addLayout(legendLayout);
 
@@ -47,7 +47,7 @@ SeatSelectionWidget::SeatSelectionWidget(ShowtimeManager* showtimeManager, Ticke
         QLabel {
             background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #B22824, stop:1 #7D1916);
             color: #FFFFFF;
-            border: 1px solid #E6B042;
+            border: 1px solid #EAB02F;
             border-radius: 6px;
             font-weight: bold;
             letter-spacing: 4px;
@@ -75,11 +75,11 @@ SeatSelectionWidget::SeatSelectionWidget(ShowtimeManager* showtimeManager, Ticke
     bottomLayout->setSpacing(15);
 
     lblSelectedInfo = new QLabel("Ghế đã chọn: 0 ghế", this);
-    lblSelectedInfo->setStyleSheet("font-size: 15px; font-weight: bold; color: #F5C542;");
+    lblSelectedInfo->setStyleSheet("font-size: 15px; font-weight: bold; color: #EAB02F;");
 
     QString btnStyle = R"(
         QPushButton {
-            background-color: #9E221E;
+            background-color: #A52C20;
             color: #FFFFFF;
             font-size: 14px;
             font-weight: bold;
@@ -89,8 +89,8 @@ SeatSelectionWidget::SeatSelectionWidget(ShowtimeManager* showtimeManager, Ticke
             padding: 6px 20px;
         }
         QPushButton:hover {
-            background-color: #B52A26;
-            border: 1px solid #E6B042;
+            background-color: #BD362A;
+            border: 1px solid #EAB02F;
         }
     )";
 
@@ -210,8 +210,8 @@ void SeatSelectionWidget::updateSeatVisuals(QPushButton* btn, int row, int col, 
     } else if (status == 2) { // VIP trong
         btn->setStyleSheet(R"(
             QPushButton {
-                background-color: #E6B042;
-                color: #1A1B41;
+                background-color: #EAB02F;
+                color: #1A1A1A;
                 border: 1px solid #B88626;
                 border-radius: 4px;
                 font-weight: bold;
@@ -225,7 +225,7 @@ void SeatSelectionWidget::updateSeatVisuals(QPushButton* btn, int row, int col, 
     } else if (status == 3) { // VIP da dat
         btn->setStyleSheet(R"(
             QPushButton {
-                background-color: #7A1916;
+                background-color: #822017;
                 color: #B37D7C;
                 border: 1px solid #52100E;
                 border-radius: 4px;

@@ -19,7 +19,7 @@ MovieListWidget::MovieListWidget(MovieManager* movieManager, ShowtimeManager* sh
     QHBoxLayout *topBar = new QHBoxLayout();
     
     QLabel *lblSectionTitle = new QLabel("DANH SÁCH PHIM ĐANG CHIẾU", this);
-    lblSectionTitle->setStyleSheet("color: #F5C542; font-size: 18px; font-weight: bold;");
+    lblSectionTitle->setStyleSheet("color: #EAB02F; font-size: 18px; font-weight: bold;");
     topBar->addWidget(lblSectionTitle);
     topBar->addStretch();
 
@@ -28,8 +28,8 @@ MovieListWidget::MovieListWidget(MovieManager* movieManager, ShowtimeManager* sh
     txtSearch->setFixedWidth(240);
     txtSearch->setStyleSheet(R"(
         QLineEdit {
-            background-color: #E6B042;
-            color: #1A1B41;
+            background-color: #EAB02F;
+            color: #1A1A1A;
             font-size: 13px;
             font-weight: bold;
             border: 1px solid #C49129;
@@ -46,7 +46,7 @@ MovieListWidget::MovieListWidget(MovieManager* movieManager, ShowtimeManager* sh
     btnSearch->setCursor(Qt::PointingHandCursor);
     btnSearch->setStyleSheet(R"(
         QPushButton {
-            background-color: #9E221E;
+            background-color: #A52C20;
             color: #FFFFFF;
             font-size: 13px;
             font-weight: bold;
@@ -56,7 +56,7 @@ MovieListWidget::MovieListWidget(MovieManager* movieManager, ShowtimeManager* sh
             padding: 4px 14px;
         }
         QPushButton:hover {
-            background-color: #B52A26;
+            background-color: #BD362A;
         }
     )");
 
@@ -140,7 +140,7 @@ QWidget* MovieListWidget::createMovieCard(const Movie& movie) {
             border-radius: 10px;
         }
         QFrame#movieCard:hover {
-            border: 1px solid #E6B042;
+            border: 1px solid #EAB02F;
         }
     )");
 
@@ -175,7 +175,7 @@ QWidget* MovieListWidget::createMovieCard(const Movie& movie) {
     } else {
         lblPoster->setText("POSTER\n" + QString::fromStdString(movie.getTenPhim()));
         lblPoster->setWordWrap(true);
-        lblPoster->setStyleSheet("color: #F5C542; font-size: 11px; font-weight: bold; background-color: #1A1B41; border-radius: 6px;");
+        lblPoster->setStyleSheet("color: #EAB02F; font-size: 11px; font-weight: bold; background-color: #101224; border-radius: 6px;");
     }
 
     // Right: Info
@@ -184,9 +184,6 @@ QWidget* MovieListWidget::createMovieCard(const Movie& movie) {
     infoLayout->setContentsMargins(0, 0, 0, 0);
 
     QString titleText = QString::fromStdString(movie.getTenPhim()).toUpper();
-    if (movie.getDoTuoi() > 0) {
-        titleText += QString(" (T%1)").arg(movie.getDoTuoi());
-    }
     QLabel *lblTitle = new QLabel(titleText, card);
     lblTitle->setStyleSheet("color: #FFFFFF; font-size: 15px; font-weight: bold; background: transparent;");
     lblTitle->setWordWrap(true);
@@ -197,13 +194,33 @@ QWidget* MovieListWidget::createMovieCard(const Movie& movie) {
     QLabel *lblDuration = new QLabel(QString("⏱️ Thời lượng: %1 phút").arg(movie.getThoiLuong()), card);
     lblDuration->setStyleSheet("color: #D6D6E6; font-size: 12px; background: transparent;");
 
-    QLabel *lblAge = new QLabel(QString("🔞 Giới hạn: %1+").arg(movie.getDoTuoi()), card);
-    lblAge->setStyleSheet("color: #D6D6E6; font-size: 12px; background: transparent;");
+    QHBoxLayout *ageRow = new QHBoxLayout();
+    ageRow->setSpacing(6);
+    QLabel *lblAgeTitle = new QLabel("Độ tuổi:", card);
+    lblAgeTitle->setStyleSheet("color: #D6D6E6; font-size: 12px; background: transparent;");
+
+    QLabel *lblAge = new QLabel(card);
+    if (movie.getDoTuoi() == 0) {
+        lblAge->setText(" P (Mọi lứa tuổi) ");
+        lblAge->setStyleSheet("color: #FFFFFF; font-size: 11px; font-weight: bold; background-color: #28A745; border-radius: 4px; padding: 2px 6px;");
+    } else if (movie.getDoTuoi() == 13) {
+        lblAge->setText(" C13 (Từ 13 tuổi) ");
+        lblAge->setStyleSheet("color: #1A1A1A; font-size: 11px; font-weight: bold; background-color: #EAB02F; border-radius: 4px; padding: 2px 6px;");
+    } else if (movie.getDoTuoi() == 16) {
+        lblAge->setText(" C16 (Từ 16 tuổi) ");
+        lblAge->setStyleSheet("color: #FFFFFF; font-size: 11px; font-weight: bold; background-color: #E06D14; border-radius: 4px; padding: 2px 6px;");
+    } else {
+        lblAge->setText(QString(" C%1 (Từ %1 tuổi) ").arg(movie.getDoTuoi()));
+        lblAge->setStyleSheet("color: #FFFFFF; font-size: 11px; font-weight: bold; background-color: #A52C20; border-radius: 4px; padding: 2px 6px;");
+    }
+    ageRow->addWidget(lblAgeTitle);
+    ageRow->addWidget(lblAge);
+    ageRow->addStretch();
 
     infoLayout->addWidget(lblTitle);
     infoLayout->addWidget(lblGenre);
     infoLayout->addWidget(lblDuration);
-    infoLayout->addWidget(lblAge);
+    infoLayout->addLayout(ageRow);
     infoLayout->addStretch();
 
     // Button: Dat ve / Chi tiet
@@ -211,7 +228,7 @@ QWidget* MovieListWidget::createMovieCard(const Movie& movie) {
     btnBook->setCursor(Qt::PointingHandCursor);
     btnBook->setStyleSheet(R"(
         QPushButton {
-            background-color: #9E221E;
+            background-color: #A52C20;
             color: #FFFFFF;
             font-size: 13px;
             font-weight: bold;
@@ -221,8 +238,8 @@ QWidget* MovieListWidget::createMovieCard(const Movie& movie) {
             padding: 4px 12px;
         }
         QPushButton:hover {
-            background-color: #B52A26;
-            border: 1px solid #E6B042;
+            background-color: #BD362A;
+            border: 1px solid #EAB02F;
         }
     )");
 

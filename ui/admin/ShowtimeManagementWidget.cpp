@@ -25,7 +25,7 @@ ShowtimeManagementWidget::ShowtimeManagementWidget(ShowtimeManager* showtimeMgr,
     layout->setSpacing(12);
 
     QLabel *lblTitle = new QLabel("QUẢN LÝ SUẤT CHIẾU", this);
-    lblTitle->setStyleSheet("color: #F5C542; font-size: 18px; font-weight: bold;");
+    lblTitle->setStyleSheet("color: #EAB02F; font-size: 18px; font-weight: bold;");
     layout->addWidget(lblTitle);
     
     QHBoxLayout* btnLayout = new QHBoxLayout();
@@ -36,7 +36,7 @@ ShowtimeManagementWidget::ShowtimeManagementWidget(ShowtimeManager* showtimeMgr,
 
     btnDelete = new QPushButton("Hủy Suất Chiếu", this);
     btnDelete->setCursor(Qt::PointingHandCursor);
-    btnDelete->setStyleSheet("background-color: #9E221E; color: white; font-weight: bold; min-height: 34px; border-radius: 5px;");
+    btnDelete->setStyleSheet("background-color: #A52C20; color: white; font-weight: bold; min-height: 34px; border-radius: 5px;");
 
     btnLayout->addWidget(btnAdd);
     btnLayout->addWidget(btnDelete);

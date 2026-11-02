@@ -15,7 +15,7 @@ StatisticsWidget::StatisticsWidget(TicketManager* ticketMgr, ShowtimeManager* sh
     mainLayout->setSpacing(14);
 
     QLabel *lblTitle = new QLabel("BÁO CÁO THỐNG KÊ DOANH THU", this);
-    lblTitle->setStyleSheet("color: #F5C542; font-size: 18px; font-weight: bold;");
+    lblTitle->setStyleSheet("color: #EAB02F; font-size: 18px; font-weight: bold;");
     mainLayout->addWidget(lblTitle);
     
     // Overview
@@ -23,7 +23,7 @@ StatisticsWidget::StatisticsWidget(TicketManager* ticketMgr, ShowtimeManager* sh
     QVBoxLayout* overviewLayout = new QVBoxLayout(gbOverview);
     lblTotalRevenue = new QLabel("Tổng doanh thu: 0 VND", this);
     lblTotalTickets = new QLabel("Tổng vé đã bán: 0 vé", this);
-    lblTotalRevenue->setStyleSheet("font-size: 20px; font-weight: bold; color: #F5C542;");
+    lblTotalRevenue->setStyleSheet("font-size: 20px; font-weight: bold; color: #EAB02F;");
     lblTotalTickets->setStyleSheet("font-size: 16px; font-weight: bold; color: #FFFFFF;");
     overviewLayout->addWidget(lblTotalRevenue);
     overviewLayout->addWidget(lblTotalTickets);
@@ -36,9 +36,9 @@ StatisticsWidget::StatisticsWidget(TicketManager* ticketMgr, ShowtimeManager* sh
     dateEdit->setDisplayFormat("dd/MM/yyyy");
     btnCheckDate = new QPushButton("Xem Doanh Thu", this);
     btnCheckDate->setCursor(Qt::PointingHandCursor);
-    btnCheckDate->setStyleSheet("background-color: #E6B042; color: #1A1B41; font-weight: bold; min-height: 30px; border-radius: 4px; padding: 4px 14px;");
+    btnCheckDate->setStyleSheet("background-color: #EAB02F; color: #1A1A1A; font-weight: bold; min-height: 30px; border-radius: 4px; padding: 4px 14px;");
     lblDateRevenue = new QLabel("Doanh thu: 0 VND", this);
-    lblDateRevenue->setStyleSheet("color: #F5C542; font-size: 14px; font-weight: bold;");
+    lblDateRevenue->setStyleSheet("color: #EAB02F; font-size: 14px; font-weight: bold;");
     dateLayout->addWidget(dateEdit);
     dateLayout->addWidget(btnCheckDate);
     dateLayout->addWidget(lblDateRevenue);
@@ -57,9 +57,9 @@ StatisticsWidget::StatisticsWidget(TicketManager* ticketMgr, ShowtimeManager* sh
     
     btnCheckMovie = new QPushButton("Xem Doanh Thu", this);
     btnCheckMovie->setCursor(Qt::PointingHandCursor);
-    btnCheckMovie->setStyleSheet("background-color: #E6B042; color: #1A1B41; font-weight: bold; min-height: 30px; border-radius: 4px; padding: 4px 14px;");
+    btnCheckMovie->setStyleSheet("background-color: #EAB02F; color: #1A1A1A; font-weight: bold; min-height: 30px; border-radius: 4px; padding: 4px 14px;");
     lblMovieRevenue = new QLabel("Doanh thu: 0 VND", this);
-    lblMovieRevenue->setStyleSheet("color: #F5C542; font-size: 14px; font-weight: bold;");
+    lblMovieRevenue->setStyleSheet("color: #EAB02F; font-size: 14px; font-weight: bold;");
     movieLayout->addWidget(cbMovies);
     movieLayout->addWidget(btnCheckMovie);
     movieLayout->addWidget(lblMovieRevenue);

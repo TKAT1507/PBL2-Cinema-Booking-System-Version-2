@@ -23,15 +23,15 @@ ShowtimeListWidget::ShowtimeListWidget(ShowtimeManager* showtimeManager, MovieMa
     // Top Filter Bar: Movie Dropdown
     QHBoxLayout *topBar = new QHBoxLayout();
     QLabel *lblFilter = new QLabel("Chọn phim:", this);
-    lblFilter->setStyleSheet("color: #F5C542; font-size: 14px; font-weight: bold;");
+    lblFilter->setStyleSheet("color: #EAB02F; font-size: 14px; font-weight: bold;");
 
     cbMovies = new QComboBox(this);
     cbMovies->addItem("Tất cả phim", "");
     cbMovies->setMinimumWidth(250);
     cbMovies->setStyleSheet(R"(
         QComboBox {
-            background-color: #E6B042;
-            color: #1A1B41;
+            background-color: #EAB02F;
+            color: #1A1A1A;
             font-size: 13px;
             font-weight: bold;
             border-radius: 5px;
@@ -111,7 +111,7 @@ ShowtimeListWidget::ShowtimeListWidget(ShowtimeManager* showtimeManager, MovieMa
 
     QString btnStyle = R"(
         QPushButton {
-            background-color: #9E221E;
+            background-color: #A52C20;
             color: #FFFFFF;
             font-size: 14px;
             font-weight: bold;
@@ -121,8 +121,8 @@ ShowtimeListWidget::ShowtimeListWidget(ShowtimeManager* showtimeManager, MovieMa
             padding: 6px 20px;
         }
         QPushButton:hover {
-            background-color: #B52A26;
-            border: 1px solid #E6B042;
+            background-color: #BD362A;
+            border: 1px solid #EAB02F;
         }
     )";
 
@@ -153,11 +153,11 @@ void ShowtimeListWidget::updateDayButtonStyles() {
         if (filterIndex == currentDayFilter) {
             dayButtons[i]->setStyleSheet(R"(
                 QPushButton {
-                    background-color: #9E221E;
+                    background-color: #A52C20;
                     color: #FFFFFF;
                     font-size: 11px;
                     font-weight: bold;
-                    border: 1px solid #E6B042;
+                    border: 1px solid #EAB02F;
                     border-radius: 6px;
                     padding: 2px 4px;
                 }
@@ -165,7 +165,7 @@ void ShowtimeListWidget::updateDayButtonStyles() {
         } else {
             dayButtons[i]->setStyleSheet(R"(
                 QPushButton {
-                    background-color: #F4DFB6;
+                    background-color: #F9F1E5;
                     color: #1A1A1A;
                     font-size: 11px;
                     font-weight: bold;
@@ -174,7 +174,7 @@ void ShowtimeListWidget::updateDayButtonStyles() {
                     padding: 2px 4px;
                 }
                 QPushButton:hover {
-                    background-color: #FFF2D6;
+                    background-color: #FFFFFF;
                 }
             )");
         }

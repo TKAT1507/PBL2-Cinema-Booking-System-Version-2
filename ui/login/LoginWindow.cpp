@@ -3,12 +3,6 @@
 #include <QHBoxLayout>
 #include <QMessageBox>
 #include <QFont>
-
-#include "LoginWindow.h"
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QMessageBox>
-#include <QFont>
 #include <QFrame>
 
 LoginWindow::LoginWindow(UserManager *userManager, QWidget *parent)
@@ -17,133 +11,113 @@ LoginWindow::LoginWindow(UserManager *userManager, QWidget *parent)
     QVBoxLayout *rootLayout = new QVBoxLayout(this);
     rootLayout->setAlignment(Qt::AlignCenter);
 
-    // Center container card
-    QFrame *card = new QFrame(this);
-    card->setFixedWidth(460);
-    card->setStyleSheet(R"(
-        QFrame {
-            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #2C2E6A, stop:1 #1E1F4B);
-            border: 2px solid #E6B042;
-            border-radius: 12px;
-            padding: 30px;
-        }
-    )");
+    // Center container (no card frame, flat on #101224)
+    QWidget *container = new QWidget(this);
+    container->setStyleSheet("background: transparent; border: none;");
 
-    QVBoxLayout *cardLayout = new QVBoxLayout(card);
-    cardLayout->setSpacing(15);
-    cardLayout->setAlignment(Qt::AlignCenter);
+    QVBoxLayout *containerLayout = new QVBoxLayout(container);
+    containerLayout->setSpacing(16);
+    containerLayout->setAlignment(Qt::AlignCenter);
 
-    // Main system title
-    QLabel *lblSystem = new QLabel("HỆ THỐNG ĐẶT VÉ XEM PHIM", card);
-    lblSystem->setStyleSheet("color: #F5C542; font-size: 20px; font-weight: bold; border: none; background: transparent;");
+    // Main system title with 2 thick white lines flanking it
+    QHBoxLayout *titleRow = new QHBoxLayout();
+    titleRow->setSpacing(14);
+    titleRow->setAlignment(Qt::AlignCenter);
+
+    QFrame *lineLeft = new QFrame(container);
+    lineLeft->setFixedHeight(5);
+    lineLeft->setFixedWidth(110);
+    lineLeft->setStyleSheet("background-color: #FFFFFF; border: none;");
+
+    QLabel *lblSystem = new QLabel("HỆ THỐNG ĐẶT VÉ XEM PHIM", container);
+    lblSystem->setStyleSheet("color: #FFFFFF; font-size: 36px; font-weight: bold; border: none; background: transparent;");
     lblSystem->setAlignment(Qt::AlignCenter);
 
-    // Divider line
-    QFrame *line = new QFrame(card);
-    line->setFrameShape(QFrame::HLine);
-    line->setStyleSheet("color: #FFFFFF; background-color: #FFFFFF; max-height: 1px; border: none;");
+    QFrame *lineRight = new QFrame(container);
+    lineRight->setFixedHeight(5);
+    lineRight->setFixedWidth(110);
+    lineRight->setStyleSheet("background-color: #FFFFFF; border: none;");
+
+    titleRow->addWidget(lineLeft);
+    titleRow->addWidget(lblSystem);
+    titleRow->addWidget(lineRight);
 
     // Subtitle
-    QLabel *lblTitle = new QLabel("ĐĂNG NHẬP", card);
-    lblTitle->setStyleSheet("color: #FFFFFF; font-size: 24px; font-weight: bold; border: none; background: transparent;");
+    QLabel *lblTitle = new QLabel("Đăng Nhập", container);
+    lblTitle->setStyleSheet("color: #FFFFFF; font-size: 30px; font-weight: bold; border: none; background: transparent;");
     lblTitle->setAlignment(Qt::AlignCenter);
 
-    // Inputs
-    txtTaiKhoan = new QLineEdit(card);
-    txtTaiKhoan->setPlaceholderText("Tài khoản");
-    txtTaiKhoan->setFixedHeight(42);
-    txtTaiKhoan->setStyleSheet(R"(
+    // Inputs: Vuông vức, background #EAB02F
+    QString inputStyle = R"(
         QLineEdit {
-            background-color: #E6B042;
-            color: #1A1B41;
+            background-color: #EAB02F;
+            color: #FFFFFF;
             font-size: 14px;
             font-weight: bold;
-            border: 1px solid #C49129;
-            border-radius: 6px;
-            padding: 0 14px;
+            border: none;
+            border-radius: 0px;
+            padding: 7px 14px;
         }
         QLineEdit:focus {
             border: 2px solid #FFFFFF;
         }
-    )");
+    )";
 
-    txtMatKhau = new QLineEdit(card);
+    txtTaiKhoan = new QLineEdit(container);
+    txtTaiKhoan->setPlaceholderText("Tài khoản");
+    txtTaiKhoan->setFixedSize(420, 44);
+    txtTaiKhoan->setStyleSheet(inputStyle);
+
+    txtMatKhau = new QLineEdit(container);
     txtMatKhau->setPlaceholderText("Mật khẩu");
     txtMatKhau->setEchoMode(QLineEdit::Password);
-    txtMatKhau->setFixedHeight(42);
-    txtMatKhau->setStyleSheet(R"(
-        QLineEdit {
-            background-color: #E6B042;
-            color: #1A1B41;
-            font-size: 14px;
-            font-weight: bold;
-            border: 1px solid #C49129;
-            border-radius: 6px;
-            padding: 0 14px;
-        }
-        QLineEdit:focus {
-            border: 2px solid #FFFFFF;
-        }
-    )");
+    txtMatKhau->setFixedSize(420, 44);
+    txtMatKhau->setStyleSheet(inputStyle);
 
-    // Action buttons row
+    // Action buttons row: Vuông vức, background #A52C20
     QHBoxLayout *btnLayout = new QHBoxLayout();
-    btnLayout->setSpacing(15);
+    btnLayout->setSpacing(20);
+    btnLayout->setAlignment(Qt::AlignCenter);
 
-    btnLogin = new QPushButton("Đăng Nhập", card);
-    btnLogin->setFixedHeight(42);
+    QString btnStyle = R"(
+        QPushButton {
+            background-color: #A52C20;
+            color: #FFFFFF;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 0px;
+            border: none;
+        }
+        QPushButton:hover {
+            background-color: #BD362A;
+        }
+        QPushButton:pressed {
+            background-color: #822017;
+        }
+    )";
+
+    btnLogin = new QPushButton("Đăng nhập", container);
+    btnLogin->setFixedSize(200, 44);
     btnLogin->setCursor(Qt::PointingHandCursor);
-    btnLogin->setStyleSheet(R"(
-        QPushButton {
-            background-color: #9E221E;
-            color: #FFFFFF;
-            font-size: 15px;
-            font-weight: bold;
-            border-radius: 6px;
-            border: none;
-        }
-        QPushButton:hover {
-            background-color: #B52A26;
-        }
-        QPushButton:pressed {
-            background-color: #7A1916;
-        }
-    )");
+    btnLogin->setStyleSheet(btnStyle);
 
-    btnRegister = new QPushButton("Đăng Kí", card);
-    btnRegister->setFixedHeight(42);
+    btnRegister = new QPushButton("Đăng kí", container);
+    btnRegister->setFixedSize(200, 44);
     btnRegister->setCursor(Qt::PointingHandCursor);
-    btnRegister->setStyleSheet(R"(
-        QPushButton {
-            background-color: #9E221E;
-            color: #FFFFFF;
-            font-size: 15px;
-            font-weight: bold;
-            border-radius: 6px;
-            border: none;
-        }
-        QPushButton:hover {
-            background-color: #B52A26;
-        }
-        QPushButton:pressed {
-            background-color: #7A1916;
-        }
-    )");
+    btnRegister->setStyleSheet(btnStyle);
 
     btnLayout->addWidget(btnLogin);
     btnLayout->addWidget(btnRegister);
 
-    cardLayout->addWidget(lblSystem);
-    cardLayout->addWidget(line);
-    cardLayout->addSpacing(5);
-    cardLayout->addWidget(lblTitle);
-    cardLayout->addSpacing(10);
-    cardLayout->addWidget(txtTaiKhoan);
-    cardLayout->addWidget(txtMatKhau);
-    cardLayout->addSpacing(10);
-    cardLayout->addLayout(btnLayout);
+    containerLayout->addLayout(titleRow);
+    containerLayout->addWidget(lblTitle);
+    containerLayout->addSpacing(10);
+    containerLayout->addWidget(txtTaiKhoan, 0, Qt::AlignCenter);
+    containerLayout->addWidget(txtMatKhau, 0, Qt::AlignCenter);
+    containerLayout->addSpacing(10);
+    containerLayout->addLayout(btnLayout);
 
-    rootLayout->addWidget(card);
+    rootLayout->addWidget(container);
 
     connect(btnLogin, &QPushButton::clicked, this, &LoginWindow::onLogin);
     connect(btnRegister, &QPushButton::clicked, this, &LoginWindow::onRegisterClicked);
@@ -161,7 +135,7 @@ void LoginWindow::onLogin() {
     if (result != -1) {
         emit loginSuccess(QString::fromStdString(role), QString::fromStdString(userId));
     } else {
-        QMessageBox::critical(this, "Loi", "Tai khoan hoac mat khau khong chinh xac!");
+        QMessageBox::critical(this, "Lỗi", "Tài khoản hoặc mật khẩu không chính xác!");
     }
 }
 
