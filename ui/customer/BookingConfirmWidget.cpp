@@ -27,7 +27,7 @@ BookingConfirmWidget::BookingConfirmWidget(const QString& maKH, TicketManager* t
     card->setMaximumWidth(700);
     card->setStyleSheet(R"(
         QFrame {
-            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #2C2E6A, stop:1 #212156);
+            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #2C2E6A, stop:1 #101224);
             border: 2px solid #EAB02F;
             border-radius: 12px;
             padding: 15px;

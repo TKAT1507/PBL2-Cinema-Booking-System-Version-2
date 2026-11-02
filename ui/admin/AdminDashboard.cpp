@@ -45,12 +45,12 @@ void AdminDashboard::setupUI() {
         QFrame {
             background-color: #A52C20;
             border-radius: 8px;
-            padding: 8px;
+            padding: 0px;
         }
     )");
     QVBoxLayout* headerLayout = new QVBoxLayout(headerFrame);
     headerLayout->setContentsMargins(5, 8, 5, 8);
-    headerLayout->setSpacing(4);
+    headerLayout->setSpacing(0);
 
     QLabel* lblGreeting = new QLabel("Xin chào", headerFrame);
     lblGreeting->setAlignment(Qt::AlignCenter);

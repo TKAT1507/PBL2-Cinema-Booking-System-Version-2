@@ -26,12 +26,12 @@ file(GLOB SOURCES
 add_executable(${PROJECT_NAME} ${SOURCES})
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Widgets)
 
-# Copy data and posters folder to build directory
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+# Always synchronize data and posters folder to build directory on every build
+add_custom_target(copy_data ALL
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/data
-        $<TARGET_FILE_DIR:${PROJECT_NAME}>/data
+        ${CMAKE_CURRENT_BINARY_DIR}/data
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/posters
-        $<TARGET_FILE_DIR:${PROJECT_NAME}>/posters
+        ${CMAKE_CURRENT_BINARY_DIR}/posters
 )

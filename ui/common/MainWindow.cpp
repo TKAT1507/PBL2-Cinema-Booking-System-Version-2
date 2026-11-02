@@ -17,10 +17,10 @@ MainWindow::MainWindow(QWidget *parent)
     setWindowTitle("PBL2 - He Thong Dat Ve Xem Phim");
     setMinimumSize(1200, 800);
 
-    // Global Stylesheet — He mau chuan: #212156, #A52C20, #EAB02F, #F9F1E5
+    // Global Stylesheet — He mau chuan: #1f224c, #87271f, #EAB02F, #F9F1E5
     setStyleSheet(R"(
         QMainWindow {
-            background-color: #212156;
+            background-color: #111729;
         }
         QWidget {
             font-family: "Segoe UI", Arial, sans-serif;
@@ -29,7 +29,7 @@ MainWindow::MainWindow(QWidget *parent)
         }
         /* Default buttons */
         QPushButton {
-            background-color: #A52C20;
+            background-color: #a32419;
             color: #FFFFFF;
             border: 1px solid #7A1F16;
             border-radius: 6px;
@@ -45,27 +45,27 @@ MainWindow::MainWindow(QWidget *parent)
             background-color: #822017;
         }
         QPushButton:disabled {
-            background-color: #4A4A6A;
-            color: #8E8EA8;
-            border-color: #3B3B55;
+            background-color: #3E4166;
+            color: #8E91A8;
+            border-color: #313455;
         }
         /* Tables */
         QTableWidget {
-            background-color: #28295C;
-            alternate-background-color: #1F204A;
-            gridline-color: #3D4080;
-            border: 1px solid #4A4D94;
+            background-color: #1f224c;
+            alternate-background-color: #101224;
+            gridline-color: #2c2f5e;
+            border: 1px solid #434994;
             border-radius: 6px;
-            selection-background-color: #A52C20;
+            selection-background-color: #87271f;
             selection-color: #FFFFFF;
             color: #FFFFFF;
         }
         QTableWidget::item {
             padding: 6px 10px;
-            border-bottom: 1px solid #33366E;
+            border-bottom: 1px solid #383D7C;
         }
         QHeaderView::section {
-            background-color: #A52C20;
+            background-color: #87271f;
             color: #FFFFFF;
             padding: 8px 10px;
             border: none;
@@ -74,7 +74,7 @@ MainWindow::MainWindow(QWidget *parent)
         }
         /* Input fields */
         QLineEdit, QSpinBox, QDoubleSpinBox, QComboBox, QDateEdit, QTimeEdit {
-            background-color: #EAB02F;
+            background-color: #e7ab2a;
             color: #1A1A1A;
             font-weight: bold;
             border: 1px solid #C89422;
@@ -95,18 +95,18 @@ MainWindow::MainWindow(QWidget *parent)
             border-left: 1px solid #C89422;
         }
         QComboBox QAbstractItemView {
-            background-color: #212156;
+            background-color: #101224;
             color: #FFFFFF;
             selection-background-color: #A52C20;
             selection-color: #FFFFFF;
-            border: 1px solid #4A4D94;
+            border: 1px solid #434994;
         }
         QLabel {
             color: #FFFFFF;
         }
         QGroupBox {
-            background-color: #28295C;
-            border: 1px solid #4A4D94;
+            background-color: #26295C;
+            border: 1px solid #434994;
             border-radius: 8px;
             margin-top: 15px;
             padding-top: 18px;
@@ -120,16 +120,16 @@ MainWindow::MainWindow(QWidget *parent)
             color: #EAB02F;
         }
         QMessageBox, QDialog {
-            background-color: #212156;
+            background-color: #101224;
             color: #FFFFFF;
         }
         QScrollBar:vertical {
-            background-color: #212156;
+            background-color: #101224;
             width: 10px;
             border-radius: 5px;
         }
         QScrollBar::handle:vertical {
-            background-color: #4A4D94;
+            background-color: #2b2f69;
             border-radius: 5px;
             min-height: 20px;
         }
@@ -137,12 +137,12 @@ MainWindow::MainWindow(QWidget *parent)
             background-color: #EAB02F;
         }
         QScrollBar:horizontal {
-            background-color: #212156;
+            background-color: #101224;
             height: 10px;
             border-radius: 5px;
         }
         QScrollBar::handle:horizontal {
-            background-color: #4A4D94;
+            background-color: #2b2f69;
             border-radius: 5px;
             min-width: 20px;
         }

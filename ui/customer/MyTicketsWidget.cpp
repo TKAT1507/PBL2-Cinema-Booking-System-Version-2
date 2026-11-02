@@ -60,7 +60,7 @@ MyTicketsWidget::MyTicketsWidget(const QString& maKH, TicketManager* ticketManag
     // Tickets Table
     tableTickets = new QTableWidget(this);
     tableTickets->setColumnCount(8);
-    tableTickets->setHorizontalHeaderLabels(QStringList() << "#" << "Mã Vé" << "Mã Đơn" << "Tên Phim" << "Suất Chiếu" << "Ghế" << "Giá Tiền" << "Trạng Thái");
+    tableTickets->setHorizontalHeaderLabels(QStringList() << "STT" << "Mã Vé" << "Mã Đơn" << "Tên Phim" << "Suất Chiếu" << "Ghế" << "Giá Tiền" << "Trạng Thái");
     tableTickets->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
     tableTickets->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
     tableTickets->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
@@ -133,7 +133,7 @@ void MyTicketsWidget::loadTickets() {
             statusColor = QColor("#FF4D4D"); // Red
         }
 
-        // # column
+        // STT column
         QTableWidgetItem* itemIdx = new QTableWidgetItem(QString::number(rowCount + 1));
         itemIdx->setTextAlignment(Qt::AlignCenter);
         tableTickets->setItem(rowCount, 0, itemIdx);

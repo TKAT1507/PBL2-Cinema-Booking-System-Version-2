@@ -5,6 +5,7 @@
 #include <QLabel>
 #include <QFont>
 #include <QFrame>
+#include <QMessageBox>
 #include "MovieListWidget.h"
 #include "MovieDetailWidget.h"
 #include "ShowtimeListWidget.h"
@@ -20,6 +21,9 @@ CustomerDashboard::CustomerDashboard(const QString& maKH, UserManager* userMgr, 
     : QWidget(parent), maKhachHang(maKH), userManager(userMgr), movieManager(movieMgr),
       showtimeManager(showtimeMgr), ticketManager(ticketMgr), comboManager(comboMgr), roomManager(roomMgr)
 {
+    Customer* currentCustomer = userManager ? userManager->findCustomerById(maKhachHang.toStdString()) : nullptr;
+    int customerAge = currentCustomer ? currentCustomer->getTuoi() : 0;
+
     QHBoxLayout *mainLayout = new QHBoxLayout(this);
     mainLayout->setContentsMargins(0, 0, 14, 0);
     mainLayout->setSpacing(14);
@@ -46,20 +50,24 @@ CustomerDashboard::CustomerDashboard(const QString& maKH, UserManager* userMgr, 
         QFrame {
             background-color: #A52C20;
             border-radius: 8px;
-            padding: 8px;
+            padding: 0px;
         }
     )");
     QVBoxLayout *headerLayout = new QVBoxLayout(headerFrame);
     headerLayout->setContentsMargins(5, 8, 5, 8);
-    headerLayout->setSpacing(4);
+    headerLayout->setSpacing(0);
 
     QLabel *lblGreeting = new QLabel("Xin chào", headerFrame);
     lblGreeting->setAlignment(Qt::AlignCenter);
     lblGreeting->setStyleSheet("color: #FFFFFF; font-size: 13px; font-weight: normal; background: transparent; border: none;");
 
-    QLabel *lblUser = new QLabel("Khách hàng\n" + maKhachHang, headerFrame);
+    QString userDisplay = "Khách hàng\n" + maKhachHang;
+    if (customerAge > 0) {
+        userDisplay += QString(" (%1 tuổi)").arg(customerAge);
+    }
+    QLabel *lblUser = new QLabel(userDisplay, headerFrame);
     lblUser->setAlignment(Qt::AlignCenter);
-    lblUser->setStyleSheet("color: #FFFFFF; font-size: 15px; font-weight: bold; background: transparent; border: none;");
+    lblUser->setStyleSheet("color: #FFFFFF; font-size: 14px; font-weight: bold; background: transparent; border: none;");
 
     headerLayout->addWidget(lblGreeting);
     headerLayout->addWidget(lblUser);
@@ -138,7 +146,7 @@ CustomerDashboard::CustomerDashboard(const QString& maKH, UserManager* userMgr, 
     sidebarLayout->addWidget(btnChangePassword);
     sidebarLayout->addWidget(btnLogout);
 
-    // Main Content Area (flat background #212156)
+    // Main Content Area (flat background #101224)
     stackedWidget = new QStackedWidget(this);
     stackedWidget->setStyleSheet(R"(
         QStackedWidget {
@@ -149,6 +157,9 @@ CustomerDashboard::CustomerDashboard(const QString& maKH, UserManager* userMgr, 
     // Sub-widgets
     movieListWidget = new MovieListWidget(movieManager, showtimeManager, this);
     movieDetailWidget = new MovieDetailWidget(movieManager, this);
+    if (customerAge > 0) {
+        movieDetailWidget->setCustomerAge(customerAge);
+    }
     showtimeListWidget = new ShowtimeListWidget(showtimeManager, movieManager, this);
     seatSelectionWidget = new SeatSelectionWidget(showtimeManager, ticketManager, this);
     comboSelectionWidget = new ComboSelectionWidget(comboManager, this);
@@ -190,21 +201,46 @@ CustomerDashboard::CustomerDashboard(const QString& maKH, UserManager* userMgr, 
         stackedWidget->setCurrentWidget(movieDetailWidget);
     });
 
-    // MovieDetail Navigation
+    // MovieDetail Navigation with Age Check
     connect(movieDetailWidget, &MovieDetailWidget::goBack, this, [this]() {
         stackedWidget->setCurrentWidget(movieListWidget);
     });
-    connect(movieDetailWidget, &MovieDetailWidget::bookMovie, this, [this](const QString& maPhim) {
+    connect(movieDetailWidget, &MovieDetailWidget::bookMovie, this, [this, customerAge](const QString& maPhim) {
+        Movie* m = movieManager ? movieManager->findById(maPhim.toStdString()) : nullptr;
+        if (m && m->getDoTuoi() > 0 && customerAge > 0 && customerAge < m->getDoTuoi()) {
+            QMessageBox::warning(this, "Giới Hạn Độ Tuổi", 
+                QString("⛔ GIỚI HẠN ĐỘ TUỔI KHÁN GIẢ\n\n"
+                        "Phim \"%1\" được dán nhãn C%2 (Dành cho khán giả từ đủ %2 tuổi trở lên).\n\n"
+                        "Tài khoản của bạn hiện %3 tuổi, chưa đủ điều kiện theo quy định của Cục Điện ảnh để đặt vé xem phim này!")
+                    .arg(QString::fromStdString(m->getTenPhim()))
+                    .arg(m->getDoTuoi())
+                    .arg(customerAge));
+            return;
+        }
         showtimeListWidget->setMovieFilter(maPhim);
         showtimeListWidget->loadShowtimes();
         stackedWidget->setCurrentWidget(showtimeListWidget);
     });
 
-    // ShowtimeList Navigation
+    // ShowtimeList Navigation with Age Check
     connect(showtimeListWidget, &ShowtimeListWidget::goBack, this, [this]() {
         stackedWidget->setCurrentWidget(movieDetailWidget);
     });
-    connect(showtimeListWidget, &ShowtimeListWidget::showtimeSelected, this, [this](const QString& maSuatChieu) {
+    connect(showtimeListWidget, &ShowtimeListWidget::showtimeSelected, this, [this, customerAge](const QString& maSuatChieu) {
+        Showtime* st = showtimeManager ? showtimeManager->findById(maSuatChieu.toStdString()) : nullptr;
+        if (st) {
+            Movie* m = movieManager ? movieManager->findById(st->getMaPhim()) : nullptr;
+            if (m && m->getDoTuoi() > 0 && customerAge > 0 && customerAge < m->getDoTuoi()) {
+                QMessageBox::warning(this, "Giới Hạn Độ Tuổi", 
+                    QString("⛔ GIỚI HẠN ĐỘ TUỔI KHÁN GIẢ\n\n"
+                            "Suất chiếu phim \"%1\" được dán nhãn C%2 (Dành cho khán giả từ đủ %2 tuổi trở lên).\n\n"
+                            "Tài khoản của bạn hiện %3 tuổi, chưa đủ điều kiện theo quy định của Cục Điện ảnh để đặt vé suất chiếu này!")
+                        .arg(QString::fromStdString(m->getTenPhim()))
+                        .arg(m->getDoTuoi())
+                        .arg(customerAge));
+                return;
+            }
+        }
         tempMaSuatChieu = maSuatChieu;
         seatSelectionWidget->loadSeatMap(maSuatChieu);
         stackedWidget->setCurrentWidget(seatSelectionWidget);

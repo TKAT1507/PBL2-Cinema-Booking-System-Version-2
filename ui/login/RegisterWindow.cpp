@@ -12,7 +12,7 @@ RegisterWindow::RegisterWindow(UserManager *userManager, QWidget *parent)
     QVBoxLayout *rootLayout = new QVBoxLayout(this);
     rootLayout->setAlignment(Qt::AlignCenter);
 
-    // Center container (no card frame, flat on #212156)
+    // Center container (no card frame, flat on #101224)
     QWidget *container = new QWidget(this);
     container->setStyleSheet("background: transparent; border: none;");
 
@@ -31,7 +31,7 @@ RegisterWindow::RegisterWindow(UserManager *userManager, QWidget *parent)
     lineLeft->setStyleSheet("background-color: #FFFFFF; border: none;");
 
     QLabel *lblTitle = new QLabel("Đăng Kí", container);
-    lblTitle->setStyleSheet("color: #FFFFFF; font-size: 26px; font-weight: bold; border: none; background: transparent;");
+    lblTitle->setStyleSheet("color: #FFFFFF; font-size: 36px; font-weight: bold; border: none; background: transparent;");
     lblTitle->setAlignment(Qt::AlignCenter);
 
     QFrame *lineRight = new QFrame(container);
@@ -52,7 +52,7 @@ RegisterWindow::RegisterWindow(UserManager *userManager, QWidget *parent)
             border: none;
             border-radius: 0px;
             padding: 0 14px;
-            min-height: 42px;
+            min-height: 38px;
         }
         QLineEdit:focus, QSpinBox:focus {
             border: 2px solid #FFFFFF;

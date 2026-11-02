@@ -1,5 +1,7 @@
-CB001|Combo 1|Bap rang bo + Nuoc ngot|55000|1
-CB002|Combo 2|Bap rang bo lon + 2 Nuoc ngot|85000|1
-CB003|Combo Couple|2 Bap rang bo + 2 Nuoc ngot + 1 Snack|120000|1
-CB004|Combo Family|4 Bap rang bo + 4 Nuoc ngot + 2 Snack|199000|1
-CB005|Combo VIP|Bap rang truffle + Nuoc ep + Snack cao cap|150000|1
+CB001|Combo 1 - Bắp Nước Tiêu Chuẩn|1 Bắp rang bơ ngọt (vừa) + 1 Nước ngọt có gas (vừa)|55000|1
+CB002|Combo 2 - Cặp Đôi Ngọt Ngào|1 Bắp rang bơ phô mai lớn + 2 Nước ngọt có gas lớn|85000|1
+CB003|Combo Couple - Tình Yêu Bùng Nổ|2 Bắp rang bơ caramel + 2 Nước ngọt lớn + 1 Snack khoai tây|120000|1
+CB004|Combo Family - Gia Đình Vui Vẻ|4 Bắp rang bơ hỗn hợp + 4 Nước ngọt + 2 Xúc xích nướng + 1 Snack|199000|1
+CB005|Combo VIP Gold - Thượng Hạng|1 Bắp rang bơ nấm Truffle hảo hạng + 2 Nước ép trái cây tươi + 1 Hộp hạt cao cấp|150000|1
+CB006|Combo Snack Teen|1 Bắp ngọt nhỏ + 1 Milo dầm trân châu + 1 Khoai tây lắc phô mai|69000|1
+CB007|Combo Siêu Tiết Kiệm|1 Bắp rang bơ truyền thống + 1 Trà đào cam sả thanh mát|49000|1

@@ -36,11 +36,11 @@ MovieManagementWidget::MovieManagementWidget(MovieManager* movieMgr, QWidget* pa
     btnAdd->setCursor(Qt::PointingHandCursor);
     btnAdd->setStyleSheet("background-color: #28A745; color: white; font-weight: bold; min-height: 34px; padding: 0 15px; border-radius: 5px;");
 
-    btnEdit = new QPushButton("✏️ Sửa Phim", this);
+    btnEdit = new QPushButton("Sửa Phim", this);
     btnEdit->setCursor(Qt::PointingHandCursor);
     btnEdit->setStyleSheet("background-color: #EAB02F; color: #1A1A1A; font-weight: bold; min-height: 34px; padding: 0 15px; border-radius: 5px;");
 
-    btnDelete = new QPushButton("🗑️ Xóa / Ngừng Chiếu", this);
+    btnDelete = new QPushButton("Xóa / Ngừng Chiếu", this);
     btnDelete->setCursor(Qt::PointingHandCursor);
     btnDelete->setStyleSheet("background-color: #A52C20; color: white; font-weight: bold; min-height: 34px; padding: 0 15px; border-radius: 5px;");
 

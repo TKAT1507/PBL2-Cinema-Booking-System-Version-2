@@ -1,0 +1,501 @@
+\documentclass[12pt,a4paper]{article}
+
+% ==================== CÁC GÓI CƠ BẢN VÀ TIẾNG VIỆT ====================
+\usepackage[utf8]{inputenc}
+\usepackage[vietnamese]{babel}
+\usepackage[a4paper, left=3cm, right=2cm, top=2.5cm, bottom=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{titlesec}
+\usepackage{tocloft}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+\usepackage{indentfirst}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{xcolor}
+
+% Cấu hình hiển thị mã nguồn C++ đẹp mắt
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.97,0.97,0.97}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+% Dãn dòng chuẩn 1.3 và thụt lề đầu dòng 1cm
+\setstretch{1.3}
+\setlength{\parindent}{1cm}
+\setlength{\parskip}{6pt}
+
+% ==================== CẤU HÌNH HEADER / FOOTER CHUẨN ĐHBK ĐÀ NẴNG ====================
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{1.5pt}
+\renewcommand{\footrulewidth}{1.5pt}
+
+\fancyhead[L]{\textbf{PBL2: DỰ ÁN CƠ SỞ LẬP TRÌNH}}
+\fancyfoot[L]{Trần Kiêm Anh Tài - Nguyễn Thị Tuyết Nhi}
+\fancyfoot[R]{Trang \thepage}
+
+% ==================== ĐỊNH DẠNG TIÊU ĐỀ MỤC ====================
+\titleformat{\section}
+  {\normalfont\Large\bfseries}{\thesection.}{0.5em}{\MakeUppercase}
+\titleformat{\subsection}
+  {\normalfont\large\bfseries}{\thesubsection.}{0.5em}{}
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\bfseries}{\thesubsubsection.}{0.5em}{}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    citecolor=black,
+    urlcolor=blue
+}
+
+% ==================== BẮT ĐẦU TÀI LIỆU ====================
+\begin{document}
+
+% -------------------- TRANG 1: TRANG BÌA --------------------
+\begin{titlepage}
+    \thispagestyle{empty}
+    \begin{center}
+        \textbf{\large ĐẠI HỌC ĐÀ NẴNG}\\[0.2cm]
+        \textbf{\large TRƯỜNG ĐẠI HỌC BÁCH KHOA}\\[0.2cm]
+        \textbf{\large KHOA CÔNG NGHỆ THÔNG TIN}\\[1.5cm]
+
+        % Logo Khoa Công nghệ Thông tin (vẽ vector TikZ)
+        \begin{tikzpicture}
+            \draw[thick, fill=cyan!15] (-1.3,-1.3) rectangle (1.3,1.3);
+            \node at (0, 0.2) {\Huge \textbf{\textsf{IT}}};
+            \node[draw, fill=black, text=white, font=\footnotesize\bfseries, inner sep=2pt] at (0, -0.9) {IT FACULTY};
+        \end{tikzpicture}\\[2.2cm]
+
+        {\textbf{\Huge PBL2: DỰ ÁN CƠ SỞ LẬP TRÌNH}}\\[1cm]
+        {\textbf{\Large Đề tài: HỆ THỐNG ĐẶT VÉ XEM PHIM}}\\[0.3cm]
+        {\large (CINEMA BOOKING SYSTEM)}\\[4cm]
+
+        \begin{flushleft}
+        \hspace*{1.8cm}
+        \begin{tabular}{lll}
+            \multicolumn{3}{l}{\textbf{SINH VIÊN THỰC HIỆN:}}\\[0.2cm]
+            \textbf{Trần Kiêm Anh Tài} & \textbf{LỚP: 24T\_KHDL} & \textbf{NHÓM: 24.Nh...}\\
+            \textbf{Nguyễn Thị Tuyết Nhi} & \textbf{LỚP: 24T\_DT3} & \textbf{NHÓM: 24.Nh...}\\[0.3cm]
+            \multicolumn{3}{l}{\textbf{GIẢNG VIÊN HƯỚNG DẪN: ...}}
+        \end{tabular}
+        \end{flushleft}
+
+        \vfill
+        {\textbf{\large Đà Nẵng, 11-2024}}
+    \end{center}
+\end{titlepage}
+
+% -------------------- TRANG 2: LỜI MỞ ĐẦU --------------------
+\newpage
+\pagenumbering{arabic}
+\setcounter{page}{3} % Bắt đầu đánh số từ Trang 3 theo đúng mẫu của Khoa
+
+\begin{center}
+    \textbf{\Large LỜI MỞ ĐẦU}
+\end{center}
+\vspace{0.5cm}
+
+Trong thời đại số hóa hiện nay, công nghệ phần mềm đóng vai trò then chốt trong việc tối ưu hóa quy trình vận hành và nâng cao chất lượng trải nghiệm của khách hàng tại các doanh nghiệp dịch vụ. Đối với lĩnh vực giải trí điện ảnh, mô hình rạp chiếu phim hiện đại đòi hỏi một hệ thống quản lý có khả năng xử lý nhanh chóng, chính xác tuyệt đối từ khâu xếp lịch chiếu, quản lý phòng chiếu, sơ đồ trạng thái ghế ngồi theo thời gian thực đến kiểm soát việc duyệt vé và báo cáo doanh thu. Các phương thức quản lý bán vé truyền thống hoặc các bảng tính thủ công không thể đáp ứng được khối lượng dữ liệu phát sinh liên tục trong giờ cao điểm, dễ dẫn đến hiện tượng đặt trùng ghế (\textit{double booking}) và thiếu hụt sự minh bạch trong kiểm soát doanh số.
+
+Nhận thức rõ tầm quan trọng thực tiễn đó, trong khuôn khổ học phần \textbf{PBL2: Dự án Cơ sở Lập trình} tại Khoa Công nghệ Thông tin – Trường Đại học Bách Khoa, Đại học Đà Nẵng, nhóm chúng em đã nghiên cứu và phát triển đề tài: \textbf{``Xây dựng Hệ thống Đặt vé Xem phim (Cinema Booking System)''}.
+
+Dự án được xây dựng hoàn toàn bằng ngôn ngữ \textbf{C++17} kết hợp với nền tảng giao diện đồ họa \textbf{Qt6 Framework}. Điểm cốt lõi của đồ án là việc nhóm không lạm dụng các cấu trúc dữ liệu có sẵn trong thư viện chuẩn STL (như \texttt{std::vector} hay \texttt{std::unordered\_map}), mà tự nghiên cứu, cài đặt từ đầu các cấu trúc dữ liệu nền tảng gồm mảng động co giãn đa năng (\texttt{DynamicArray<T>}) tuân thủ nguyên tắc \textit{Rule of Five}, bảng băm nối chuỗi (\texttt{HashTable<K, V>}) với giải thuật băm \textit{DJB2}, và ma trận trạng thái ghế động 2 chiều (\texttt{SeatMap}). Toàn bộ dữ liệu của hệ thống được quản lý bền vững thông qua hệ thống tệp tin văn bản (\texttt{.txt}) chuẩn hóa.
+
+Nhóm chúng em xin bày tỏ lòng biết ơn chân thành nhất tới quý Thầy, Cô giáo trong Khoa Công nghệ Thông tin, đặc biệt là Giảng viên hướng dẫn đã tận tình định hướng, chỉ bảo và hỗ trợ nhóm trong suốt quá trình triển khai đồ án. Mặc dù đã rất nỗ lực hoàn thiện đề tài với tinh thần trách nhiệm cao nhất, sản phẩm khó tránh khỏi những hạn chế nhất định. Nhóm rất mong nhận được những ý kiến đóng góp quý báu từ quý Thầy, Cô để hệ thống ngày càng hoàn thiện hơn.
+
+\newpage
+
+% -------------------- TRANG 3: MỤC LỤC --------------------
+\begin{center}
+    \textbf{\Large MỤC LỤC}
+\end{center}
+\vspace{-0.5cm}
+\tableofcontents
+\thispagestyle{fancy}
+
+\newpage
+
+% -------------------- TRANG 4: DANH MỤC HÌNH VẼ --------------------
+\begin{center}
+    \textbf{\Large DANH MỤC HÌNH VẼ}
+\end{center}
+\vspace{-0.5cm}
+\listoffigures
+\thispagestyle{fancy}
+
+\newpage
+
+% -------------------- NỘI DUNG CHÍNH CỦA BÁO CÁO --------------------
+
+% ==================== MỤC 1 ====================
+\section{GIỚI THIỆU ĐỀ TÀI}
+
+\subsection{Lý do chọn đề tài}
+Nhu cầu giải trí xem phim tại rạp của người dân, đặc biệt là giới trẻ và học sinh, sinh viên, ngày càng tăng cao. Mỗi cụm rạp hàng ngày phải đón nhận hàng ngàn lượt khách hàng, tổ chức hàng chục suất chiếu tại nhiều phòng chiếu khác nhau với các định dạng phòng đa dạng (Phòng tiêu chuẩn, Phòng VIP, Phòng IMAX). Để vận hành trơn tru một hệ thống như vậy, rạp chiếu phim phải đối mặt với các bài toán nghiệp vụ phức tạp:
+\begin{itemize}
+    \item \textbf{Đối với khách hàng:} Cần một giao diện đồ họa trực quan để theo dõi danh sách phim đang chiếu, xem chi tiết nội dung, giới hạn độ tuổi xem phim, chọn suất chiếu phù hợp, trực tiếp lựa chọn vị trí ghế ngồi ưa thích trên bản đồ ghế ma trận, và lựa chọn thêm các combo bắp nước đi kèm.
+    \item \textbf{Đối với nhân viên thu ngân:} Cần công cụ thao tác bán vé nhanh tại quầy, duyệt các đơn hàng đặt vé online chờ thanh toán (\texttt{PENDING}), và soát vé vào cửa nhanh chóng, chống việc sử dụng vé giả hoặc vé đã dùng nhiều lần.
+    \item \textbf{Đối với nhà quản lý rạp:} Cần công cụ quản lý danh mục phim, thiết lập phòng chiếu, tạo suất chiếu mới tự động kiểm tra xung đột thời gian chiếu, quản lý gói combo ẩm thực, và thống kê doanh thu đa chiều theo từng ngày, từng bộ phim.
+\end{itemize}
+Đề tài \textbf{``Hệ thống đặt vé xem phim''} được nhóm lựa chọn nhằm giải quyết toàn diện các bài toán thực tiễn trên, đồng thời hiện thực hóa các kiến thức nền tảng về Cấu trúc dữ liệu \& Giải thuật và Lập trình hướng đối tượng đã được học trên giảng đường.
+
+\subsection{Mục tiêu của đề tài}
+\begin{itemize}
+    \item \textbf{Mục tiêu kiến thức \& kỹ năng kỹ thuật:}
+    \begin{itemize}
+        \item Nắm vững ngôn ngữ C++17 và mô hình hướng đối tượng (OOP): Đóng gói, Kế thừa, Đa hình và Trừu tượng.
+        \item Tự thiết kế và cài đặt các cấu trúc dữ liệu nền tảng dạng template: Mảng động tự co giãn \texttt{DynamicArray<T>} và Bảng băm \texttt{HashTable<K, V>}, quản lý bộ nhớ động an toàn tuyệt đối, ngăn chặn triệt để rò rỉ vùng nhớ (\textit{memory leak}).
+        \item Xây dựng các thuật toán nghiệp vụ chính xác: Thuật toán kiểm tra xung đột lịch chiếu, thuật toán xác định ngày cuối tuần Zeller's Congruence để tính giá vé lũy tiến, thuật toán băm chuỗi DJB2.
+    \end{itemize}
+    \item \textbf{Mục tiêu sản phẩm:}
+    \begin{itemize}
+        \item Xây dựng một ứng dụng Desktop hoàn chỉnh với giao diện Qt6 Widgets mượt mà, phân quyền người dùng rõ ràng (Khách hàng, Thu ngân, Quản trị viên).
+        \item Quản lý và lưu trữ dữ liệu an toàn, tin cậy thông qua hệ thống tệp tin văn bản (\texttt{.txt}).
+    \end{itemize}
+\end{itemize}
+
+\subsection{Phạm vi và đối tượng nghiên cứu}
+\begin{itemize}
+    \item \textbf{Đối tượng nghiên cứu:} Quy trình phân tích, thiết kế và cài đặt hệ thống quản lý rạp chiếu phim; các thuật toán xử lý dữ liệu, cấp phát bộ nhớ động trong C++ và cơ chế điều khiển giao diện Qt Signal/Slot.
+    \item \textbf{Phạm vi hệ thống:} Ứng dụng Desktop chạy độc lập trên hệ điều hành Windows/Linux, hỗ trợ 3 nhóm tác nhân chính: Khách hàng (Customer), Nhân viên thu ngân (Cashier), và Quản trị viên (Admin).
+\end{itemize}
+
+% ==================== MỤC 2 ====================
+\section{PHÂN TÍCH CHỨC NĂNG HỆ THỐNG}
+
+Hệ thống được thiết kế phân tầng nghiệp vụ rõ ràng, đáp ứng toàn diện nhu cầu của ba nhóm tác nhân chính:
+
+\subsection{Phân hệ Khách hàng (Customer)}
+Khách hàng sau khi đăng nhập vào hệ thống được điều hướng tới \texttt{CustomerDashboard} với các chức năng chính:
+\begin{itemize}
+    \item \textbf{Xem danh sách phim (\texttt{MovieListWidget}):} Hiển thị danh mục phim dưới dạng các thẻ (cards) trực quan kèm hình ảnh poster, tên phim, thời lượng, thể loại và giới hạn độ tuổi xem phim (P, T13, T16, T18). Cung cấp thanh tìm kiếm nhanh theo từ khóa tên phim.
+    \item \textbf{Xem chi tiết phim (\texttt{MovieDetailWidget}):} Hiển thị đầy đủ thông tin tóm tắt cốt truyện, đạo diễn, và danh sách các suất chiếu đang mở của bộ phim.
+    \item \textbf{Chọn suất chiếu (\texttt{ShowtimeListWidget}):} Lọc và hiển thị danh sách các suất chiếu khả dụng theo ngày xem phim và theo phòng chiếu.
+    \item \textbf{Sơ đồ chọn ghế ma trận (\texttt{SeatSelectionWidget}):} Trình diễn trực quan sơ đồ ghế của phòng chiếu. Phân biệt rõ ràng 4 trạng thái ghế: Ghế thường trống, Ghế VIP trống, Ghế đang chọn, và Ghế đã có người đặt. Tính toán tổng tiền vé tức thời khi khách hàng nhấn chọn hoặc bỏ chọn ghế.
+    \item \textbf{Chọn Combo bắp nước (\texttt{ComboSelectionWidget}):} Khách hàng có thể chọn thêm các gói combo ẩm thực ưu đãi (Combo bắp ngọt, Combo nước lớn, Combo Couple, Combo Family).
+    \item \textbf{Xác nhận đơn đặt vé (\texttt{BookingConfirmWidget}):} Hiển thị hóa đơn tổng hợp gồm thông tin phim, suất chiếu, phòng chiếu, danh sách ghế, combo kèm theo và tổng chi phí thanh toán. Sau khi đặt vé, vé sẽ được lưu vào hệ thống ở trạng thái chờ thu ngân duyệt (\texttt{PENDING}).
+    \item \textbf{Quản lý vé cá nhân (\texttt{MyTicketsWidget}):} Khách hàng tra cứu lịch sử vé đã đặt, kiểm tra trạng thái vé (\texttt{PENDING}, \texttt{VALID}, \texttt{USED}, \texttt{CANCELLED}).
+\end{itemize}
+
+\subsection{Phân hệ Nhân viên Thu ngân (Cashier)}
+Thu ngân sử dụng hệ thống tại quầy qua \texttt{CashierDashboard}:
+\begin{itemize}
+    \item \textbf{Bán vé tại quầy (\texttt{SaleWidget}):} Cho phép thu ngân thực hiện quy trình bán vé trực tiếp cho khách mua tại quầy. Vé được phát hành trực tiếp và có trạng thái hợp lệ (\texttt{VALID}) ngay lập tức sau khi nhận tiền.
+    \item \textbf{Duyệt đơn đặt vé online (\texttt{TicketApprovalWidget}):} Quản lý các đơn đặt vé online đang ở trạng thái \texttt{PENDING}. Thu ngân kiểm tra thông tin khách hàng, xác nhận thanh toán để chuyển vé sang trạng thái hợp lệ \texttt{VALID}, hoặc hủy đơn giải phóng ghế nếu khách hàng không đến nhận vé đúng hạn.
+    \item \textbf{Kiểm soát và Soát vé vào cửa (\texttt{CheckTicketWidget}):} Hỗ trợ tra cứu nhanh mã vé khi khách hàng chuẩn bị vào phòng chiếu. Hệ thống xác thực tính hợp lệ của vé và chuyển trạng thái vé sang \texttt{USED} (Đã sử dụng), ngăn chặn hành vi tái sử dụng vé.
+\end{itemize}
+
+\subsection{Phân hệ Quản trị viên (Admin)}
+Admin quản lý toàn diện tài nguyên rạp thông qua \texttt{AdminDashboard}:
+\begin{itemize}
+    \item \textbf{Quản lý Phim (\texttt{MovieManagementWidget}):} Thêm phim mới, chỉnh sửa thông tin phim, chọn ảnh poster, cập nhật trạng thái phim (Đang chiếu / Ngừng chiếu).
+    \item \textbf{Quản lý Phòng chiếu (\texttt{RoomManagementWidget}):} Quản lý danh sách phòng chiếu (Phòng 1, Phòng 2, Phòng VIP, Phòng IMAX), thiết lập kích thước ma trận ghế (số hàng, số cột) và trạng thái phòng.
+    \item \textbf{Quản lý Suất chiếu (\texttt{ShowtimeManagementWidget}):} Lên lịch chiếu phim mới; tự động khởi tạo ma trận ghế \texttt{SeatMap} tương ứng cho từng suất chiếu; tích hợp thuật toán tự động ngăn chặn trùng lịch chiếu phòng.
+    \item \textbf{Quản lý Combo ẩm thực (\texttt{ComboManagementWidget}):} Thêm, sửa, xóa các gói bắp nước, cập nhật đơn giá.
+    \item \textbf{Thống kê và Báo cáo (\texttt{StatisticsWidget}):} Báo cáo tổng doanh thu bán vé và combo của toàn rạp; Thống kê doanh thu theo từng ngày cụ thể; Thống kê doanh thu và số lượng vé bán ra theo từng bộ phim; Thống kê tỷ lệ vé hợp lệ và vé đã sử dụng.
+\end{itemize}
+
+\subsection{Hệ thống tệp tin lưu trữ dữ liệu}
+Dữ liệu của dự án được lưu trữ bền vững trong thư mục \texttt{data/} với cấu trúc phân cách bằng ký tự \texttt{|}:
+\begin{itemize}
+    \item \texttt{admins.txt}: Thông tin tài khoản quản trị viên.
+    \item \texttt{cashiers.txt}: Thông tin tài khoản và mã nhân viên thu ngân.
+    \item \texttt{customers.txt}: Thông tin tài khoản, điểm thưởng và mã khách hàng.
+    \item \texttt{movies.txt}: Danh sách phim, thời lượng, thể loại, tóm tắt, poster.
+    \item \texttt{rooms.txt}: Danh sách phòng chiếu, số hàng, số cột, trạng thái.
+    \item \texttt{showtimes.txt}: Lịch chiếu liên kết giữa mã suất, mã phòng, mã phim, ngày và giờ chiếu.
+    \item \texttt{seatmaps.txt}: Lưu trữ mảng chuỗi trạng thái toàn bộ các ghế của từng suất chiếu.
+    \item \texttt{tickets.txt}: Danh sách các vé đã xuất, vị trí tọa độ ghế, combo, giá tiền, ngày mua và trạng thái vé.
+    \item \texttt{combos.txt}: Danh mục combo bắp nước và đơn giá niêm yết.
+\end{itemize}
+
+% ==================== MỤC 3 ====================
+\section{THIẾT KẾ CẤU TRÚC DỮ LIỆU}
+
+\subsection{Phát biểu bài toán}
+
+\subsubsection{Mô tả đầu vào (Input)}
+Đầu vào của hệ thống gồm hai thành phần chính:
+\begin{enumerate}
+    \item \textbf{Dữ liệu đọc từ các tệp văn bản (\texttt{.txt}):} Định dạng theo cấu trúc dòng với phân tách dấu gạch đứng (\texttt{|}). Ví dụ dữ liệu thực tế trích xuất từ file \texttt{movies.txt} và \texttt{combos.txt}:
+    \begin{lstlisting}[language=bash]
+MV001|Avengers: Endgame|Hanh Dong, Vien Tuong|181|13|Tran chien vi dai nhat...|posters/avengers.jpg|1
+CB001|Combo 1 - Bap Nuoc Tieu Chuan|1 Bap rang bo ngot + 1 Nuoc ngot|55000|1
+RM001|Phong 1|8|10|1
+    \end{lstlisting}
+    \item \textbf{Dữ liệu người dùng nhập liệu từ giao diện đồ họa Qt:} Tương tác chọn chuột trên sơ đồ ma trận ghế, chuỗi tìm kiếm tên phim, thông tin đăng ký tài khoản (tài khoản, mật khẩu, số điện thoại, tuổi).
+\end{enumerate}
+
+\subsubsection{Mô tả đầu ra (Output)}
+\begin{enumerate}
+    \item \textbf{Giao diện trực quan:} Hiển thị danh sách phim dạng lưới (\textit{grid layout}), ma trận ghế hiển thị trạng thái màu sắc theo thời gian thực (Trống, Đang chọn, Đã bán, Khóa), hóa đơn chi tiết đơn đặt vé.
+    \item \textbf{Cập nhật dữ liệu tệp tin:} Ghi nhận thay đổi tức thời xuống các file trong thư mục \texttt{data/} khi có thao tác thêm, sửa, xóa hoặc đặt vé mới mà không làm hỏng cấu trúc tệp.
+    \item \textbf{Đầu ra báo cáo thống kê:} Tổng số doanh thu, số vé đã bán, phân tích doanh thu theo từng mốc thời gian và từng bộ phim.
+\end{enumerate}
+
+\subsection{Phân tích và ứng dụng cấu trúc dữ liệu trong hệ thống}
+Để đáp ứng chuẩn mực của đồ án PBL2, hệ thống không sử dụng các container có sẵn của thư viện chuẩn STL (\texttt{std::vector}, \texttt{std::map}), mà nhóm tự nghiên cứu và xây dựng ba cấu trúc dữ liệu nền tảng:
+
+\subsubsection{Cấu trúc Mảng động tự co giãn (\texttt{DynamicArray<T>})}
+Mảng tĩnh thông thường có kích thước cố định, gây lãng phí bộ nhớ hoặc tràn vùng nhớ khi dữ liệu phim và vé tăng lên. Lớp mẫu \texttt{DynamicArray<T>} được thiết kế quản lý bộ nhớ động thông qua con trỏ mảng \texttt{T* data}, biến \texttt{m\_size} (số phần tử hiện tại) và \texttt{m\_capacity} (sức chứa tối đa hiện tại).
+
+\begin{itemize}
+    \item \textbf{Chiến lược nhân đôi sức chứa (Doubling Strategy):} Khi \texttt{m\_size == m\_capacity}, hàm \texttt{resize()} sẽ cấp phát vùng nhớ mới có kích thước gấp đôi:
+    \begin{equation}
+        \text{newCapacity} = \text{m\_capacity} \times 2
+    \end{equation}
+    Kỹ thuật này giúp chi phí cấp phát bộ nhớ trung bình cho mỗi thao tác \texttt{push\_back} đạt độ phức tạp khấu hao (\textit{amortized complexity}) là $O(1)$.
+    \item \textbf{Cài đặt trọn vẹn Quy tắc 5 thành phần (Rule of Five):} Để quản lý tài nguyên vùng nhớ an toàn tuyệt đối, nhóm đã cài đặt:
+    \begin{enumerate}
+        \item Hàm hủy giải phóng bộ nhớ: \texttt{\~DynamicArray() \{ delete[] data; \}}
+        \item Hàm khởi tạo sao chép (\textit{Copy Constructor})
+        \item Toán tử gán sao chép (\textit{Copy Assignment Operator})
+        \item Hàm khởi tạo di chuyển (\textit{Move Constructor}) với từ khóa \texttt{noexcept}
+        \item Toán tử gán di chuyển (\textit{Move Assignment Operator}) với từ khóa \texttt{noexcept}
+    \end{enumerate}
+\end{itemize}
+
+\begin{lstlisting}[language=C++, caption={Cài đặt Move Semantics trong DynamicArray}]
+DynamicArray(DynamicArray&& other) noexcept 
+    : data(other.data), m_size(other.m_size), m_capacity(other.m_capacity) {
+    other.data = nullptr;
+    other.m_size = 0;
+    other.m_capacity = 0;
+}
+
+DynamicArray& operator=(DynamicArray&& other) noexcept {
+    if (this != &other) {
+        delete[] data;
+        data = other.data;
+        m_size = other.m_size;
+        m_capacity = other.m_capacity;
+        other.data = nullptr;
+        other.m_size = 0;
+        other.m_capacity = 0;
+    }
+    return *this;
+}
+\end{lstlisting}
+
+\subsubsection{Cấu trúc Bảng băm tra cứu riêng biệt (\texttt{HashTable<K, V>})}
+Trong nghiệp vụ bán vé, việc tra cứu mã combo bắp nước hoặc thông tin vé cần diễn ra tức thời với độ trễ thấp nhất. Nhóm tự cài đặt cấu trúc \texttt{HashTable<K, V>}:
+\begin{itemize}
+    \item \textbf{Kỹ thuật giải quyết xung đột (Separate Chaining):} Bảng băm quản lý một mảng các con trỏ trỏ tới danh sách liên kết đơn cấu thành từ các nút \texttt{HashNode<K, V>}.
+    \item \textbf{Giải thuật băm DJB2 cho chuỗi ký tự (\texttt{std::string}):} Áp dụng giải thuật băm nổi tiếng của Daniel J. Bernstein với tính chất phân tán ngẫu nhiên rất cao:
+    \begin{equation}
+        \text{hash}_{i} = ((\text{hash}_{i-1} \ll 5) + \text{hash}_{i-1}) + c = \text{hash}_{i-1} \times 33 + c
+    \end{equation}
+    với giá trị khởi tạo \texttt{hash = 5381}.
+    \item \textbf{Hệ số tải và cơ chế Tự động Tái băm (Rehashing):} Thiết lập ngưỡng hệ số tải $\alpha = \frac{\text{size}}{\text{capacity}} = 0.75$. Khi hệ số tải vượt ngưỡng, hệ thống tự động cấp phát bảng mới gấp đôi kích thước và băm lại toàn bộ phần tử, đảm bảo chi phí tìm kiếm, thêm, xóa trung bình luôn đạt $O(1)$.
+\end{itemize}
+
+\begin{lstlisting}[language=C++, caption={Giải thuật băm DJB2 và cơ chế Rehash trong HashTable}]
+size_t hashFunc(const K& key) const {
+    if constexpr (std::is_same_v<K, std::string>) {
+        size_t hash = 5381;
+        for (char c : key) {
+            hash = ((hash << 5) + hash) + static_cast<unsigned char>(c);
+        }
+        return hash;
+    } else {
+        return std::hash<K>{}(key);
+    }
+}
+\end{lstlisting}
+
+\subsubsection{Cấu trúc Ma trận trạng thái ghế 2 chiều (\texttt{SeatMap})}
+Lớp \texttt{SeatMap} đại diện cho sơ đồ ghế của từng suất chiếu, được tổ chức dưới dạng con trỏ cấp phát động 2 chiều \texttt{int** trangThai}.
+\begin{itemize}
+    \item Quản lý 4 trạng thái ghế thông qua kiểu liệt kê (\texttt{enum}):
+    \begin{equation}
+        \text{SeatStatus} = \{\text{EMPTY} = 0, \text{BOOKED} = 1, \text{VIP\_EMPTY} = 2, \text{VIP\_BOOKED} = 3\}
+    \end{equation}
+    \item Toàn bộ quy trình cấp phát (\texttt{allocateMemory}), giải phóng (\texttt{freeMemory}), và sao chép sâu (\texttt{copyFrom}) được quản lý chặt chẽ theo nguyên tắc hướng đối tượng.
+\end{itemize}
+
+\subsubsection{Các thuật toán nghiệp vụ cốt lõi}
+\begin{enumerate}
+    \item \textbf{Thuật toán xác định ngày cuối tuần Zeller's Congruence (\texttt{PriceCalculator}):}
+    Để áp dụng chính sách phụ thu vé cuối tuần, hệ thống sử dụng công thức Zeller:
+    \begin{equation}
+        h = \left( q + \left\lfloor \frac{13(m+1)}{5} \right\rfloor + K + \left\lfloor \frac{K}{4} \right\rfloor + \left\lfloor \frac{J}{4} \right\rfloor + 5J \right) \bmod 7
+    \end{equation}
+    Trong đó $q$ là ngày, $m$ là tháng (tháng 1, 2 chuyển thành 13, 14 của năm trước), $K = \text{năm} \bmod 100$, $J = \lfloor\text{năm} / 100\rfloor$. Nếu $h = 0$ (Thứ Bảy) hoặc $h = 1$ (Chủ Nhật), hệ thống tự động cộng phụ phí cuối tuần (15.000 VNĐ).
+    \item \textbf{Thuật toán tính giá vé lũy tiến (\texttt{PriceCalculator}):}
+    \begin{equation}
+        \text{Price} = \text{BASE} + \Delta_{\text{VIP}} + \Delta_{\text{Weekend}} - \Delta_{\text{Early}} + \Delta_{\text{Late}}
+    \end{equation}
+    với $\text{BASE} = 65.000$, $\Delta_{\text{VIP}} = 30.000$, $\Delta_{\text{Weekend}} = 15.000$, suất chiếu sáng ($< 12\text{h}$) giảm 10.000, suất chiếu muộn ($\ge 22\text{h}$) phụ thu 10.000 VNĐ.
+    \item \textbf{Thuật toán kiểm tra xung đột thời gian chiếu phim (\texttt{hasTimeConflict}):}
+    Khi tạo suất chiếu mới tại phòng $R$ vào ngày $D$, khoảng thời gian $[T_{\text{start}}, T_{\text{end}}]$ của suất chiếu mới (với $T_{\text{end}} = T_{\text{start}} + \text{Thời lượng} + 15\text{ phút dọn phòng}$) được kiểm tra giao cắt với toàn bộ các suất chiếu đã có trong phòng:
+    \begin{equation}
+        \text{Conflict} \iff (T_{\text{start}} < T_{\text{end}}^{\text{old}}) \land (T_{\text{end}} > T_{\text{start}}^{\text{old}})
+    \end{equation}
+    \item \textbf{Thuật toán sinh mã tự động tăng dần (\texttt{IDGenerator}):}
+    Trích xuất phần số từ các mã đã có (ví dụ \texttt{MV005} trích xuất ra $5$), tìm số cực đại $M_{\max}$ và sinh mã mới $M_{\max} + 1$ định dạng chuẩn qua \texttt{std::setw(3)} và \texttt{std::setfill('0')}.
+\end{enumerate}
+
+\subsubsection{Đánh giá độ phức tạp thuật toán}
+\begin{table}[htbp]
+\centering
+\caption{Đánh giá độ phức tạp thời gian và bộ nhớ của các giải thuật}
+\vspace{0.2cm}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Cấu trúc / Thuật toán} & \textbf{Truy xuất} & \textbf{Tìm kiếm} & \textbf{Thêm mới} & \textbf{Độ phức tạp bộ nhớ} \\
+\midrule
+\texttt{DynamicArray<T>} & $O(1)$ & $O(n)$ & $O(1)$ (Khấu hao) & $O(n)$ \\
+\texttt{HashTable<K, V>} (Trung bình) & -- & $O(1)$ & $O(1)$ & $O(n)$ \\
+\texttt{HashTable<K, V>} (Xấu nhất) & -- & $O(n)$ & $O(n)$ & $O(n)$ \\
+\texttt{SeatMap} (Cấp phát ma trận) & $O(1)$ & $O(R \times C)$ & $O(1)$ & $O(R \times C)$ \\
+Kiểm tra xung đột lịch chiếu & -- & $O(M)$ & -- & $O(1)$ \\
+Tính ngày trong tuần Zeller & $O(1)$ & -- & -- & $O(1)$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ==================== MỤC 4 ====================
+\section{PHÂN TÍCH HƯỚNG ĐỐI TƯỢNG VÀ TRIỂN KHAI HỆ THỐNG}
+
+\subsection{Cấu trúc hệ thống hướng đối tượng (class, object, relation)}
+Hệ thống được tổ chức theo kiến trúc phân tầng chuyên biệt gồm: **Models** (Lớp thực thể), **Managers** (Lớp điều khiển nghiệp vụ \& thao tác File), và **UI/Widgets** (Lớp giao diện người dùng).
+
+\subsubsection{Cây phân cấp kế thừa Lớp Người dùng (User Hierarchy)}
+\begin{itemize}
+    \item \textbf{Lớp cơ sở \texttt{User}:} Đóng gói các thuộc tính cơ bản của người dùng hệ thống gồm \texttt{taiKhoan}, \texttt{matKhau}, \texttt{soDienThoai}, \texttt{tuoi}, \texttt{vaiTro}, \texttt{ten}. Cung cấp các phương thức truy xuất getter/setter và các phương thức kiểm tra hợp lệ.
+    \item \textbf{Lớp \texttt{Customer} (Kế thừa từ \texttt{User}):} Đại diện cho khách hàng, bổ sung thuộc tính mã khách hàng \texttt{maKhachHang} (dạng \texttt{KH001}) và điểm tích lũy điểm thưởng.
+    \item \textbf{Lớp \texttt{Cashier} (Kế thừa từ \texttt{User}):} Đại diện cho nhân viên thu ngân tại rạp, bổ sung thuộc tính mã nhân viên \texttt{maNhanVien} (dạng \texttt{NV001}) và ca làm việc.
+    \item \textbf{Lớp \texttt{Admin} (Kế thừa từ \texttt{User}):} Đại diện cho người quản trị hệ thống, bổ sung mã quản lý \texttt{maQuanLy} (dạng \texttt{QL001}) và nắm toàn quyền thiết lập các tham số hệ thống.
+\end{itemize}
+
+\subsubsection{Các lớp thực thể dữ liệu (Models)}
+\begin{itemize}
+    \item \textbf{\texttt{Movie}:} Đóng gói thông tin phim: \texttt{maPhim}, \texttt{tenPhim}, \texttt{theLoai}, \texttt{thoiLuong}, \texttt{doTuoi}, \texttt{moTa}, \texttt{posterPath}, \texttt{trangThai}.
+    \item \textbf{\texttt{Room}:} Thông tin phòng chiếu: \texttt{maPhong}, \texttt{tenPhong}, \texttt{soHang}, \texttt{soCot}, \texttt{trangThai}.
+    \item \textbf{\texttt{Showtime}:} Lịch chiếu cụ thể: \texttt{maSuatChieu}, \texttt{maPhong}, \texttt{maPhim}, \texttt{ngayChieu}, \texttt{gioChieu}, \texttt{giaVeCoSo}, \texttt{trangThai}.
+    \item \textbf{\texttt{Ticket}:} Thực thể vé xem phim: \texttt{maVe}, \texttt{maSuatChieu}, \texttt{maKhachHang}, \texttt{maNhanVien}, tọa độ ghế (\texttt{hang}, \texttt{cot}), \texttt{giaVe}, \texttt{comboInfo}, \texttt{ngayMua}, \texttt{trangThai} (\texttt{PENDING}, \texttt{VALID}, \texttt{USED}, \texttt{CANCELLED}).
+    \item \textbf{\texttt{Combo}:} Gói sản phẩm ăn uống: \texttt{maCombo}, \texttt{tenCombo}, \texttt{chiTiet}, \texttt{giaTien}, \texttt{trangThai}.
+\end{itemize}
+
+\subsubsection{Các lớp quản lý nghiệp vụ (Managers)}
+Các lớp quản lý đóng vai trò trung gian giữa giao diện và cơ sở dữ liệu tệp tin văn bản:
+\begin{itemize}
+    \item \texttt{UserManager}: Quản lý mảng động các đối tượng \texttt{Customer}, \texttt{Cashier}, \texttt{Admin}. Xử lý logic đăng nhập, đăng ký tài khoản, đổi mật khẩu và phân quyền truy cập.
+    \item \texttt{MovieManager}: Quản lý mảng \texttt{DynamicArray<Movie>}, lọc phim đang chiếu, tìm kiếm phim theo từ khóa.
+    \item \texttt{ShowtimeManager}: Quản lý lịch chiếu và mảng các \texttt{SeatMap}. Tích hợp kiểm tra xung đột thời gian chiếu.
+    \item \texttt{TicketManager}: Quản lý toàn bộ vòng đời của vé xem phim, tạo mã đơn hàng gộp (\textit{order ID}), duyệt vé, hủy vé và lọc vé theo khách hàng/suất chiếu.
+    \item \texttt{ComboManager}: Sử dụng bảng băm \texttt{HashTable<std::string, Combo>} để lưu trữ và tra cứu cực nhanh các gói combo ẩm thực.
+    \item \texttt{StatisticManager}: Cung cấp các phương thức tĩnh (\textit{static methods}) tính tổng doanh thu theo ngày, theo phim và đếm số lượng vé bán ra/vé đã sử dụng.
+\end{itemize}
+
+\subsubsection{Mối quan hệ giữa các lớp trong hệ thống}
+\begin{itemize}
+    \item \textbf{Quan hệ Kế thừa (\textit{Inheritance}):} $\text{User} \leftarrow \text{Customer}$, $\text{User} \leftarrow \text{Cashier}$, $\text{User} \leftarrow \text{Admin}$.
+    \item \textbf{Quan hệ Hợp thành (\textit{Composition}):} Một đối tượng \texttt{Showtime} sở hữu chặt chẽ một \texttt{SeatMap}. Vòng đời của bản đồ ghế gắn liền mật thiết với suất chiếu.
+    \item \textbf{Quan hệ Kết tập (\textit{Aggregation}):} \texttt{TicketManager} tập hợp nhiều đối tượng \texttt{Ticket}; \texttt{MovieManager} tập hợp nhiều đối tượng \texttt{Movie}.
+    \item \textbf{Quan hệ Phụ thuộc (\textit{Dependency}):} \texttt{StatisticManager} phụ thuộc vào dữ liệu được cung cấp từ \texttt{TicketManager} và \texttt{ShowtimeManager} để tính toán các chỉ số tài chính.
+\end{itemize}
+
+\subsection{Kết quả}
+
+\subsubsection{Giao diện chính của chương trình}
+Ứng dụng được xây dựng trên thư viện Qt6 C++ với phong cách giao diện chuyên nghiệp, trực quan:
+\begin{itemize}
+    \item \textbf{Cửa sổ Đăng nhập \& Đăng ký (\texttt{LoginWindow}, \texttt{RegisterWindow}):} Cho phép chuyển đổi linh hoạt giữa đăng nhập và đăng ký, kiểm tra chặt chẽ tính hợp lệ của số điện thoại và mật khẩu. Tự động điều hướng sang Dashboard tương ứng sau khi xác thực vai trò thành công.
+    \item \textbf{Giao diện Khách hàng (\texttt{CustomerDashboard}):} Bố cục trực quan gồm danh sách phim dạng lưới có hình ảnh poster sống động, màn hình chọn suất chiếu và sơ đồ ma trận ghế tương tác mượt mà bằng chuột.
+    \item \textbf{Giao diện Thu ngân (\texttt{CashierDashboard}):} Bàn bán vé tại quầy tiện lợi, khu vực duyệt vé đặt online và hộp thoại tra cứu mã vé vào cửa nhanh chóng.
+    \item \textbf{Giao diện Quản trị viên (\texttt{AdminDashboard}):} Bảng điều khiển phân chia thành các tab chuyên trách: Quản lý phim, Quản lý phòng chiếu, Quản lý suất chiếu, Quản lý combo và Bảng báo cáo thống kê doanh thu đa chiều.
+\end{itemize}
+
+\subsubsection{Kết quả thực thi của chương trình}
+Chương trình đã được kiểm thử toàn diện qua nhiều kịch bản thực tế:
+\begin{itemize}
+    \item \textbf{Kiểm thử quy trình đặt vé trọn vẹn:} Khách hàng đăng ký tài khoản $\rightarrow$ Chọn phim Avengers: Endgame $\rightarrow$ Chọn suất chiếu 09:00 tại Phòng 1 $\rightarrow$ Chọn 2 ghế VIP (Hàng 2 Cột 3, Hàng 2 Cột 4) $\rightarrow$ Chọn thêm Combo 1 $\rightarrow$ Xác nhận đơn hàng. Kết quả: Hai ghế được khóa tức thì trên \texttt{SeatMap}, vé được lưu với trạng thái \texttt{PENDING}. Thu ngân mở \texttt{TicketApprovalWidget} thấy đơn hàng, nhấn Duyệt, vé chuyển sang \texttt{VALID}. Khi khách đến rạp, thu ngân kiểm tra vé bằng \texttt{CheckTicketWidget}, vé được đánh dấu \texttt{USED}.
+    \item \textbf{Kiểm thử xung đột suất chiếu:} Thử tạo thêm một suất chiếu tại Phòng 1 lúc 10:00 (trùng với thời gian suất chiếu 09:00 kéo dài 181 phút). Hệ thống phát hiện xung đột và từ chối tạo mới thành công.
+    \item \textbf{Kiểm thử tính toàn vẹn của tệp tin:} Dữ liệu sau các thao tác đặt vé, thêm phim đều được ghi nhận chuẩn xác vào thư mục \texttt{data/}. Khi tắt và khởi động lại ứng dụng, toàn bộ dữ liệu được tải lại nguyên vẹn 100\%.
+\end{itemize}
+
+\subsubsection{Nhận xét và đánh giá}
+\begin{itemize}
+    \item \textbf{Ưu điểm nổi bật:}
+    \begin{itemize}
+        \item Hệ thống hoạt động trơn tru, tốc độ phản hồi cực nhanh nhờ sử dụng các cấu trúc dữ liệu tự cài đặt tối ưu (\texttt{DynamicArray} và \texttt{HashTable}).
+        \item Quản lý bộ nhớ sạch sẽ, áp dụng đúng nguyên tắc \textit{Rule of Five} và giải phóng con trỏ đầy đủ, không gây rò rỉ bộ nhớ khi chạy lâu dài.
+        \item Giao diện đồ họa Qt6 đẹp mắt, hiện đại, mang lại trải nghiệm tiện lợi cho người dùng thực tế.
+    \end{itemize}
+    \item \textbf{Hạn chế tồn tại:}
+    \begin{itemize}
+        \item Cơ sở dữ liệu file text có thể bị suy giảm hiệu năng đọc ghi tuần tự khi quy mô vé phát hành đạt hàng vạn bản ghi.
+        \item Mật khẩu lưu trữ trong file chưa được băm mã hóa bảo mật chuyên sâu (như SHA-256 hay bcrypt).
+    \end{itemize}
+\end{itemize}
+
+% ==================== KẾT LUẬN VÀ HƯỚNG PHÁT TRIỂN ====================
+\section*{KẾT LUẬN VÀ HƯỚNG PHÁT TRIỂN}
+\addcontentsline{toc}{section}{KẾT LUẬN VÀ HƯỚNG PHÁT TRIỂN}
+
+\subsection*{a. Kết luận}
+\addcontentsline{toc}{subsection}{a. Kết luận}
+Trải qua quá trình nghiên cứu, thiết kế và phát triển đồ án \textbf{PBL2: Dự án Cơ sở Lập trình}, nhóm chúng em đã hoàn thành xuất sắc các mục tiêu trọng tâm đặt ra:
+\begin{enumerate}
+    \item Xây dựng hoàn chỉnh phần mềm \textbf{Hệ thống Đặt vé Xem phim (Cinema Booking System)} bằng C++17 kết hợp thư viện giao diện Qt6.
+    \item Tự nghiên cứu và cài đặt thành công hai cấu trúc dữ liệu nền tảng là Mảng động tự co giãn (\texttt{DynamicArray<T>}) và Bảng băm tra cứu riêng biệt (\texttt{HashTable<K, V>}), làm chủ hoàn toàn kỹ thuật cấp phát động và quản lý vùng nhớ.
+    \item Vận dụng nhuần nhuyễn các nguyên lý Lập trình hướng đối tượng (Kế thừa, Bao gói, Đa hình, Trừu tượng) vào việc thiết kế kiến trúc phần mềm 3 tầng rõ ràng.
+    \item Tích hợp thành công các giải thuật toán học thực tiễn: Thuật toán Zeller tính ngày cuối tuần, thuật toán băm DJB2, thuật toán kiểm tra giao thoa khoảng thời gian.
+\end{enumerate}
+
+\subsection*{b. Hướng phát triển}
+\addcontentsline{toc}{subsection}{b. Hướng phát triển}
+Để nâng cấp ứng dụng đạt chuẩn thương mại và triển khai thực tế trên diện rộng, nhóm định hướng các mục tiêu phát triển tiếp theo:
+\begin{itemize}
+    \item \textbf{Chuyển đổi sang Hệ quản trị cơ sở dữ liệu quan hệ:} Kết nối hệ thống với cơ sở dữ liệu MySQL hoặc PostgreSQL để nâng cao tốc độ truy vấn đa luồng, hỗ trợ cơ chế khóa giao dịch (\textit{transaction}) và đảm bảo toàn vẹn dữ liệu chuẩn ACID.
+    \item \textbf{Tích hợp Cổng thanh toán trực tuyến và Mã QR:} Kết nối API các cổng thanh toán điện tử (VNPay, MoMo, ZaloPay) và sinh mã vé điện tử QR Code để khách hàng tự quét mã vào phòng chiếu qua cửa tự động.
+    \item \textbf{Mã hóa bảo mật thông tin:} Áp dụng các thuật toán băm mật khẩu hiện đại (SHA-256 kết hợp Salt) nhằm bảo vệ an toàn tuyệt đối cho thông tin người dùng.
+    \item \textbf{Mở rộng đa nền tảng:} Phát triển ứng dụng đặt vé trên nền tảng di động (iOS/Android) và Web App đồng bộ dữ liệu thời gian thực với máy chủ rạp chiếu.
+\end{itemize}
+
+\newpage
+
+% ==================== TÀI LIỆU THAM KHẢO ====================
+\begin{center}
+    \textbf{\Large TÀI LIỆU THAM KHẢO}
+\end{center}
+\addcontentsline{toc}{section}{TÀI LIỆU THAM KHẢO}
+\vspace{0.5cm}
+
+\begin{enumerate}
+    \item[{[1]}] GS. Phạm Văn Ất, \textit{Giáo trình C++ \& Lập trình hướng đối tượng}, NXB Bách Khoa Hà Nội, 2012.
+    \item[{[2]}] PGS. TS. Hoàng Nghĩa Tý, \textit{Cấu trúc dữ liệu và giải thuật}, NXB Xây Dựng, 2014.
+    \item[{[3]}] Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein, \textit{Introduction to Algorithms (3rd Edition)}, The MIT Press, 2009.
+    \item[{[4]}] Bjarne Stroustrup, \textit{The C++ Programming Language (4th Edition)}, Addison-Wesley Professional, 2013.
+    \item[{[5]}] The Qt Company, \textit{Qt 6 Documentation - Architecture, Widgets and Layouts}, \url{https://doc.qt.io/qt-6/}, ngày truy cập: 02/11/2026.
+    \item[{[6]}] Daniel J. Bernstein, \textit{DJB2 Hash Function Algorithm}, \url{http://www.cse.yorku.ca/~oz/hash.html}, ngày truy cập: 02/11/2026.
+    \item[{[7]}] Christian Zeller, \textit{Kalender-Formeln (Zeller's Congruence for Day of the Week)}, Acta Mathematica, 1887.
+\end{enumerate}
+
+\end{document}

@@ -65,7 +65,7 @@ TicketApprovalWidget::TicketApprovalWidget(TicketManager* ticketMgr, ShowtimeMan
     // Table of Pending Orders
     tableOrders = new QTableWidget(this);
     tableOrders->setColumnCount(9);
-    tableOrders->setHorizontalHeaderLabels(QStringList() << "#" << "Mã Đơn" << "Khách Hàng" << "Tên Phim" 
+    tableOrders->setHorizontalHeaderLabels(QStringList() << "STT" << "Mã Đơn" << "Khách Hàng" << "Tên Phim" 
                                                           << "Suất Chiếu" << "Ghế Đặt" << "Combo" 
                                                           << "Tổng Tiền" << "Trạng Thái");
     tableOrders->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
@@ -345,7 +345,7 @@ void TicketApprovalWidget::onPrintClicked() {
     dlg.setFixedSize(480, 500);
     dlg.setStyleSheet(R"(
         QDialog {
-            background: #212156;
+            background: #101224;
             border: 2px solid #EAB02F;
             border-radius: 8px;
         }

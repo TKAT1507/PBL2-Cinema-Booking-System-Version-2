@@ -12,7 +12,7 @@ ChangePasswordWindow::ChangePasswordWindow(UserManager *userManager, QWidget *pa
     QVBoxLayout *rootLayout = new QVBoxLayout(this);
     rootLayout->setAlignment(Qt::AlignCenter);
 
-    // Center container (no card frame, flat on #212156)
+    // Center container (no card frame, flat on #101224)
     QWidget *container = new QWidget(this);
     container->setStyleSheet("background: transparent; border: none;");
 

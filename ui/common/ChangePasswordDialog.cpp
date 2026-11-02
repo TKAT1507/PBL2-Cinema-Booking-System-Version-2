@@ -12,7 +12,7 @@ ChangePasswordDialog::ChangePasswordDialog(UserManager *userManager, const std::
     setFixedSize(420, 400);
     setStyleSheet(R"(
         QDialog {
-            background-color: #212156;
+            background-color: #101224;
             border: 2px solid #EAB02F;
             border-radius: 10px;
         }

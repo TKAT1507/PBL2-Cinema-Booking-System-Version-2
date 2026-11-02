@@ -51,8 +51,8 @@ void SaleWidget::setupStep1(QWidget* page) {
     lblTitle->setStyleSheet("color: #EAB02F; font-size: 16px; font-weight: bold;");
     layout->addWidget(lblTitle);
 
-    movieTable = new QTableWidget(0, 3, page);
-    movieTable->setHorizontalHeaderLabels({"Mã Phim", "Tên Phim", "Thời Lượng"});
+    movieTable = new QTableWidget(0, 4, page);
+    movieTable->setHorizontalHeaderLabels({"Mã Phim", "Tên Phim", "Độ Tuổi", "Thời Lượng"});
     movieTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     movieTable->setSelectionMode(QAbstractItemView::SingleSelection);
     movieTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -84,15 +84,29 @@ void SaleWidget::setupStep1(QWidget* page) {
 
 void SaleWidget::loadMovies() {
     movieTable->setRowCount(0);
+    movieTable->setColumnCount(4);
+    movieTable->setHorizontalHeaderLabels({"Mã Phim", "Tên Phim", "Độ Tuổi", "Thời Lượng"});
     auto movies = movieManager->getActiveMovies();
     for(int i = 0; i < movies.size(); ++i) {
         movieTable->insertRow(i);
         movieTable->setItem(i, 0, new QTableWidgetItem(QString::fromStdString(movies[i].getMaPhim())));
         movieTable->setItem(i, 1, new QTableWidgetItem(QString::fromStdString(movies[i].getTenPhim())));
         
+        QString ageStr = movies[i].getDoTuoi() == 0 ? "P (Mọi lứa tuổi)" : QString("C%1 (%1+)").arg(movies[i].getDoTuoi());
+        QTableWidgetItem* ageItem = new QTableWidgetItem(ageStr);
+        ageItem->setTextAlignment(Qt::AlignCenter);
+        if (movies[i].getDoTuoi() >= 18) {
+            ageItem->setForeground(QBrush(QColor("#FF6B6B")));
+        } else if (movies[i].getDoTuoi() >= 13) {
+            ageItem->setForeground(QBrush(QColor("#EAB02F")));
+        } else {
+            ageItem->setForeground(QBrush(QColor("#51CF66")));
+        }
+        movieTable->setItem(i, 2, ageItem);
+
         QTableWidgetItem* durItem = new QTableWidgetItem(QString::number(movies[i].getThoiLuong()) + " phút");
         durItem->setTextAlignment(Qt::AlignCenter);
-        movieTable->setItem(i, 2, durItem);
+        movieTable->setItem(i, 3, durItem);
     }
 }
 
@@ -136,6 +150,21 @@ void SaleWidget::setupStep2(QWidget* page) {
         int row = showtimeTable->currentRow();
         if(row >= 0) {
             selectedShowtimeId = showtimeTable->item(row, 0)->text().toStdString();
+            
+            Movie* m = movieManager ? movieManager->findById(selectedMovieId) : nullptr;
+            if (m && m->getDoTuoi() > 0) {
+                QMessageBox msg(this);
+                msg.setWindowTitle("Lưu Ý Độ Tuổi");
+                msg.setIcon(QMessageBox::Warning);
+                msg.setText(QString("⚠️ <b>PHIM GIỚI HẠN ĐỘ TUỔI: C%1</b> (Dành cho khán giả từ đủ %1 tuổi trở lên)<br><br>"
+                                    "Phim: <b>%2</b><br><br>"
+                                    "Thu ngân vui lòng <b>kiểm tra giấy tờ tùy thân (CCCD/Thẻ học sinh)</b> của khách trước khi in vé!")
+                                .arg(m->getDoTuoi())
+                                .arg(QString::fromStdString(m->getTenPhim())));
+                msg.addButton("Đã Kiểm Tra & Tiếp Tục", QMessageBox::AcceptRole);
+                msg.exec();
+            }
+
             loadSeats();
             stepWidget->setCurrentIndex(2);
         } else {
@@ -571,7 +600,7 @@ void SaleWidget::setupStep5(QWidget* page) {
     card->setMaximumWidth(600);
     card->setStyleSheet(R"(
         QFrame {
-            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #2C2E6A, stop:1 #212156);
+            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #2C2E6A, stop:1 #101224);
             border: 2px solid #EAB02F;
             border-radius: 10px;
             padding: 20px;
@@ -671,7 +700,7 @@ void SaleWidget::setupStep6(QWidget* page) {
     card->setMaximumWidth(450);
     card->setStyleSheet(R"(
         QFrame {
-            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #2C2E6A, stop:1 #212156);
+            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #2C2E6A, stop:1 #101224);
             border: 2px solid #28A745;
             border-radius: 10px;
             padding: 25px;

@@ -11,7 +11,7 @@ LoginWindow::LoginWindow(UserManager *userManager, QWidget *parent)
     QVBoxLayout *rootLayout = new QVBoxLayout(this);
     rootLayout->setAlignment(Qt::AlignCenter);
 
-    // Center container (no card frame, flat on #212156)
+    // Center container (no card frame, flat on #101224)
     QWidget *container = new QWidget(this);
     container->setStyleSheet("background: transparent; border: none;");
 
@@ -30,7 +30,7 @@ LoginWindow::LoginWindow(UserManager *userManager, QWidget *parent)
     lineLeft->setStyleSheet("background-color: #FFFFFF; border: none;");
 
     QLabel *lblSystem = new QLabel("HỆ THỐNG ĐẶT VÉ XEM PHIM", container);
-    lblSystem->setStyleSheet("color: #FFFFFF; font-size: 24px; font-weight: bold; border: none; background: transparent;");
+    lblSystem->setStyleSheet("color: #FFFFFF; font-size: 36px; font-weight: bold; border: none; background: transparent;");
     lblSystem->setAlignment(Qt::AlignCenter);
 
     QFrame *lineRight = new QFrame(container);
@@ -44,7 +44,7 @@ LoginWindow::LoginWindow(UserManager *userManager, QWidget *parent)
 
     // Subtitle
     QLabel *lblTitle = new QLabel("Đăng Nhập", container);
-    lblTitle->setStyleSheet("color: #FFFFFF; font-size: 16px; font-weight: normal; border: none; background: transparent;");
+    lblTitle->setStyleSheet("color: #FFFFFF; font-size: 30px; font-weight: bold; border: none; background: transparent;");
     lblTitle->setAlignment(Qt::AlignCenter);
 
     // Inputs: Vuông vức, background #EAB02F
@@ -56,7 +56,7 @@ LoginWindow::LoginWindow(UserManager *userManager, QWidget *parent)
             font-weight: bold;
             border: none;
             border-radius: 0px;
-            padding: 0 14px;
+            padding: 7px 14px;
         }
         QLineEdit:focus {
             border: 2px solid #FFFFFF;
@@ -83,7 +83,7 @@ LoginWindow::LoginWindow(UserManager *userManager, QWidget *parent)
         QPushButton {
             background-color: #A52C20;
             color: #FFFFFF;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: bold;
             border-radius: 0px;
             border: none;

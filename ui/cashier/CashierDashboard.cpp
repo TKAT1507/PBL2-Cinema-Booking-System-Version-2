@@ -43,12 +43,12 @@ void CashierDashboard::setupUI() {
         QFrame {
             background-color: #A52C20;
             border-radius: 8px;
-            padding: 8px;
+            padding: 0px;
         }
     )");
     QVBoxLayout* headerLayout = new QVBoxLayout(headerFrame);
     headerLayout->setContentsMargins(5, 8, 5, 8);
-    headerLayout->setSpacing(4);
+    headerLayout->setSpacing(0);
 
     QLabel* lblGreeting = new QLabel("Xin chào", headerFrame);
     lblGreeting->setAlignment(Qt::AlignCenter);
@@ -89,7 +89,7 @@ void CashierDashboard::setupUI() {
     btnBanVe->setCursor(Qt::PointingHandCursor);
     btnBanVe->setStyleSheet(tabBtnStyle);
 
-    QPushButton* btnDuyetVe = new QPushButton("Xác Nhận Vé ⭐", sidebar);
+    QPushButton* btnDuyetVe = new QPushButton("Xác Nhận Vé ", sidebar);
     btnDuyetVe->setCursor(Qt::PointingHandCursor);
     btnDuyetVe->setStyleSheet(tabBtnStyle);
 
