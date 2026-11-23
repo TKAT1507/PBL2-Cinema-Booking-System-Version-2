@@ -32,30 +32,26 @@ BookingConfirmWidget::BookingConfirmWidget(const QString& maKH, TicketManager* t
     cardLayout->setContentsMargins(30, 26, 30, 26);
     cardLayout->setSpacing(14);
 
-    QLabel *lblEyebrow = new QLabel("BƯỚC 4 / 4 • XÁC NHẬN ĐƠN VÉ", card);
-    lblEyebrow->setAlignment(Qt::AlignCenter);
-    lblEyebrow->setStyleSheet(Theme::sectionEyebrowStyle());
 
     QLabel *lblTitle = new QLabel("Xác Nhận Thông Tin Đặt Vé", card);
     lblTitle->setAlignment(Qt::AlignCenter);
-    lblTitle->setStyleSheet("color: #F3F4FA; font-size: 22px; font-weight: bold; border: none; background: transparent;");
+    lblTitle->setStyleSheet("color: #1E293B; font-size: 22px; font-weight: 600; border: none; background: transparent;");
 
     QFrame *line = new QFrame(card);
     line->setFrameShape(QFrame::HLine);
-    line->setStyleSheet("background-color: #323859; max-height: 1px; border: none;");
+    line->setStyleSheet("background-color: #E5E7EB; max-height: 1px; border: none;");
 
-    cardLayout->addWidget(lblEyebrow);
     cardLayout->addWidget(lblTitle);
     cardLayout->addWidget(line);
 
     lblSummary = new QLabel(card);
     lblSummary->setWordWrap(true);
     lblSummary->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-    lblSummary->setStyleSheet("color: #F3F4FA; font-size: 13px; border: none; background: transparent; padding: 10px;");
+    lblSummary->setStyleSheet("color: #1E293B; font-size: 13px; border: none; background: transparent; padding: 10px;");
 
     QScrollArea *scroll = new QScrollArea(card);
     scroll->setWidgetResizable(true);
-    scroll->setStyleSheet("QScrollArea { background-color: #1A1D2F; border: 1px solid #303654; border-radius: 14px; }");
+    scroll->setStyleSheet("QScrollArea { background-color: #F9FAFB; border: 1px solid #E5E7EB; border-radius: 8px; }");
     scroll->setWidget(lblSummary);
     scroll->setMinimumHeight(260);
     cardLayout->addWidget(scroll, 1);
@@ -64,12 +60,12 @@ BookingConfirmWidget::BookingConfirmWidget(const QString& maKH, TicketManager* t
     lblTotal->setAlignment(Qt::AlignCenter);
     lblTotal->setStyleSheet(R"(
         QLabel {
-            color: #FFD166;
+            color: #D97706;
             font-size: 22px;
-            font-weight: bold;
-            background-color: #2E2538;
-            border: 1.5px solid #6E4458;
-            border-radius: 14px;
+            font-weight: 600;
+            background-color: #F8FAFC;
+            border: 1.5px solid #E5E7EB;
+            border-radius: 8px;
             padding: 12px;
         }
     )");
@@ -106,19 +102,19 @@ void BookingConfirmWidget::setBookingData(const QString& maSuat, const QStringLi
     auto showtime = showtimeManager->findById(maSuat.toStdString());
     auto seatMap = showtimeManager->findSeatMap(maSuat.toStdString());
 
-    QString summary = "<div style='font-size: 13px; line-height: 1.65; color: #F3F4FA;'>";
-    summary += "<div style='color: #8C92FF; font-size: 12px; font-weight: bold; letter-spacing: 1px; margin-bottom: 6px;'>THÔNG TIN SUẤT CHIẾU</div>";
-    summary += "• <span style='color:#9AA2C2;'>Mã suất chiếu:</span> <b>" + maSuat + "</b><br>";
+    QString summary = "<div style='font-size: 13px; line-height: 1.65; color: #1E293B;'>";
+    summary += "<div style='color: #64748B; font-size: 12px; font-weight: 600; margin-bottom: 6px;'>THÔNG TIN SUẤT CHIẾU</div>";
+    summary += "• <span style='color:#64748B;'>Mã suất chiếu:</span> <b>" + maSuat + "</b><br>";
     if (showtime) {
-        summary += "• <span style='color:#9AA2C2;'>Phòng chiếu:</span> <b>" + QString::fromStdString(showtime->getMaPhong()) + "</b><br>";
-        summary += "• <span style='color:#9AA2C2;'>Ngày chiếu:</span> <b>" + QString::fromStdString(showtime->getNgayChieu()) + "</b> &nbsp;|&nbsp; <span style='color:#9AA2C2;'>Giờ chiếu:</span> <b style='color:#FFD166;'>" + QString::fromStdString(showtime->getGioChieu()) + "</b><br>";
+        summary += "• <span style='color:#64748B;'>Phòng chiếu:</span> <b>" + QString::fromStdString(showtime->getMaPhong()) + "</b><br>";
+        summary += "• <span style='color:#64748B;'>Ngày chiếu:</span> <b>" + QString::fromStdString(showtime->getNgayChieu()) + "</b> &nbsp;|&nbsp; <span style='color:#64748B;'>Giờ chiếu:</span> <b style='color:#D97706;'>" + QString::fromStdString(showtime->getGioChieu()) + "</b><br>";
     }
-    summary += "• <span style='color:#9AA2C2;'>Số lượng ghế đặt:</span> <b>" + QString::number(seats.size()) + " ghế</b><br><br>";
+    summary += "• <span style='color:#64748B;'>Số lượng ghế đặt:</span> <b>" + QString::number(seats.size()) + " ghế</b><br><br>";
 
     double totalSeatPrice = 0;
-    summary += "<div style='color: #8C92FF; font-size: 12px; font-weight: bold; letter-spacing: 1px; margin-bottom: 6px;'>DANH SÁCH GHẾ ĐÃ CHỌN</div>";
+    summary += "<div style='color: #64748B; font-size: 12px; font-weight: 600; margin-bottom: 6px;'>DANH SÁCH GHẾ ĐÃ CHỌN</div>";
     summary += "<table width='100%' cellpadding='6' cellspacing='0' style='border-collapse: collapse;'>";
-    summary += "<tr style='background-color: #262B47; color: #FFD166;'>"
+    summary += "<tr style='background-color: #F8FAFC; color: #D97706;'>"
                "<th align='center'>Ghế</th><th align='center'>Loại Ghế</th><th align='right'>Đơn Giá</th></tr>";
 
     for (const auto& seatStr : seats) {
@@ -134,18 +130,18 @@ void BookingConfirmWidget::setBookingData(const QString& maSuat, const QStringLi
             bool isVip = seatMap && (seatMap->getSeatStatus(r, c) == 2 || seatMap->getSeatStatus(r, c) == 3);
             totalSeatPrice += price;
 
-            summary += QString("<tr style='border-bottom: 1px solid #2D3352;'>"
+            summary += QString("<tr style='border-bottom: 1px solid #E5E7EB;'>"
                                "<td align='center'><b>%1</b></td>"
                                "<td align='center'>%2</td>"
                                "<td align='right'><b>%L3 VND</b></td></tr>")
                        .arg(seatName)
-                       .arg(isVip ? "<span style='color: #FFD166; font-weight: bold;'>VIP</span>" : "<span style='color:#A3ABC9;'>Thường</span>")
+                       .arg(isVip ? "<span style='color: #D97706; font-weight: 600;'>VIP</span>" : "<span style='color:#64748B;'>Thường</span>")
                        .arg(price, 0, 'f', 0);
         }
     }
     summary += "</table><br>";
 
-    summary += "<div style='color: #8C92FF; font-size: 12px; font-weight: bold; letter-spacing: 1px; margin-bottom: 6px;'>BẮP NƯỚC / COMBO</div>";
+    summary += "<div style='color: #64748B; font-size: 12px; font-weight: 600; margin-bottom: 6px;'>BẮP NƯỚC / COMBO</div>";
     std::string comboStrStd = "";
     bool hasCombo = false;
     for (const auto& comboInfo : combos) {
@@ -160,7 +156,7 @@ void BookingConfirmWidget::setBookingData(const QString& maSuat, const QStringLi
                 currentComboTotalPrice += comboPrice;
                 if (!comboStrStd.empty()) comboStrStd += "; ";
                 comboStrStd += cb->getTenCombo() + " x" + std::to_string(qty);
-                summary += QString("• %1 &times; %2 = <b style='color: #FFD166;'>%L3 VND</b><br>")
+                summary += QString("• %1 &times; %2 = <b style='color: #D97706;'>%L3 VND</b><br>")
                            .arg(QString::fromStdString(cb->getTenCombo()))
                            .arg(qty)
                            .arg(comboPrice, 0, 'f', 0);
@@ -168,7 +164,7 @@ void BookingConfirmWidget::setBookingData(const QString& maSuat, const QStringLi
         }
     }
     if (!hasCombo) {
-        summary += "• <i style='color:#707899;'>Không mua combo bắp nước</i><br>";
+        summary += "• <i style='color:#94A3B8;'>Không mua combo bắp nước</i><br>";
     }
     currentComboString = QString::fromStdString(comboStrStd);
     summary += "</div>";

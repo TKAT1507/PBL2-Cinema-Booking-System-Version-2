@@ -20,11 +20,8 @@ CheckTicketWidget::CheckTicketWidget(TicketManager* ticketMgr, ShowtimeManager* 
 
     QVBoxLayout* titleCol = new QVBoxLayout();
     titleCol->setSpacing(2);
-    QLabel* lblEyebrow = new QLabel("CỔNG SOÁT VÉ VÀO RẠP", this);
-    lblEyebrow->setStyleSheet(Theme::sectionEyebrowStyle());
-    QLabel* lblTitle = new QLabel("KIỂM TRA & SOÁT VÉ", this);
+    QLabel* lblTitle = new QLabel("Soát vé", this);
     lblTitle->setStyleSheet(Theme::sectionTitleStyle());
-    titleCol->addWidget(lblEyebrow);
     titleCol->addWidget(lblTitle);
     rootLayout->addLayout(titleCol);
 
@@ -37,8 +34,8 @@ CheckTicketWidget::CheckTicketWidget(TicketManager* ticketMgr, ShowtimeManager* 
     cardLayout->setContentsMargins(30, 28, 30, 28);
     cardLayout->setSpacing(16);
 
-    QLabel* lblInputHint = new QLabel("NHẬP MÃ VÉ CẦN KIỂM TRA", card);
-    lblInputHint->setStyleSheet("color: #FFD166; font-size: 12px; font-weight: bold; letter-spacing: 1.5px; border: none; background: transparent;");
+    QLabel* lblInputHint = new QLabel("Mã vé", card);
+    lblInputHint->setStyleSheet("color: #D97706; font-size: 12px; font-weight: 600; border: none; background: transparent;");
 
     QHBoxLayout* searchRow = new QHBoxLayout();
     searchRow->setSpacing(10);
@@ -48,17 +45,17 @@ CheckTicketWidget::CheckTicketWidget(TicketManager* ticketMgr, ShowtimeManager* 
     ticketIdInput->setFixedHeight(44);
     ticketIdInput->setStyleSheet(R"(
         QLineEdit {
-            background-color: #1A1D2F;
-            color: #F3F4FA;
+            background-color: #F9FAFB;
+            color: #1E293B;
             font-size: 14px;
-            font-weight: bold;
-            border: 1.5px solid #353C61;
-            border-radius: 12px;
+            font-weight: 600;
+            border: 1.5px solid #E5E7EB;
+            border-radius: 6px;
             padding: 0 16px;
         }
         QLineEdit:focus {
-            border: 1.5px solid #FF6B6B;
-            background-color: #212640;
+            border: 1.5px solid #E05D5D;
+            background-color: #FFFFFF;
         }
     )");
 
@@ -71,15 +68,15 @@ CheckTicketWidget::CheckTicketWidget(TicketManager* ticketMgr, ShowtimeManager* 
     searchRow->addWidget(btnCheck);
 
     QFrame* resultBox = new QFrame(card);
-    resultBox->setStyleSheet("QFrame { background-color: #1A1D2F; border: 1px solid #303654; border-radius: 14px; }");
+    resultBox->setStyleSheet("QFrame { background-color: #F9FAFB; border: 1px solid #E5E7EB; border-radius: 8px; }");
     QVBoxLayout* resLayout = new QVBoxLayout(resultBox);
     resLayout->setContentsMargins(20, 18, 20, 18);
 
-    resultLabel = new QLabel("<span style='color:#7C84A8;'>Nhập mã vé và nhấn <b>Kiểm Tra Vé</b> để xem thông tin chi tiết và trạng thái hiệu lực.</span>", resultBox);
+    resultLabel = new QLabel("<span style='color:#94A3B8;'>Nhập mã vé và nhấn <b>Kiểm Tra Vé</b> để xem thông tin chi tiết và trạng thái hiệu lực.</span>", resultBox);
     resultLabel->setWordWrap(true);
     resultLabel->setMinimumHeight(170);
     resultLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-    resultLabel->setStyleSheet("color: #F3F4FA; font-size: 14px; border: none; background: transparent;");
+    resultLabel->setStyleSheet("color: #1E293B; font-size: 14px; border: none; background: transparent;");
     resLayout->addWidget(resultLabel);
 
     btnConfirm = new QPushButton("Xác Nhận Sử Dụng Vé (Check-in)", card);
@@ -104,15 +101,15 @@ CheckTicketWidget::CheckTicketWidget(TicketManager* ticketMgr, ShowtimeManager* 
 void CheckTicketWidget::checkTicket() {
     std::string id = ticketIdInput->text().trimmed().toStdString();
     if (id.empty()) {
-        resultLabel->setText("<span style='color:#FFD166;'>Vui lòng nhập mã vé cần kiểm tra.</span>");
+        resultLabel->setText("<span style='color:#D97706;'>Vui lòng nhập mã vé cần kiểm tra.</span>");
         btnConfirm->setEnabled(false);
         return;
     }
 
     Ticket* t = ticketManager->findById(id);
     if (!t) {
-        resultLabel->setText("<div style='color:#FF858D; font-size:15px; font-weight:bold;'>Không tìm thấy vé với mã đã nhập!</div>"
-                             "<div style='color:#9AA2C2; margin-top:6px;'>Vui lòng kiểm tra lại mã vé của khách hàng.</div>");
+        resultLabel->setText("<div style='color:#E05D5D; font-size:15px; font-weight:bold;'>Không tìm thấy vé với mã đã nhập!</div>"
+                             "<div style='color:#64748B; margin-top:6px;'>Vui lòng kiểm tra lại mã vé của khách hàng.</div>");
         btnConfirm->setEnabled(false);
         return;
     }
@@ -129,24 +126,24 @@ void CheckTicketWidget::checkTicket() {
     bool isValid = (t->getTrangThai() == "VALID");
     QString status;
     if (t->getTrangThai() == "VALID") {
-        status = "<span style='color:#34D399; font-weight:bold;'>HỢP LỆ (ĐÃ DUYỆT / CHƯA SỬ DỤNG)</span>";
+        status = "<span style='color:#059669; font-weight:bold;'>HỢP LỆ (ĐÃ DUYỆT / CHƯA SỬ DỤNG)</span>";
     } else if (t->getTrangThai() == "PENDING") {
-        status = "<span style='color:#FFD166; font-weight:bold;'>ĐANG CHỜ DUYỆT (PENDING)</span>";
+        status = "<span style='color:#D97706; font-weight:bold;'>ĐANG CHỜ DUYỆT (PENDING)</span>";
     } else if (t->getTrangThai() == "USED") {
-        status = "<span style='color:#9AA2C2; font-weight:bold;'>ĐÃ SỬ DỤNG</span>";
+        status = "<span style='color:#64748B; font-weight:bold;'>ĐÃ SỬ DỤNG</span>";
     } else {
-        status = "<span style='color:#FF858D; font-weight:bold;'>ĐÃ HỦY</span>";
+        status = "<span style='color:#E05D5D; font-weight:bold;'>ĐÃ HỦY</span>";
     }
 
     QString info = QString(
-        "<div style='line-height: 1.85; color: #F3F4FA;'>"
-        "<div style='color:#FFD166; font-size:16px; font-weight:bold; margin-bottom:8px;'>%1</div>"
-        "• <span style='color:#9AA2C2;'>Mã vé:</span> <b>%2</b> &nbsp;&nbsp;|&nbsp;&nbsp; <span style='color:#9AA2C2;'>Mã đơn:</span> <b>%3</b><br>"
-        "• <span style='color:#9AA2C2;'>Suất chiếu:</span> <b>%4</b><br>"
-        "• <span style='color:#9AA2C2;'>Vị trí ghế:</span> <b style='color:#FF8E72;'>%5%6</b><br>"
-        "• <span style='color:#9AA2C2;'>Combo:</span> %7<br>"
-        "• <span style='color:#9AA2C2;'>Giá vé:</span> <b style='color:#FFD166;'>%L8 VND</b><br>"
-        "• <span style='color:#9AA2C2;'>Trạng thái:</span> %9"
+        "<div style='line-height: 1.85; color: #1E293B;'>"
+        "<div style='color:#D97706; font-size:16px; font-weight:bold; margin-bottom:8px;'>%1</div>"
+        "• <span style='color:#64748B;'>Mã vé:</span> <b>%2</b> &nbsp;&nbsp;|&nbsp;&nbsp; <span style='color:#64748B;'>Mã đơn:</span> <b>%3</b><br>"
+        "• <span style='color:#64748B;'>Suất chiếu:</span> <b>%4</b><br>"
+        "• <span style='color:#64748B;'>Vị trí ghế:</span> <b style='color:#E05D5D;'>%5%6</b><br>"
+        "• <span style='color:#64748B;'>Combo:</span> %7<br>"
+        "• <span style='color:#64748B;'>Giá vé:</span> <b style='color:#D97706;'>%L8 VND</b><br>"
+        "• <span style='color:#64748B;'>Trạng thái:</span> %9"
         "</div>")
         .arg(QString::fromStdString(movieName).toUpper())
         .arg(QString::fromStdString(id))

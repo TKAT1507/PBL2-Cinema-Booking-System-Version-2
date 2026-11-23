@@ -24,11 +24,8 @@ TicketApprovalWidget::TicketApprovalWidget(TicketManager* ticketMgr, ShowtimeMan
 
     QVBoxLayout *titleCol = new QVBoxLayout();
     titleCol->setSpacing(2);
-    QLabel *lblEyebrow = new QLabel("PHÊ DUYỆT ĐẶT VÉ TRỰC TUYẾN", this);
-    lblEyebrow->setStyleSheet(Theme::sectionEyebrowStyle());
-    QLabel *lblTitle = new QLabel("XÁC NHẬN & DUYỆT ĐƠN VÉ", this);
+    QLabel *lblTitle = new QLabel("Duyệt đơn vé", this);
     lblTitle->setStyleSheet(Theme::sectionTitleStyle());
-    titleCol->addWidget(lblEyebrow);
     titleCol->addWidget(lblTitle);
 
     topBar->addLayout(titleCol);
@@ -70,13 +67,13 @@ TicketApprovalWidget::TicketApprovalWidget(TicketManager* ticketMgr, ShowtimeMan
     mainLayout->addWidget(tableOrders, 1);
 
     QFrame *bottomBar = new QFrame(this);
-    bottomBar->setStyleSheet("QFrame { background-color: #22263C; border: 1px solid #323859; border-radius: 16px; }");
+    bottomBar->setStyleSheet("QFrame { background-color: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 8px; }");
     QHBoxLayout *bottomLayout = new QHBoxLayout(bottomBar);
     bottomLayout->setContentsMargins(18, 10, 18, 10);
     bottomLayout->setSpacing(10);
 
     lblStatusCount = new QLabel("Đang chờ duyệt: 0 đơn", bottomBar);
-    lblStatusCount->setStyleSheet("color: #FFD166; font-size: 13px; font-weight: bold; background: transparent; border: none;");
+    lblStatusCount->setStyleSheet("color: #D97706; font-size: 13px; font-weight: 600; background: transparent; border: none;");
 
     btnPrint = new QPushButton("In Hóa Đơn / Vé", bottomBar);
     btnPrint->setCursor(Qt::PointingHandCursor);
@@ -163,7 +160,7 @@ void TicketApprovalWidget::loadPendingOrders() {
         QTableWidgetItem* itDon = new QTableWidgetItem(QString::fromStdString(maCum));
         itDon->setTextAlignment(Qt::AlignCenter);
         itDon->setFont(boldFont);
-        itDon->setForeground(QBrush(QColor("#8C92FF")));
+        itDon->setForeground(QBrush(QColor("#64748B")));
         tableOrders->setItem(rowCount, 1, itDon);
 
         QTableWidgetItem* itKH = new QTableWidgetItem(QString::fromStdString(maKH));
@@ -187,13 +184,13 @@ void TicketApprovalWidget::loadPendingOrders() {
         QTableWidgetItem* itTien = new QTableWidgetItem(QString("%L1 VND").arg(totalGia, 0, 'f', 0));
         itTien->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
         itTien->setFont(boldFont);
-        itTien->setForeground(QBrush(QColor("#FFD166")));
+        itTien->setForeground(QBrush(QColor("#D97706")));
         tableOrders->setItem(rowCount, 7, itTien);
 
         QTableWidgetItem* itTT = new QTableWidgetItem("Đang chờ");
         itTT->setTextAlignment(Qt::AlignCenter);
         itTT->setFont(boldFont);
-        itTT->setForeground(QBrush(QColor("#FFD166")));
+        itTT->setForeground(QBrush(QColor("#D97706")));
         tableOrders->setItem(rowCount, 8, itTT);
 
         rowCount++;
@@ -279,9 +276,9 @@ void TicketApprovalWidget::onPrintClicked() {
     dlg.setFixedSize(500, 520);
     dlg.setStyleSheet(R"(
         QDialog {
-            background-color: #1F2338;
-            border: 1px solid #353C61;
-            border-radius: 18px;
+            background-color: #FFFFFF;
+            border: 1px solid #E5E7EB;
+            border-radius: 10px;
         }
     )");
 
@@ -291,18 +288,18 @@ void TicketApprovalWidget::onPrintClicked() {
 
     QLabel *lblHead = new QLabel("HÓA ĐƠN & VÉ XEM PHIM", &dlg);
     lblHead->setAlignment(Qt::AlignCenter);
-    lblHead->setStyleSheet("color: #FFD166; font-size: 16px; font-weight: bold; letter-spacing: 2px;");
+    lblHead->setStyleSheet("color: #D97706; font-size: 16px; font-weight: 600;");
 
     QTextEdit *txtReceipt = new QTextEdit(&dlg);
     txtReceipt->setReadOnly(true);
     txtReceipt->setStyleSheet(R"(
         QTextEdit {
-            background-color: #171A2B;
-            color: #F3F4FA;
+            background-color: #F9FAFB;
+            color: #1E293B;
             font-family: "Menlo", "Consolas", "Courier New", monospace;
             font-size: 12px;
-            border: 1px solid #303654;
-            border-radius: 14px;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
             padding: 14px;
         }
     )");

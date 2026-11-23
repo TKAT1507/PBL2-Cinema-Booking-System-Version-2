@@ -18,11 +18,8 @@ MyTicketsWidget::MyTicketsWidget(const QString& maKH, TicketManager* ticketManag
 
     QVBoxLayout *titleCol = new QVBoxLayout();
     titleCol->setSpacing(2);
-    QLabel *lblEyebrow = new QLabel("LỊCH SỬ ĐẶT VÉ CỦA BẠN", this);
-    lblEyebrow->setStyleSheet(Theme::sectionEyebrowStyle());
-    QLabel *lblTitle = new QLabel("VÉ CỦA TÔI", this);
+    QLabel *lblTitle = new QLabel("Vé của tôi", this);
     lblTitle->setStyleSheet(Theme::sectionTitleStyle());
-    titleCol->addWidget(lblEyebrow);
     titleCol->addWidget(lblTitle);
 
     topLayout->addLayout(titleCol);
@@ -104,16 +101,16 @@ void MyTicketsWidget::loadTickets() {
         std::string status = t.getTrangThai();
         if (status == "PENDING") {
             trangThaiStr = "Đang chờ duyệt";
-            statusColor = QColor("#FFD166");
+            statusColor = QColor("#D97706");
         } else if (status == "VALID") {
             trangThaiStr = "Hợp lệ";
-            statusColor = QColor("#34D399");
+            statusColor = QColor("#059669");
         } else if (status == "USED") {
             trangThaiStr = "Đã sử dụng";
-            statusColor = QColor("#9AA2C2");
+            statusColor = QColor("#64748B");
         } else {
             trangThaiStr = "Đã hủy";
-            statusColor = QColor("#FF858D");
+            statusColor = QColor("#E05D5D");
         }
 
         QFont boldFont = tableTickets->font();
@@ -131,7 +128,7 @@ void MyTicketsWidget::loadTickets() {
         QTableWidgetItem* itemMaDon = new QTableWidgetItem(maCumVe.isEmpty() ? "—" : maCumVe);
         itemMaDon->setTextAlignment(Qt::AlignCenter);
         itemMaDon->setFont(boldFont);
-        itemMaDon->setForeground(QBrush(QColor("#8C92FF")));
+        itemMaDon->setForeground(QBrush(QColor("#64748B")));
         tableTickets->setItem(rowCount, 2, itemMaDon);
 
         tableTickets->setItem(rowCount, 3, new QTableWidgetItem(tenPhim));
@@ -148,7 +145,7 @@ void MyTicketsWidget::loadTickets() {
         QTableWidgetItem* priceItem = new QTableWidgetItem(QString("%L1 VND").arg(t.getGiaVe(), 0, 'f', 0));
         priceItem->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
         priceItem->setFont(boldFont);
-        priceItem->setForeground(QBrush(QColor("#FFD166")));
+        priceItem->setForeground(QBrush(QColor("#D97706")));
         tableTickets->setItem(rowCount, 6, priceItem);
 
         QTableWidgetItem *statusItem = new QTableWidgetItem(trangThaiStr);

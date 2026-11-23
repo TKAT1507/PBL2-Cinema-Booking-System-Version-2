@@ -20,20 +20,17 @@ ShowtimeListWidget::ShowtimeListWidget(ShowtimeManager* showtimeManager, MovieMa
 
     QVBoxLayout *titleCol = new QVBoxLayout();
     titleCol->setSpacing(2);
-    QLabel *lblEyebrow = new QLabel("BƯỚC 1 / 4 • CHỌN LỊCH CHIẾU", this);
-    lblEyebrow->setStyleSheet(Theme::sectionEyebrowStyle());
 
-    lblMovieHeader = new QLabel("LỊCH CHIẾU PHIM", this);
+    lblMovieHeader = new QLabel("Lịch chiếu", this);
     lblMovieHeader->setStyleSheet(Theme::sectionTitleStyle());
 
-    titleCol->addWidget(lblEyebrow);
     titleCol->addWidget(lblMovieHeader);
 
     topBar->addLayout(titleCol);
     topBar->addStretch();
 
     QLabel *lblFilter = new QLabel("Lọc theo phim:", this);
-    lblFilter->setStyleSheet("color: #A3ABC9; font-size: 13px; font-weight: 600;");
+    lblFilter->setStyleSheet("color: #64748B; font-size: 13px; font-weight: 600;");
 
     cbMovies = new QComboBox(this);
     cbMovies->addItem("Tất cả phim", "");
@@ -132,30 +129,30 @@ void ShowtimeListWidget::updateDayButtonStyles() {
         if (filterIndex == currentDayFilter) {
             dayButtons[i]->setStyleSheet(R"(
                 QPushButton {
-                    background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #FF6B6B, stop:1 #FF8E72);
+                    background: #E05D5D;
                     color: #FFFFFF;
                     font-size: 11px;
-                    font-weight: bold;
+                    font-weight: 600;
                     border: none;
-                    border-radius: 12px;
+                    border-radius: 6px;
                     padding: 4px 6px;
                 }
             )");
         } else {
             dayButtons[i]->setStyleSheet(R"(
                 QPushButton {
-                    background-color: #22263C;
-                    color: #B4BCE0;
+                    background-color: #FFFFFF;
+                    color: #64748B;
                     font-size: 11px;
                     font-weight: 600;
-                    border: 1px solid #323859;
-                    border-radius: 12px;
+                    border: 1px solid #E5E7EB;
+                    border-radius: 6px;
                     padding: 4px 6px;
                 }
                 QPushButton:hover {
-                    background-color: #2D3252;
-                    border-color: #FF6B6B;
-                    color: #FFFFFF;
+                    background-color: #FEF2F2;
+                    border-color: #FCA5A5;
+                    color: #D14343;
                 }
             )");
         }
@@ -178,10 +175,10 @@ void ShowtimeListWidget::setMovieFilter(const QString& maPhim) {
         cbMovies->setCurrentIndex(index);
         auto m = movieManager->findById(maPhim.toStdString());
         if (m) {
-            lblMovieHeader->setText("LỊCH CHIẾU: " + QString::fromStdString(m->getTenPhim()).toUpper());
+            lblMovieHeader->setText("Lịch chiếu: " + QString::fromStdString(m->getTenPhim()));
         }
     } else {
-        lblMovieHeader->setText("LỊCH CHIẾU PHIM");
+        lblMovieHeader->setText("Lịch chiếu");
     }
 }
 
@@ -191,12 +188,12 @@ void ShowtimeListWidget::filterByMovie() {
     DynamicArray<Showtime> showtimes;
     if (maPhim.isEmpty()) {
         showtimes = showtimeManager->getActiveShowtimes();
-        lblMovieHeader->setText("LỊCH CHIẾU TẤT CẢ CÁC PHIM");
+        lblMovieHeader->setText("Lịch chiếu tất cả phim");
     } else {
         showtimes = showtimeManager->getShowtimesByMovie(maPhim.toStdString());
         auto m = movieManager->findById(maPhim.toStdString());
         if (m) {
-            lblMovieHeader->setText("LỊCH CHIẾU: " + QString::fromStdString(m->getTenPhim()).toUpper());
+            lblMovieHeader->setText("Lịch chiếu: " + QString::fromStdString(m->getTenPhim()));
         }
     }
 
@@ -242,7 +239,7 @@ void ShowtimeListWidget::filterByMovie() {
         QTableWidgetItem* timeItem = new QTableWidgetItem(QString::fromStdString(s.getGioChieu()));
         timeItem->setTextAlignment(Qt::AlignCenter);
         timeItem->setFont(boldFont);
-        timeItem->setForeground(QBrush(QColor("#FFD166")));
+        timeItem->setForeground(QBrush(QColor("#D97706")));
         tableShowtimes->setItem(i, 3, timeItem);
 
         auto seatMap = showtimeManager->findSeatMap(s.getMaSuatChieu());
@@ -261,9 +258,9 @@ void ShowtimeListWidget::filterByMovie() {
         seatItem->setTextAlignment(Qt::AlignCenter);
         seatItem->setFont(boldFont);
         if (emptyCount > 0) {
-            seatItem->setForeground(QBrush(QColor("#34D399")));
+            seatItem->setForeground(QBrush(QColor("#059669")));
         } else {
-            seatItem->setForeground(QBrush(QColor("#FF858D")));
+            seatItem->setForeground(QBrush(QColor("#E05D5D")));
         }
         tableShowtimes->setItem(i, 4, seatItem);
     }

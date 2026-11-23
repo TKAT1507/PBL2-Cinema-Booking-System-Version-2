@@ -17,17 +17,14 @@ SeatSelectionWidget::SeatSelectionWidget(ShowtimeManager* showtimeManager, Ticke
     QHBoxLayout *headerRow = new QHBoxLayout();
     QVBoxLayout *titleCol = new QVBoxLayout();
     titleCol->setSpacing(2);
-    QLabel *lblEyebrow = new QLabel("BƯỚC 2 / 4 • PHÒNG CHIẾU", this);
-    lblEyebrow->setStyleSheet(Theme::sectionEyebrowStyle());
-    QLabel *lblTitle = new QLabel("CHỌN VỊ TRÍ GHẾ NGỒI", this);
+    QLabel *lblTitle = new QLabel("Chọn ghế", this);
     lblTitle->setStyleSheet(Theme::sectionTitleStyle());
-    titleCol->addWidget(lblEyebrow);
     titleCol->addWidget(lblTitle);
     headerRow->addLayout(titleCol);
     headerRow->addStretch();
 
     QFrame *legendFrame = new QFrame(this);
-    legendFrame->setStyleSheet("QFrame { background-color: #22263C; border: 1px solid #323859; border-radius: 14px; }");
+    legendFrame->setStyleSheet("QFrame { background-color: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 8px; }");
     QHBoxLayout *legendLayout = new QHBoxLayout(legendFrame);
     legendLayout->setAlignment(Qt::AlignCenter);
     legendLayout->setContentsMargins(16, 8, 16, 8);
@@ -43,7 +40,7 @@ SeatSelectionWidget::SeatSelectionWidget(ShowtimeManager* showtimeManager, Ticke
         badge->setFixedSize(16, 16);
         badge->setStyleSheet(Theme::seatLegendSwatchStyle(swatchType));
         QLabel* lbl = new QLabel(text, item);
-        lbl->setStyleSheet("color: #C8CEE8; font-size: 11px; font-weight: 600; background: transparent; border: none;");
+        lbl->setStyleSheet("color: #64748B; font-size: 11px; font-weight: 600; background: transparent; border: none;");
         l->addWidget(badge);
         l->addWidget(lbl);
         return item;
@@ -58,7 +55,7 @@ SeatSelectionWidget::SeatSelectionWidget(ShowtimeManager* showtimeManager, Ticke
     headerRow->addWidget(legendFrame, 0, Qt::AlignVCenter);
     mainLayout->addLayout(headerRow);
 
-    QLabel *lblScreen = new QLabel("MÀN HÌNH CHIẾU PHIM", this);
+    QLabel *lblScreen = new QLabel("Màn hình", this);
     lblScreen->setAlignment(Qt::AlignCenter);
     lblScreen->setFixedHeight(36);
     lblScreen->setStyleSheet(Theme::screenBannerStyle());
@@ -66,7 +63,7 @@ SeatSelectionWidget::SeatSelectionWidget(ShowtimeManager* showtimeManager, Ticke
 
     QFrame *auditoriumFrame = new QFrame(this);
     auditoriumFrame->setObjectName("auditoriumBox");
-    auditoriumFrame->setStyleSheet("QFrame#auditoriumBox { background-color: #1D2034; border: 1px solid #303654; border-radius: 20px; }");
+    auditoriumFrame->setStyleSheet("QFrame#auditoriumBox { background-color: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 10px; }");
     QVBoxLayout *auditoriumLayout = new QVBoxLayout(auditoriumFrame);
     auditoriumLayout->setContentsMargins(12, 14, 12, 14);
 
@@ -85,13 +82,13 @@ SeatSelectionWidget::SeatSelectionWidget(ShowtimeManager* showtimeManager, Ticke
     mainLayout->addWidget(auditoriumFrame, 1);
 
     QFrame *bottomBar = new QFrame(this);
-    bottomBar->setStyleSheet("QFrame { background-color: #22263C; border: 1px solid #323859; border-radius: 16px; }");
+    bottomBar->setStyleSheet("QFrame { background-color: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 8px; }");
     QHBoxLayout *bottomLayout = new QHBoxLayout(bottomBar);
     bottomLayout->setContentsMargins(20, 12, 20, 12);
     bottomLayout->setSpacing(12);
 
     lblSelectedInfo = new QLabel("Ghế đã chọn: Chưa chọn ghế", bottomBar);
-    lblSelectedInfo->setStyleSheet("font-size: 14px; font-weight: bold; color: #FFD166; background: transparent; border: none;");
+    lblSelectedInfo->setStyleSheet("font-size: 14px; font-weight: 600; color: #D97706; background: transparent; border: none;");
     lblSelectedInfo->setWordWrap(true);
 
     btnBack = new QPushButton("Quay Lại", bottomBar);
@@ -136,7 +133,7 @@ void SeatSelectionWidget::loadSeatMap(const QString& maSuatChieu) {
         QLabel *rowLblLeft = new QLabel(QString(QChar('A' + r)), gridContainer);
         rowLblLeft->setFixedSize(22, 36);
         rowLblLeft->setAlignment(Qt::AlignCenter);
-        rowLblLeft->setStyleSheet("color: #707899; font-size: 11px; font-weight: bold; background: transparent;");
+        rowLblLeft->setStyleSheet("color: #94A3B8; font-size: 11px; font-weight: 600; background: transparent;");
         seatGrid->addWidget(rowLblLeft, r, 0);
 
         for (int c = 0; c < cols; ++c) {
@@ -166,7 +163,7 @@ void SeatSelectionWidget::loadSeatMap(const QString& maSuatChieu) {
         QLabel *rowLblRight = new QLabel(QString(QChar('A' + r)), gridContainer);
         rowLblRight->setFixedSize(22, 36);
         rowLblRight->setAlignment(Qt::AlignCenter);
-        rowLblRight->setStyleSheet("color: #707899; font-size: 11px; font-weight: bold; background: transparent;");
+        rowLblRight->setStyleSheet("color: #94A3B8; font-size: 11px; font-weight: 600; background: transparent;");
         seatGrid->addWidget(rowLblRight, r, cols + 1);
     }
 }

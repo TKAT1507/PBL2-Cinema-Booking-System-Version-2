@@ -16,11 +16,8 @@ ComboSelectionWidget::ComboSelectionWidget(ComboManager* comboManager, QWidget *
 
     QVBoxLayout *titleCol = new QVBoxLayout();
     titleCol->setSpacing(2);
-    QLabel *lblEyebrow = new QLabel("BƯỚC 3 / 4 • QUẦY BẮP NƯỚC", this);
-    lblEyebrow->setStyleSheet(Theme::sectionEyebrowStyle());
-    QLabel *lblTitle = new QLabel("CHỌN COMBO BẮP NƯỚC", this);
+    QLabel *lblTitle = new QLabel("Chọn combo bắp nước", this);
     lblTitle->setStyleSheet(Theme::sectionTitleStyle());
-    titleCol->addWidget(lblEyebrow);
     titleCol->addWidget(lblTitle);
     layout->addLayout(titleCol);
 
@@ -89,14 +86,14 @@ void ComboSelectionWidget::loadCombos() {
 
         QTableWidgetItem* itemMoTa = new QTableWidgetItem(QString::fromStdString(c.getMoTa()));
         itemMoTa->setFlags(itemMoTa->flags() & ~Qt::ItemIsEditable);
-        itemMoTa->setForeground(QBrush(QColor("#A3ABC9")));
+        itemMoTa->setForeground(QBrush(QColor("#64748B")));
         tableCombos->setItem(i, 2, itemMoTa);
 
         QTableWidgetItem* itemGia = new QTableWidgetItem(QString("%L1 VND").arg(c.getGia(), 0, 'f', 0));
         itemGia->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
         itemGia->setFlags(itemGia->flags() & ~Qt::ItemIsEditable);
         itemGia->setFont(boldFont);
-        itemGia->setForeground(QBrush(QColor("#FFD166")));
+        itemGia->setForeground(QBrush(QColor("#D97706")));
         tableCombos->setItem(i, 3, itemGia);
 
         QWidget* pWidget = new QWidget();
@@ -112,16 +109,16 @@ void ComboSelectionWidget::loadCombos() {
         spinQty->setFixedSize(94, 34);
         spinQty->setStyleSheet(R"(
             QSpinBox {
-                background-color: #1A1D2F;
-                color: #F3F4FA;
+                background-color: #F9FAFB;
+                color: #1E293B;
                 font-size: 13px;
-                font-weight: bold;
-                border: 1.5px solid #3D446B;
+                font-weight: 600;
+                border: 1.5px solid #E5E7EB;
                 border-radius: 10px;
                 padding: 0px 6px;
             }
             QSpinBox:focus {
-                border: 1.5px solid #FF6B6B;
+                border: 1.5px solid #E05D5D;
             }
         )");
         pLayout->addWidget(spinQty);

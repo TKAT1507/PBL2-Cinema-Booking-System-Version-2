@@ -35,19 +35,15 @@ void CashierDashboard::setupUI() {
     sidebarLayout->setAlignment(Qt::AlignTop);
 
     QLabel* lblBrandMain = new QLabel("PBL2 CINEMA", sidebar);
-    lblBrandMain->setAlignment(Qt::AlignCenter);
-    lblBrandMain->setStyleSheet("color: #F3F4FA; font-size: 19px; font-weight: bold; letter-spacing: 2px; background: transparent;");
+    lblBrandMain->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+    lblBrandMain->setStyleSheet("color: #1E293B; font-size: 16px; font-weight: 600; background: transparent; padding-left: 6px;");
 
-    QLabel* lblBrandSub = new QLabel("BOX OFFICE • QUẦY VÉ", sidebar);
-    lblBrandSub->setAlignment(Qt::AlignCenter);
-    lblBrandSub->setStyleSheet("color: #FF7675; font-size: 10px; font-weight: bold; letter-spacing: 2px; background: transparent;");
 
     QFrame* brandDivider = new QFrame(sidebar);
     brandDivider->setFrameShape(QFrame::HLine);
-    brandDivider->setStyleSheet("background-color: #2D3252; max-height: 1px; border: none;");
+    brandDivider->setStyleSheet("background-color: #E5E7EB; max-height: 1px; border: none;");
 
     sidebarLayout->addWidget(lblBrandMain);
-    sidebarLayout->addWidget(lblBrandSub);
     sidebarLayout->addSpacing(6);
     sidebarLayout->addWidget(brandDivider);
     sidebarLayout->addSpacing(6);
@@ -61,21 +57,18 @@ void CashierDashboard::setupUI() {
     headerLayout->setContentsMargins(14, 12, 14, 12);
     headerLayout->setSpacing(3);
 
-    QLabel* lblRole = new QLabel("NHÂN VIÊN THU NGÂN", headerFrame);
-    lblRole->setStyleSheet("color: #FFD166; font-size: 10px; font-weight: bold; letter-spacing: 1px; background: transparent; border: none;");
+    QLabel* lblRole = new QLabel("Thu ngân", headerFrame);
+    lblRole->setStyleSheet("color: #D97706; font-size: 10px; font-weight: 600; background: transparent; border: none;");
 
     QLabel* lblName = new QLabel(QString::fromStdString(tenNhanVien), headerFrame);
     lblName->setWordWrap(true);
-    lblName->setStyleSheet("color: #F3F4FA; font-size: 14px; font-weight: bold; background: transparent; border: none;");
+    lblName->setStyleSheet("color: #1E293B; font-size: 14px; font-weight: 600; background: transparent; border: none;");
 
     headerLayout->addWidget(lblRole);
     headerLayout->addWidget(lblName);
     sidebarLayout->addWidget(headerFrame);
     sidebarLayout->addSpacing(12);
 
-    QLabel* lblMenu = new QLabel("NGHIỆP VỤ QUẦY", sidebar);
-    lblMenu->setStyleSheet("color: #707899; font-size: 10px; font-weight: bold; letter-spacing: 2px; padding-left: 8px; background: transparent;");
-    sidebarLayout->addWidget(lblMenu);
 
     QPushButton* btnBanVe = new QPushButton("  Bán Vé Tại Rạp", sidebar);
     btnBanVe->setCursor(Qt::PointingHandCursor);
@@ -100,7 +93,7 @@ void CashierDashboard::setupUI() {
 
     QFrame* bottomDivider = new QFrame(sidebar);
     bottomDivider->setFrameShape(QFrame::HLine);
-    bottomDivider->setStyleSheet("background-color: #2D3252; max-height: 1px; border: none;");
+    bottomDivider->setStyleSheet("background-color: #E5E7EB; max-height: 1px; border: none;");
     sidebarLayout->addWidget(bottomDivider);
     sidebarLayout->addSpacing(6);
 
@@ -117,7 +110,7 @@ void CashierDashboard::setupUI() {
 
     // Right Content Area
     stackedWidget = new QStackedWidget(this);
-    stackedWidget->setStyleSheet("QStackedWidget { background-color: #161827; }");
+    stackedWidget->setStyleSheet("QStackedWidget { background-color: #F5F6F8; }");
 
     SaleWidget* saleWidget = new SaleWidget(maNhanVien, movieManager, roomManager, showtimeManager, ticketManager, comboManager, this);
     ticketApprovalWidget = new TicketApprovalWidget(ticketManager, showtimeManager, movieManager, this);

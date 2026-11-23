@@ -1,456 +1,313 @@
-#ifndef THEME_H
-#define THEME_H
+#ifndef UI_COMMON_THEME_H
+#define UI_COMMON_THEME_H
 
 #include <QString>
 #include <QPixmap>
 #include <QPainter>
 #include <QPainterPath>
 #include <QFileInfo>
+#include <QDir>
 #include <QCoreApplication>
 
 namespace Theme {
 
 // ============================================================================
-// SOFT MIDNIGHT & ELECTRIC CORAL PALETTE — DYNAMIC, SOFT & CINEMATIC
+// SOFT LIGHT & GENTLE ROSE PALETTE (Nền trắng dịu & Đỏ hồng trầm)
 // ============================================================================
-inline constexpr const char* BG_ROOT         = "#161827"; // Soft midnight canvas
-inline constexpr const char* BG_SIDEBAR      = "#1C1F33"; // Soft twilight sidebar
-inline constexpr const char* BG_SURFACE      = "#22263C"; // Floating soft cards
-inline constexpr const char* BG_SURFACE_ALT  = "#1D2034"; // Gentle alternating row
-inline constexpr const char* BG_ELEVATED     = "#2B304B"; // Secondary pill surfaces
+inline constexpr const char* BgMain          = "#F5F6F8"; // Soft off-white canvas
+inline constexpr const char* BgSidebar       = "#FFFFFF"; // Crisp white sidebar
+inline constexpr const char* BgCard          = "#FFFFFF"; // Pure white card/table surface
+inline constexpr const char* BgCardHover     = "#F9FAFB"; // Subtle hover surface
+inline constexpr const char* BgElevated      = "#F3F4F6"; // Secondary controls & headers
+inline constexpr const char* BgInput         = "#F9FAFB"; // Gentle input field fill
 
-inline constexpr const char* CORAL_PRIMARY   = "#FF6B6B"; // Electric soft coral
-inline constexpr const char* CORAL_WARM      = "#FF8E72"; // Warm peach-coral
-inline constexpr const char* INDIGO_PASTEL   = "#8C92FF"; // Dreamy periwinkle accent
-inline constexpr const char* BUTTER_GOLD     = "#FFD166"; // Warm buttercream gold
-inline constexpr const char* MINT_FRESH      = "#34D399"; // Fresh emerald mint
+inline constexpr const char* BorderSubtle    = "#E5E7EB"; // Clean 1px hairline border
+inline constexpr const char* BorderGold      = "#F59E0B"; // Warm amber outline
+inline constexpr const char* BorderFocus     = "#E05D5D"; // Soft terracotta rose focus
 
-inline constexpr const char* TEXT_PRIMARY    = "#F3F4FA"; // Crisp soft white
-inline constexpr const char* TEXT_SECONDARY  = "#A3ABC9"; // Soft cool periwinkle-gray
-inline constexpr const char* TEXT_MUTED      = "#707899"; // Subtle muted slate
+inline constexpr const char* TextPrimary     = "#1E293B"; // Deep slate (softer than pure black)
+inline constexpr const char* TextSecondary   = "#64748B"; // Balanced neutral slate gray
+inline constexpr const char* TextMuted       = "#94A3B8"; // Muted caption / placeholder
 
-inline constexpr const char* BORDER_SUBTLE   = "#313654"; // Soft twilight hairline
-inline constexpr const char* BORDER_STRONG   = "#4B5380"; // Interactive border
+inline constexpr const char* AccentCrimson   = "#E05D5D"; // Soft rose-coral brand accent
+inline constexpr const char* AccentCrimsonHi = "#CC4B4B"; // Hover state
+inline constexpr const char* AccentCoral     = "#E05D5D";
+inline constexpr const char* AccentGold      = "#D97706"; // Warm caramel amber for prices/VIP
+inline constexpr const char* AccentGoldSoft  = "#FEF3C7";
+inline constexpr const char* AccentViolet    = "#6366F1";
+
+inline constexpr const char* Success         = "#059669"; // Soft sage emerald
+inline constexpr const char* Warning         = "#D97706";
+inline constexpr const char* Danger          = "#DC2626";
+inline constexpr const char* SeatNormal      = "#10B981";
+inline constexpr const char* SeatVip         = "#D97706";
+inline constexpr const char* SeatSelected    = "#E05D5D";
+inline constexpr const char* SeatBooked      = "#E2E8F0";
 
 // ============================================================================
 // GLOBAL APPLICATION STYLESHEET
 // ============================================================================
 inline QString globalStylesheet() {
     return R"(
-        QMainWindow {
-            background-color: #161827;
+        QMainWindow, QStackedWidget {
+            background-color: #F5F6F8;
+            color: #1E293B;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", "Inter", "Roboto", sans-serif;
+            font-size: 13px;
         }
         QWidget {
-            font-family: "SF Pro Display", "Helvetica Neue", "Segoe UI", Arial, sans-serif;
-            font-size: 13px;
-            color: #F3F4FA;
+            color: #1E293B;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", "Inter", "Roboto", sans-serif;
         }
-
-        /* Default Buttons — Electric Coral Pill */
-        QPushButton {
-            background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #FF6B6B, stop:1 #FF8E72);
+        QDialog, QMessageBox {
+            background-color: #FFFFFF;
+            color: #1E293B;
+        }
+        QMessageBox QLabel {
+            color: #1E293B;
+            font-size: 13px;
+            background: transparent;
+        }
+        QMessageBox QPushButton {
+            background-color: #E05D5D;
             color: #FFFFFF;
             border: none;
-            border-radius: 12px;
-            padding: 8px 20px;
-            font-weight: bold;
-            min-height: 34px;
-            outline: none;
+            border-radius: 6px;
+            padding: 7px 18px;
+            font-weight: 600;
+            min-width: 84px;
         }
-        QPushButton:hover {
-            background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #FF545A, stop:1 #FF7B5C);
-        }
-        QPushButton:pressed {
-            background-color: #E34B54;
-        }
-        QPushButton:disabled {
-            background: #252940;
-            color: #656D8F;
-            border: 1px solid #303654;
+        QMessageBox QPushButton:hover {
+            background-color: #CC4B4B;
         }
 
-        /* Tables — Soft Midnight Cards */
+        /* Inputs */
+        QLineEdit, QSpinBox, QDoubleSpinBox, QDateEdit, QTimeEdit, QComboBox, QTextEdit {
+            background-color: #F9FAFB;
+            color: #1E293B;
+            border: 1px solid #D1D5DB;
+            border-radius: 6px;
+            padding: 7px 11px;
+            font-size: 13px;
+            selection-background-color: #FECACA;
+            selection-color: #991B1B;
+        }
+        QLineEdit:hover, QSpinBox:hover, QDoubleSpinBox:hover, QDateEdit:hover, QTimeEdit:hover, QComboBox:hover {
+            border: 1px solid #9CA3AF;
+            background-color: #FFFFFF;
+        }
+        QLineEdit:focus, QSpinBox:focus, QDoubleSpinBox:focus, QDateEdit:focus, QTimeEdit:focus, QComboBox:focus, QTextEdit:focus {
+            border: 1px solid #E05D5D;
+            background-color: #FFFFFF;
+        }
+        QComboBox::drop-down {
+            border: none;
+            width: 26px;
+        }
+        QComboBox QAbstractItemView {
+            background-color: #FFFFFF;
+            color: #1E293B;
+            border: 1px solid #E5E7EB;
+            border-radius: 6px;
+            selection-background-color: #FEF2F2;
+            selection-color: #D14343;
+            outline: 0;
+            padding: 4px;
+        }
+
+        /* Tables */
         QTableWidget {
-            background-color: #1F2338;
-            alternate-background-color: #242942;
-            gridline-color: #2D3352;
-            border: 1px solid #323859;
-            border-radius: 16px;
-            selection-background-color: #3D2B42;
-            selection-color: #FFFFFF;
-            color: #F3F4FA;
+            background-color: #FFFFFF;
+            alternate-background-color: #FAFBFD;
+            color: #1E293B;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            gridline-color: #F1F5F9;
+            font-size: 13px;
+            selection-background-color: #FEF2F2;
+            selection-color: #1E293B;
             outline: 0;
         }
         QTableWidget::item {
             padding: 8px 12px;
-            border-bottom: 1px solid #2A2F4A;
+            border-bottom: 1px solid #F1F5F9;
+        }
+        QTableWidget::item:hover {
+            background-color: #F8FAFC;
         }
         QTableWidget::item:selected {
-            background-color: #462D42;
-            color: #FFFFFF;
+            background-color: #FEF2F2;
+            color: #1E293B;
         }
-        QTableWidget::item:hover:!selected {
-            background-color: #2A2F4C;
+        QHeaderView {
+            background-color: transparent;
         }
         QHeaderView::section {
-            background-color: #262B47;
-            color: #B8C0E6;
-            padding: 11px 12px;
+            background-color: #F8FAFC;
+            color: #64748B;
+            font-weight: 600;
+            font-size: 12px;
+            padding: 10px 12px;
             border: none;
-            border-bottom: 2px solid #FF6B6B;
-            border-right: 1px solid #31375A;
-            font-weight: bold;
-            font-size: 11px;
-            text-transform: uppercase;
-        }
-        QHeaderView::section:last {
-            border-right: none;
-        }
-        QTableCornerButton::section {
-            background-color: #262B47;
-            border: none;
-            border-bottom: 2px solid #FF6B6B;
+            border-bottom: 1px solid #E5E7EB;
+            border-right: 1px solid #F1F5F9;
         }
 
-        /* Inputs — Soft Rounded Wells */
-        QLineEdit, QSpinBox, QDoubleSpinBox, QComboBox, QDateEdit, QTimeEdit {
-            background-color: #1A1D2F;
-            color: #F3F4FA;
-            border: 1.5px solid #33395A;
-            border-radius: 11px;
-            padding: 6px 14px;
-            min-height: 26px;
-            selection-background-color: #FF6B6B;
-            selection-color: #FFFFFF;
-        }
-        QLineEdit:hover, QSpinBox:hover, QDoubleSpinBox:hover, QComboBox:hover, QDateEdit:hover, QTimeEdit:hover {
-            border-color: #4F5785;
-            background-color: #20243A;
-        }
-        QLineEdit:focus, QSpinBox:focus, QDoubleSpinBox:focus, QComboBox:focus, QDateEdit:focus, QTimeEdit:focus {
-            border: 1.5px solid #FF6B6B;
-            background-color: #222740;
-        }
-        QLineEdit:read-only {
-            background-color: #171A2A;
-            color: #848DB0;
-            border-color: #2B304D;
-        }
-
-        QComboBox QAbstractItemView {
-            background-color: #22263C;
-            color: #F3F4FA;
-            selection-background-color: #FF6B6B;
-            selection-color: #FFFFFF;
-            border: 1px solid #3D446B;
-            border-radius: 10px;
-            outline: 0;
-            padding: 4px;
-        }
-        QComboBox QAbstractItemView::item {
-            min-height: 30px;
-            padding: 4px 12px;
-            border-radius: 7px;
-        }
-
-        /* Calendar Popup */
-        QCalendarWidget QWidget {
-            background-color: #1F2338;
-            color: #F3F4FA;
-        }
-        QCalendarWidget QWidget#qt_calendar_navigationbar {
-            background-color: #292E4D;
-            border-bottom: 1px solid #FF6B6B;
-            padding: 6px;
-        }
-        QCalendarWidget QToolButton {
-            background-color: transparent;
-            color: #F3F4FA;
-            font-weight: bold;
-            padding: 4px 10px;
-            border-radius: 8px;
-        }
-        QCalendarWidget QToolButton:hover {
-            background-color: #FF6B6B;
-        }
-        QCalendarWidget QMenu {
-            background-color: #22263C;
-            color: #F3F4FA;
-            border: 1px solid #3D446B;
-        }
-        QCalendarWidget QAbstractItemView:enabled {
-            background-color: #1F2338;
-            color: #F3F4FA;
-            selection-background-color: #FF6B6B;
-            selection-color: #FFFFFF;
-        }
-        QCalendarWidget QAbstractItemView:disabled {
-            color: #555D80;
-        }
-
-        /* Labels & GroupBox */
-        QLabel {
-            color: #F3F4FA;
-            background: transparent;
-        }
-        QGroupBox {
-            background-color: #22263C;
-            border: 1px solid #323859;
-            border-radius: 16px;
-            margin-top: 16px;
-            padding: 18px 16px 16px 16px;
-            color: #FFD166;
-            font-weight: bold;
-        }
-        QGroupBox::title {
-            subcontrol-origin: margin;
-            left: 16px;
-            padding: 0 8px;
-            color: #FFD166;
-        }
-
-        /* Dialogs & Message Boxes */
-        QDialog {
-            background-color: #1D2136;
-            color: #F3F4FA;
-        }
-        QMessageBox {
-            background-color: #1F2338;
-            color: #F3F4FA;
-        }
-        QMessageBox QLabel {
-            color: #F3F4FA;
-            font-size: 13px;
-        }
-        QMessageBox QPushButton {
-            min-width: 90px;
-            min-height: 34px;
-            padding: 6px 18px;
-            border-radius: 10px;
-        }
-
-        /* TextEdit & ScrollAreas */
-        QTextEdit {
-            background-color: #1A1D2F;
-            color: #F3F4FA;
-            border: 1px solid #323859;
-            border-radius: 12px;
-            padding: 12px;
-        }
-        QScrollArea {
-            background: transparent;
-            border: none;
-        }
-
-        /* Scrollbars — Soft Minimal Pill */
+        /* Scrollbars */
         QScrollBar:vertical {
-            background-color: transparent;
+            background: transparent;
             width: 8px;
             margin: 2px;
-            border-radius: 4px;
         }
         QScrollBar::handle:vertical {
-            background-color: #394066;
+            background: #CBD5E1;
+            min-height: 28px;
             border-radius: 4px;
-            min-height: 32px;
         }
         QScrollBar::handle:vertical:hover {
-            background-color: #FF6B6B;
+            background: #94A3B8;
         }
-        QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+        QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical,
+        QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+            background: none;
             height: 0px;
         }
         QScrollBar:horizontal {
-            background-color: transparent;
+            background: transparent;
             height: 8px;
             margin: 2px;
-            border-radius: 4px;
         }
         QScrollBar::handle:horizontal {
-            background-color: #394066;
+            background: #CBD5E1;
+            min-width: 28px;
             border-radius: 4px;
-            min-width: 32px;
         }
         QScrollBar::handle:horizontal:hover {
-            background-color: #FF6B6B;
+            background: #94A3B8;
         }
-        QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {
+        QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal,
+        QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
+            background: none;
             width: 0px;
         }
 
+        /* ToolTip */
         QToolTip {
-            background-color: #2B304D;
-            color: #F3F4FA;
-            border: 1px solid #FF6B6B;
+            background-color: #1E293B;
+            color: #FFFFFF;
+            border: 1px solid #334155;
             padding: 6px 10px;
-            border-radius: 8px;
+            border-radius: 6px;
         }
     )";
 }
 
 // ============================================================================
-// BUTTON STYLES — SOFT PILLS & ELECTRIC CORAL ENERGY
+// REUSABLE COMPONENT STYLES
 // ============================================================================
-inline QString primaryButtonStyle(int minHeight = 40, int fontSize = 13) {
-    return QString(R"(
-        QPushButton {
-            background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #FF6B6B, stop:1 #FF8E72);
-            color: #FFFFFF;
-            font-size: %1px;
-            font-weight: bold;
-            border: none;
-            border-radius: 12px;
-            min-height: %2px;
-            padding: 6px 22px;
-        }
-        QPushButton:hover {
-            background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #FF545A, stop:1 #FF7B5C);
-        }
-        QPushButton:pressed {
-            background-color: #E34B54;
-        }
-        QPushButton:disabled {
-            background: #252940;
-            color: #656D8F;
-            border: 1px solid #303654;
-        }
-    )").arg(fontSize).arg(minHeight);
-}
-
-inline QString secondaryButtonStyle(int minHeight = 40, int fontSize = 13) {
-    return QString(R"(
-        QPushButton {
-            background-color: #2A2F4A;
-            color: #DCE0F5;
-            font-size: %1px;
-            font-weight: 600;
-            border: 1px solid #3D446B;
-            border-radius: 12px;
-            min-height: %2px;
-            padding: 6px 20px;
-        }
-        QPushButton:hover {
-            background-color: #343A5C;
-            border-color: #7C83FD;
-            color: #FFFFFF;
-        }
-        QPushButton:pressed {
-            background-color: #22263C;
-        }
-        QPushButton:disabled {
-            background-color: #202438;
-            color: #5C6485;
-            border-color: #2C314D;
-        }
-    )").arg(fontSize).arg(minHeight);
-}
-
-inline QString successButtonStyle(int minHeight = 40, int fontSize = 13) {
-    return QString(R"(
-        QPushButton {
-            background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #10B981, stop:1 #14B8A6);
-            color: #FFFFFF;
-            font-size: %1px;
-            font-weight: bold;
-            border: none;
-            border-radius: 12px;
-            min-height: %2px;
-            padding: 6px 22px;
-        }
-        QPushButton:hover {
-            background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #059669, stop:1 #0D9488);
-        }
-        QPushButton:pressed {
-            background-color: #047857;
-        }
-        QPushButton:disabled {
-            background: #252940;
-            color: #656D8F;
-            border: 1px solid #303654;
-        }
-    )").arg(fontSize).arg(minHeight);
-}
-
-inline QString goldOutlineButtonStyle(int minHeight = 38, int fontSize = 13) {
-    return QString(R"(
-        QPushButton {
-            background-color: #282B4D;
-            color: #A5ABFF;
-            font-size: %1px;
-            font-weight: bold;
-            border: 1px solid #4D5399;
-            border-radius: 12px;
-            min-height: %2px;
-            padding: 6px 18px;
-        }
-        QPushButton:hover {
-            background-color: #333763;
-            border-color: #8C92FF;
-            color: #FFFFFF;
-        }
-        QPushButton:pressed {
-            background-color: #202340;
-        }
-    )").arg(fontSize).arg(minHeight);
-}
-
-inline QString dangerOutlineButtonStyle(int minHeight = 38, int fontSize = 13) {
-    return QString(R"(
-        QPushButton {
-            background-color: #332130;
-            color: #FF8C94;
-            font-size: %1px;
-            font-weight: bold;
-            border: 1px solid #6E3647;
-            border-radius: 12px;
-            min-height: %2px;
-            padding: 6px 18px;
-        }
-        QPushButton:hover {
-            background-color: #4A283A;
-            border-color: #FF6B6B;
-            color: #FFFFFF;
-        }
-        QPushButton:pressed {
-            background-color: #2B1B29;
-        }
-    )").arg(fontSize).arg(minHeight);
-}
-
-// ============================================================================
-// SIDEBAR STYLES (Soft Midnight Twilight + Electric Coral Pill)
-// ============================================================================
-inline QString sidebarContainerStyle() {
+inline QString sidebarStyle() {
     return R"(
-        QWidget#sidebarContainer {
-            background-color: #1C1F33;
-            border-right: 1px solid #2D3252;
+        QWidget#sidebar {
+            background-color: #FFFFFF;
+            border-right: 1px solid #E5E7EB;
         }
     )";
+}
+
+inline QString sidebarContainerStyle() {
+    return sidebarStyle();
 }
 
 inline QString sidebarProfileCardStyle() {
     return R"(
         QFrame#profileCard {
-            background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #2E2747, stop:1 #382538);
-            border: 1px solid #4E3C66;
-            border-radius: 14px;
+            background-color: #F8FAFC;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
         }
     )";
 }
 
-inline QString sidebarNavButtonStyle(bool active) {
+inline QString authCardStyle() {
+    return R"(
+        QFrame#authCard {
+            background-color: #FFFFFF;
+            border: 1px solid #E5E7EB;
+            border-radius: 12px;
+        }
+    )";
+}
+
+inline QString luxuryCardStyle(const QString& selector = "QFrame") {
+    return QString(R"(
+        %1 {
+            background-color: #FFFFFF;
+            border: 1px solid #E5E7EB;
+            border-radius: 10px;
+        }
+    )").arg(selector);
+}
+
+inline QString goldOutlineButtonStyle(int height = 38, int fontSize = 13) {
+    return QString(R"(
+        QPushButton {
+            background-color: #FFFFFF;
+            color: #334155;
+            border: 1px solid #D1D5DB;
+            border-radius: 6px;
+            padding: 0 16px;
+            min-height: %1px;
+            font-size: %2px;
+            font-weight: 600;
+        }
+        QPushButton:hover {
+            background-color: #F8FAFC;
+            color: #1E293B;
+            border-color: #9CA3AF;
+        }
+        QPushButton:pressed {
+            background-color: #F1F5F9;
+        }
+    )").arg(height).arg(fontSize);
+}
+
+inline QString successButtonStyle(int height = 38, int fontSize = 13) {
+    return QString(R"(
+        QPushButton {
+            background-color: #059669;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 6px;
+            padding: 0 18px;
+            min-height: %1px;
+            font-size: %2px;
+            font-weight: 600;
+        }
+        QPushButton:hover {
+            background-color: #047857;
+        }
+        QPushButton:pressed {
+            background-color: #065F46;
+        }
+        QPushButton:disabled {
+            background-color: #E5E7EB;
+            color: #9CA3AF;
+        }
+    )").arg(height).arg(fontSize);
+}
+
+inline QString sidebarNavButtonStyle(bool active = false) {
     if (active) {
         return R"(
             QPushButton {
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #FF6B6B, stop:1 #FF8E72);
-                color: #FFFFFF;
+                background-color: #FEF2F2;
+                color: #D14343;
                 border: none;
-                border-radius: 12px;
+                border-left: 3px solid #E05D5D;
+                border-radius: 6px;
+                padding: 10px 14px;
                 font-size: 13px;
-                font-weight: bold;
-                min-height: 44px;
-                padding: 6px 16px;
+                font-weight: 600;
                 text-align: left;
             }
         )";
@@ -458,222 +315,409 @@ inline QString sidebarNavButtonStyle(bool active) {
     return R"(
         QPushButton {
             background-color: transparent;
-            color: #A3ABC9;
+            color: #64748B;
             border: none;
-            border-radius: 12px;
+            border-left: 3px solid transparent;
+            border-radius: 6px;
+            padding: 10px 14px;
             font-size: 13px;
-            font-weight: 600;
-            min-height: 44px;
-            padding: 6px 16px;
+            font-weight: 500;
             text-align: left;
         }
         QPushButton:hover {
-            background-color: #272B47;
-            color: #FFFFFF;
+            background-color: #F3F4F6;
+            color: #1E293B;
         }
         QPushButton:pressed {
-            background-color: #303556;
+            background-color: #E5E7EB;
         }
     )";
 }
 
-// ============================================================================
-// CINEMA SCREEN & SEAT MAP STYLES (Soft Midnight Auditorium)
-// ============================================================================
-inline QString screenBannerStyle() {
-    return R"(
-        QLabel {
-            background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                stop:0 #7C83FD, stop:0.5 #FF6B6B, stop:1 #FFD166);
-            color: #FFFFFF;
-            border: none;
-            border-radius: 16px;
-            font-weight: bold;
-            letter-spacing: 5px;
-            font-size: 12px;
-        }
-    )";
-}
-
-inline QString seatLegendSwatchStyle(int type) {
-    // 0: standard free, 1: standard booked, 2: vip free, 3: vip booked, 4: selected
-    switch (type) {
-        case 0: return "background-color: #2B304D; border-radius: 6px; border: 1.5px solid #4D5685;";
-        case 1: return "background-color: #191C2C; border-radius: 6px; border: 1.5px solid #292E47;";
-        case 2: return "background-color: #3B311E; border-radius: 6px; border: 1.5px solid #E6B84C;";
-        case 3: return "background-color: #292128; border-radius: 6px; border: 1.5px solid #4A3442;";
-        default: return "background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #FF6B6B, stop:1 #FF8E72); border-radius: 6px; border: 1.5px solid #FFFFFF;";
-    }
-}
-
-inline QString seatButtonStyle(int status, bool selected = false) {
-    if (selected) {
-        return R"(
-            QPushButton {
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #FF6B6B, stop:1 #FF8E72);
-                color: #FFFFFF;
-                border: 2px solid #FFFFFF;
-                border-radius: 10px;
-                font-weight: bold;
-                font-size: 10px;
-                padding: 0px;
-            }
-        )";
-    }
-    if (status == 0) { // Standard free — Soft Midnight Periwinkle
-        return R"(
-            QPushButton {
-                background-color: #2B304D;
-                color: #DCE2FF;
-                border: 1.5px solid #4D5685;
-                border-radius: 10px;
-                font-weight: bold;
-                font-size: 10px;
-                padding: 0px;
-            }
-            QPushButton:hover {
-                background-color: #373D63;
-                border: 1.5px solid #FF6B6B;
-                color: #FFFFFF;
-            }
-        )";
-    }
-    if (status == 1) { // Standard booked — Soft Dimmed Navy
-        return R"(
-            QPushButton {
-                background-color: #191C2C;
-                color: #4D5475;
-                border: 1px solid #272B42;
-                border-radius: 10px;
-                font-weight: 600;
-                font-size: 10px;
-                padding: 0px;
-            }
-        )";
-    }
-    if (status == 2) { // VIP free — Warm Buttercream Gold
-        return R"(
-            QPushButton {
-                background-color: #3B311E;
-                color: #FFE08A;
-                border: 1.5px solid #E6B84C;
-                border-radius: 10px;
-                font-weight: bold;
-                font-size: 10px;
-                padding: 0px;
-            }
-            QPushButton:hover {
-                background-color: #4F4126;
-                border: 1.5px solid #FFE8A3;
-                color: #FFF8DC;
-            }
-        )";
-    }
-    // VIP booked (status == 3)
+inline QString sidebarSubtleButtonStyle() {
     return R"(
         QPushButton {
-            background-color: #292128;
-            color: #705866;
-            border: 1px solid #453340;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 10px;
-            padding: 0px;
+            background-color: #F9FAFB;
+            color: #475569;
+            border: 1px solid #E5E7EB;
+            border-radius: 6px;
+            padding: 8px 14px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        QPushButton:hover {
+            background-color: #F3F4F6;
+            color: #1E293B;
+            border-color: #D1D5DB;
         }
     )";
 }
 
-// ============================================================================
-// AGE RATING BADGES (Soft Glowing Dark-Pastel Pills)
-// ============================================================================
-inline QString ageBadgeText(int age, bool verbose = true) {
-    if (age == 0) return verbose ? "P • Mọi lứa tuổi" : "P";
-    return verbose ? QString("C%1 • Từ %1 tuổi").arg(age) : QString("C%1").arg(age);
+inline QString sidebarDangerButtonStyle() {
+    return R"(
+        QPushButton {
+            background-color: #FEF2F2;
+            color: #DC2626;
+            border: 1px solid #FECACA;
+            border-radius: 6px;
+            padding: 8px 14px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        QPushButton:hover {
+            background-color: #FEE2E2;
+            color: #B91C1C;
+            border-color: #FCA5A5;
+        }
+    )";
 }
 
-inline QString ageBadgeStyle(int age) {
-    if (age == 0) {
-        return "color: #34D399; font-size: 11px; font-weight: bold; background-color: #1B3635; border: 1px solid #2A6E5C; border-radius: 8px; padding: 3px 10px;";
-    } else if (age <= 13) {
-        return "color: #FFD166; font-size: 11px; font-weight: bold; background-color: #3A3122; border: 1px solid #8A6D2F; border-radius: 8px; padding: 3px 10px;";
-    } else if (age <= 16) {
-        return "color: #FFB07C; font-size: 11px; font-weight: bold; background-color: #3D2824; border: 1px solid #9E5238; border-radius: 8px; padding: 3px 10px;";
-    }
-    return "color: #FF8C94; font-size: 11px; font-weight: bold; background-color: #3D2130; border: 1px solid #A83A50; border-radius: 8px; padding: 3px 10px;";
+inline QString primaryButtonStyle(int height = 38, int fontSize = 13) {
+    return QString(R"(
+        QPushButton {
+            background-color: #E05D5D;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 6px;
+            padding: 0 18px;
+            min-height: %1px;
+            font-size: %2px;
+            font-weight: 600;
+        }
+        QPushButton:hover {
+            background-color: #CC4B4B;
+        }
+        QPushButton:pressed {
+            background-color: #B83B3B;
+        }
+        QPushButton:disabled {
+            background-color: #E5E7EB;
+            color: #9CA3AF;
+        }
+    )").arg(height).arg(fontSize);
 }
 
-// ============================================================================
-// TYPOGRAPHY & CARD HELPERS
-// ============================================================================
+inline QString goldButtonStyle(int height = 38, int fontSize = 13) {
+    return QString(R"(
+        QPushButton {
+            background-color: #D97706;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 6px;
+            padding: 0 18px;
+            min-height: %1px;
+            font-size: %2px;
+            font-weight: 600;
+        }
+        QPushButton:hover {
+            background-color: #B45309;
+        }
+        QPushButton:pressed {
+            background-color: #92400E;
+        }
+    )").arg(height).arg(fontSize);
+}
+
+inline QString secondaryButtonStyle(int height = 38, int fontSize = 13) {
+    return QString(R"(
+        QPushButton {
+            background-color: #FFFFFF;
+            color: #334155;
+            border: 1px solid #D1D5DB;
+            border-radius: 6px;
+            padding: 0 16px;
+            min-height: %1px;
+            font-size: %2px;
+            font-weight: 600;
+        }
+        QPushButton:hover {
+            background-color: #F8FAFC;
+            color: #1E293B;
+            border-color: #9CA3AF;
+        }
+        QPushButton:pressed {
+            background-color: #F1F5F9;
+        }
+    )").arg(height).arg(fontSize);
+}
+
+inline QString dangerOutlineButtonStyle(int height = 38, int fontSize = 13) {
+    return QString(R"(
+        QPushButton {
+            background-color: #FEF2F2;
+            color: #DC2626;
+            border: 1px solid #FECACA;
+            border-radius: 6px;
+            padding: 0 16px;
+            min-height: %1px;
+            font-size: %2px;
+            font-weight: 600;
+        }
+        QPushButton:hover {
+            background-color: #FEE2E2;
+            color: #B91C1C;
+            border-color: #FCA5A5;
+        }
+    )").arg(height).arg(fontSize);
+}
+
 inline QString sectionTitleStyle() {
-    return "color: #F3F4FA; font-size: 21px; font-weight: bold; letter-spacing: 0.3px; background: transparent; border: none;";
+    return R"(
+        QLabel {
+            color: #1E293B;
+            font-size: 20px;
+            font-weight: 700;
+            background: transparent;
+        }
+    )";
 }
 
 inline QString sectionEyebrowStyle() {
-    return "color: #FF7675; font-size: 11px; font-weight: bold; letter-spacing: 2px; background: transparent; border: none;";
-}
-
-inline QString authCardStyle() {
     return R"(
-        QFrame#authCard {
-            background-color: #20243A;
-            border: 1px solid #353C61;
-            border-radius: 22px;
+        QLabel {
+            color: #64748B;
+            font-size: 12px;
+            font-weight: 500;
+            background: transparent;
         }
     )";
 }
 
-inline QString luxuryCardStyle(const QString& objectName = "luxuryCard") {
+inline QString cardFrameStyle(const QString& objectName = "cinemaCard") {
     return QString(R"(
         QFrame#%1 {
-            background-color: #22263C;
-            border: 1px solid #343A5C;
-            border-radius: 20px;
+            background-color: #FFFFFF;
+            border: 1px solid #E5E7EB;
+            border-radius: 10px;
         }
     )").arg(objectName);
 }
 
-// ============================================================================
-// POSTER IMAGE HELPERS
-// ============================================================================
-inline QPixmap loadPosterPixmap(const QString& posterPath) {
-    QPixmap pixmap;
-    if (posterPath.isEmpty()) return pixmap;
-    if (QFileInfo::exists(posterPath)) {
-        pixmap.load(posterPath);
-    } else {
-        QString alt1 = "posters/" + QFileInfo(posterPath).fileName();
-        if (QFileInfo::exists(alt1)) {
-            pixmap.load(alt1);
-        } else {
-            QString alt2 = QCoreApplication::applicationDirPath() + "/" + posterPath;
-            if (QFileInfo::exists(alt2)) {
-                pixmap.load(alt2);
-            }
-        }
+inline QString ageBadgeStyle(int age) {
+    QString bg = "#ECFDF5";
+    QString fg = "#059669";
+    QString border = "#A7F3D0";
+    if (age >= 18) {
+        bg = "#FEF2F2";
+        fg = "#DC2626";
+        border = "#FECACA";
+    } else if (age >= 16) {
+        bg = "#FFF7ED";
+        fg = "#EA580C";
+        border = "#FED7AA";
+    } else if (age >= 13) {
+        bg = "#FFFBEB";
+        fg = "#D97706";
+        border = "#FDE68A";
     }
-    return pixmap;
+    return QString(R"(
+        QLabel {
+            background-color: %1;
+            color: %2;
+            border: 1px solid %3;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 9px;
+            border-radius: 5px;
+        }
+    )").arg(bg, fg, border);
 }
 
-inline QPixmap roundedCoverPixmap(const QPixmap& src, int w, int h, int radius = 14) {
-    if (src.isNull() || w <= 0 || h <= 0) return QPixmap();
-    QPixmap scaled = src.scaled(w, h, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
-    int x = (scaled.width() - w) / 2;
-    int y = (scaled.height() - h) / 2;
-    QPixmap cropped = scaled.copy(x, y, w, h);
+inline QString ageBadgeText(int age, bool detailed = false) {
+    if (age <= 0) {
+        return detailed ? "P · Mọi lứa tuổi" : "P";
+    }
+    return detailed ? QString("C%1 · Từ %1 tuổi").arg(age)
+                    : QString("C%1 (%1+)").arg(age);
+}
 
-    QPixmap out(w, h);
-    out.fill(Qt::transparent);
-    QPainter painter(&out);
+inline QString softPrimaryButtonStyle(int height = 36, int fontSize = 13) {
+    return QString(R"(
+        QPushButton {
+            background-color: #FEF2F2;
+            color: #D14343;
+            border: 1px solid #FCA5A5;
+            border-radius: 6px;
+            padding: 0 16px;
+            min-height: %1px;
+            font-size: %2px;
+            font-weight: 600;
+        }
+        QPushButton:hover {
+            background-color: #E05D5D;
+            color: #FFFFFF;
+            border-color: #E05D5D;
+        }
+        QPushButton:pressed {
+            background-color: #CC4B4B;
+            color: #FFFFFF;
+        }
+    )").arg(height).arg(fontSize);
+}
+
+// ============================================================================
+// SEAT MAP STYLES (CUSTOMER & CASHIER) - SOFT LIGHT MODE
+// ============================================================================
+inline QString seatButtonStyle(int status, bool isSelected = false) {
+    if (isSelected) {
+        return R"(
+            QPushButton {
+                background-color: #E05D5D;
+                color: #FFFFFF;
+                border: 1.5px solid #CC4B4B;
+                border-radius: 6px;
+                font-size: 11px;
+                font-weight: 700;
+            }
+            QPushButton:hover {
+                background-color: #CC4B4B;
+            }
+        )";
+    }
+    switch (status) {
+        case 0: // Normal Available
+            return R"(
+                QPushButton {
+                    background-color: #FFFFFF;
+                    color: #334155;
+                    border: 1.5px solid #CBD5E1;
+                    border-radius: 6px;
+                    font-size: 11px;
+                    font-weight: 600;
+                }
+                QPushButton:hover {
+                    background-color: #F1F5F9;
+                    border-color: #64748B;
+                    color: #0F172A;
+                }
+            )";
+        case 1: // Normal Booked
+            return R"(
+                QPushButton {
+                    background-color: #E2E8F0;
+                    color: #94A3B8;
+                    border: 1px solid #CBD5E1;
+                    border-radius: 6px;
+                    font-size: 10px;
+                    font-weight: 500;
+                }
+            )";
+        case 2: // VIP Available
+            return R"(
+                QPushButton {
+                    background-color: #FFFBEB;
+                    color: #B45309;
+                    border: 1.5px solid #F59E0B;
+                    border-radius: 6px;
+                    font-size: 11px;
+                    font-weight: 700;
+                }
+                QPushButton:hover {
+                    background-color: #FEF3C7;
+                    border-color: #D97706;
+                    color: #92400E;
+                }
+            )";
+        case 3: // VIP Booked
+            return R"(
+                QPushButton {
+                    background-color: #F1F5F9;
+                    color: #94A3B8;
+                    border: 1px solid #CBD5E1;
+                    border-radius: 6px;
+                    font-size: 10px;
+                    font-weight: 500;
+                }
+            )";
+        default:
+            return "";
+    }
+}
+
+inline QString seatLegendSwatchStyle(int type) {
+    switch (type) {
+        case 0: // Normal available
+            return "background-color: #FFFFFF; border: 1.5px solid #CBD5E1; border-radius: 4px;";
+        case 1: // Normal booked
+            return "background-color: #E2E8F0; border: 1px solid #CBD5E1; border-radius: 4px;";
+        case 2: // VIP available
+            return "background-color: #FFFBEB; border: 1.5px solid #F59E0B; border-radius: 4px;";
+        case 3: // VIP booked
+            return "background-color: #F1F5F9; border: 1px solid #CBD5E1; border-radius: 4px;";
+        case 4: // Selected
+            return "background-color: #E05D5D; border: 1.5px solid #CC4B4B; border-radius: 4px;";
+        default:
+            return "";
+    }
+}
+
+inline QString screenBannerStyle() {
+    return R"(
+        QLabel {
+            background-color: #F1F5F9;
+            color: #475569;
+            font-weight: 600;
+            font-size: 12px;
+            border-top: 3px solid #94A3B8;
+            border-bottom: 1px solid #E2E8F0;
+            border-left: 1px solid #E2E8F0;
+            border-right: 1px solid #E2E8F0;
+            border-radius: 6px;
+        }
+    )";
+}
+
+// ============================================================================
+// IMAGE HELPERS (ROUNDED POSTER CROP & SMART PATH RESOLUTION)
+// ============================================================================
+inline QPixmap loadPosterPixmap(const QString& rawPath) {
+    if (rawPath.trimmed().isEmpty()) return QPixmap();
+
+    QStringList candidates;
+    candidates << rawPath;
+
+    QFileInfo fi(rawPath);
+    if (fi.isRelative()) {
+        QString appDir = QCoreApplication::applicationDirPath();
+        candidates << QDir(appDir).filePath(rawPath);
+        candidates << QDir(appDir).filePath("../" + rawPath);
+        candidates << QDir(appDir).filePath("../../" + rawPath);
+        candidates << QDir::current().filePath(rawPath);
+    }
+
+    for (const QString& candidate : candidates) {
+        if (QFileInfo::exists(candidate)) {
+            QPixmap px(candidate);
+            if (!px.isNull()) return px;
+        }
+    }
+    return QPixmap();
+}
+
+inline QPixmap roundedCoverPixmap(const QPixmap& src, int targetW, int targetH, int radius = 6) {
+    if (src.isNull() || targetW <= 0 || targetH <= 0) return QPixmap();
+
+    QPixmap scaled = src.scaled(targetW, targetH, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
+    int x = (scaled.width() - targetW) / 2;
+    int y = (scaled.height() - targetH) / 2;
+    QPixmap cropped = scaled.copy(x, y, targetW, targetH);
+
+    QPixmap dest(targetW, targetH);
+    dest.fill(Qt::transparent);
+
+    QPainter painter(&dest);
     painter.setRenderHint(QPainter::Antialiasing, true);
     painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
+
     QPainterPath path;
-    path.addRoundedRect(0, 0, w, h, radius, radius);
+    path.addRoundedRect(0, 0, targetW, targetH, radius, radius);
     painter.setClipPath(path);
     painter.drawPixmap(0, 0, cropped);
-    return out;
+    painter.end();
+
+    return dest;
 }
 
 } // namespace Theme
 
-#endif // THEME_H
+#endif // UI_COMMON_THEME_H

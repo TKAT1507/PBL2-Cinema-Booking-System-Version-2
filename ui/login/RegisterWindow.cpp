@@ -13,8 +13,7 @@ RegisterWindow::RegisterWindow(UserManager *userManager, QWidget *parent)
     setAttribute(Qt::WA_StyledBackground, true);
     setStyleSheet(R"(
         QWidget#registerPage {
-            background: qradialgradient(cx:0.5, cy:0.18, radius:0.9, fx:0.5, fy:0.12,
-                stop:0 #2B254D, stop:0.5 #1B1D33, stop:1 #131524);
+            background: #F5F6F8;
         }
     )");
 
@@ -31,40 +30,37 @@ RegisterWindow::RegisterWindow(UserManager *userManager, QWidget *parent)
     cardLayout->setContentsMargins(38, 32, 38, 32);
     cardLayout->setSpacing(9);
 
-    QLabel *lblBrand = new QLabel("PBL2 CINEMA • THÀNH VIÊN MỚI", card);
-    lblBrand->setAlignment(Qt::AlignCenter);
-    lblBrand->setStyleSheet(Theme::sectionEyebrowStyle());
 
     QLabel *lblTitle = new QLabel("Đăng Ký Tài Khoản", card);
     lblTitle->setAlignment(Qt::AlignCenter);
-    lblTitle->setStyleSheet("color: #F3F4FA; font-size: 24px; font-weight: bold; background: transparent; border: none;");
+    lblTitle->setStyleSheet("color: #1E293B; font-size: 24px; font-weight: 600; background: transparent; border: none;");
 
     QFrame *divider = new QFrame(card);
     divider->setFrameShape(QFrame::HLine);
-    divider->setStyleSheet("background-color: #303654; max-height: 1px; border: none;");
+    divider->setStyleSheet("background-color: #E5E7EB; max-height: 1px; border: none;");
 
     auto makeFieldLabel = [card](const QString& text) {
         QLabel* lbl = new QLabel(text, card);
-        lbl->setStyleSheet("color: #B6BEDE; font-size: 12px; font-weight: 600; background: transparent; border: none;");
+        lbl->setStyleSheet("color: #64748B; font-size: 12px; font-weight: 600; background: transparent; border: none;");
         return lbl;
     };
 
     QString inputStyle = R"(
         QLineEdit, QSpinBox {
-            background-color: #191C2E;
-            color: #F3F4FA;
+            background-color: #F9FAFB;
+            color: #1E293B;
             font-size: 14px;
-            border: 1.5px solid #33395A;
-            border-radius: 12px;
+            border: 1.5px solid #E5E7EB;
+            border-radius: 6px;
             padding: 0 14px;
         }
         QLineEdit:hover, QSpinBox:hover {
-            border-color: #525B8A;
-            background-color: #1E2238;
+            border-color: #CBD5E1;
+            background-color: #FFFFFF;
         }
         QLineEdit:focus, QSpinBox:focus {
-            border: 1.5px solid #FF6B6B;
-            background-color: #212640;
+            border: 1.5px solid #E05D5D;
+            background-color: #FFFFFF;
         }
     )";
 
@@ -128,7 +124,6 @@ RegisterWindow::RegisterWindow(UserManager *userManager, QWidget *parent)
     btnLayout->addWidget(btnBack, 1);
     btnLayout->addWidget(btnRegister, 2);
 
-    cardLayout->addWidget(lblBrand);
     cardLayout->addWidget(lblTitle);
     cardLayout->addSpacing(4);
     cardLayout->addWidget(divider);

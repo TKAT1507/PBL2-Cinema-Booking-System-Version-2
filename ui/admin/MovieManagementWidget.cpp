@@ -28,11 +28,8 @@ MovieManagementWidget::MovieManagementWidget(MovieManager* movieMgr, QWidget* pa
     QHBoxLayout* topRow = new QHBoxLayout();
     QVBoxLayout* titleCol = new QVBoxLayout();
     titleCol->setSpacing(2);
-    QLabel* lblEyebrow = new QLabel("DANH MỤC TÁC PHẨM ĐIỆN ẢNH", this);
-    lblEyebrow->setStyleSheet(Theme::sectionEyebrowStyle());
-    QLabel* lblTitle = new QLabel("QUẢN LÝ DANH SÁCH PHIM", this);
+    QLabel* lblTitle = new QLabel("Quản lý phim", this);
     lblTitle->setStyleSheet(Theme::sectionTitleStyle());
-    titleCol->addWidget(lblEyebrow);
     titleCol->addWidget(lblTitle);
 
     topRow->addLayout(titleCol);
@@ -65,7 +62,8 @@ MovieManagementWidget::MovieManagementWidget(MovieManager* movieMgr, QWidget* pa
     table->verticalHeader()->setDefaultSectionSize(58);
     table->verticalHeader()->setVisible(false);
     table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
-    table->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
+    table->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Fixed);
+    table->setColumnWidth(1, 76);
     table->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
     table->horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
     table->horizontalHeader()->setSectionResizeMode(4, QHeaderView::ResizeToContents);
@@ -92,18 +90,27 @@ void MovieManagementWidget::loadData() {
         QTableWidgetItem* idItem = new QTableWidgetItem(QString::fromStdString(movies[i].getMaPhim()));
         idItem->setTextAlignment(Qt::AlignCenter);
         idItem->setFont(boldFont);
-        idItem->setForeground(QBrush(QColor("#8C92FF")));
+        idItem->setForeground(QBrush(QColor("#64748B")));
         table->setItem(i, 0, idItem);
 
         QString posterPath = QString::fromStdString(movies[i].getPoster());
         QPixmap px = Theme::loadPosterPixmap(posterPath);
-        QTableWidgetItem* posterItem = new QTableWidgetItem(QFileInfo(posterPath).fileName());
-        posterItem->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-        posterItem->setForeground(QBrush(QColor("#A3ABC9")));
+        QWidget* posterCell = new QWidget(table);
+        posterCell->setStyleSheet("background: transparent;");
+        QHBoxLayout* posterLayout = new QHBoxLayout(posterCell);
+        posterLayout->setContentsMargins(0, 4, 0, 4);
+        posterLayout->setAlignment(Qt::AlignCenter);
+        QLabel* posterLbl = new QLabel(posterCell);
+        posterLbl->setFixedSize(36, 48);
+        posterLbl->setAlignment(Qt::AlignCenter);
         if (!px.isNull()) {
-            posterItem->setIcon(QIcon(Theme::roundedCoverPixmap(px, 38, 50, 7)));
+            posterLbl->setPixmap(Theme::roundedCoverPixmap(px, 36, 48, 5));
+        } else {
+            posterLbl->setText("N/A");
+            posterLbl->setStyleSheet("background-color: #F1F5F9; color: #94A3B8; font-size: 9px; font-weight: 600; border-radius: 5px; border: 1px solid #E2E8F0;");
         }
-        table->setItem(i, 1, posterItem);
+        posterLayout->addWidget(posterLbl);
+        table->setCellWidget(i, 1, posterCell);
 
         QTableWidgetItem* nameItem = new QTableWidgetItem(QString::fromStdString(movies[i].getTenPhim()));
         nameItem->setFont(boldFont);
@@ -119,7 +126,7 @@ void MovieManagementWidget::loadData() {
         QTableWidgetItem* statusItem = new QTableWidgetItem(active ? "Đang chiếu" : "Ngừng chiếu");
         statusItem->setTextAlignment(Qt::AlignCenter);
         statusItem->setFont(boldFont);
-        statusItem->setForeground(QBrush(QColor(active ? "#34D399" : "#707899")));
+        statusItem->setForeground(QBrush(QColor(active ? "#059669" : "#94A3B8")));
         table->setItem(i, 5, statusItem);
     }
 }
@@ -127,9 +134,9 @@ void MovieManagementWidget::loadData() {
 static void styleAdminDialog(QDialog& dialog) {
     dialog.setStyleSheet(R"(
         QDialog {
-            background-color: #1F2338;
-            border: 1px solid #353C61;
-            border-radius: 18px;
+            background-color: #FFFFFF;
+            border: 1px solid #E5E7EB;
+            border-radius: 10px;
         }
     )");
 }
@@ -145,7 +152,7 @@ void MovieManagementWidget::addMovie() {
     mainDialogLayout->setSpacing(16);
 
     QLabel *dlgTitle = new QLabel("Thêm Phim Mới", &dialog);
-    dlgTitle->setStyleSheet("color: #FFD166; font-size: 19px; font-weight: bold;");
+    dlgTitle->setStyleSheet("color: #D97706; font-size: 19px; font-weight: 600;");
     mainDialogLayout->addWidget(dlgTitle);
 
     QHBoxLayout *contentLayout = new QHBoxLayout();
@@ -155,7 +162,7 @@ void MovieManagementWidget::addMovie() {
     leftForm->setSpacing(6);
     auto lbl = [&dialog](const QString& t) {
         QLabel* l = new QLabel(t, &dialog);
-        l->setStyleSheet("color: #A3ABC9; font-size: 12px; font-weight: 600;");
+        l->setStyleSheet("color: #64748B; font-size: 12px; font-weight: 600;");
         return l;
     };
 
@@ -183,7 +190,7 @@ void MovieManagementWidget::addMovie() {
     QLabel *lblPreview = new QLabel(&dialog);
     lblPreview->setFixedSize(140, 200);
     lblPreview->setAlignment(Qt::AlignCenter);
-    lblPreview->setStyleSheet("background-color: #181B2C; border: 1.5px solid #353C61; border-radius: 14px; color: #7C84A8;");
+    lblPreview->setStyleSheet("background-color: #F9FAFB; border: 1.5px solid #E5E7EB; border-radius: 8px; color: #94A3B8;");
     lblPreview->setText("Chưa chọn poster");
     lblPreview->setWordWrap(true);
     rightForm->addWidget(lblPreview, 0, Qt::AlignHCenter);
@@ -303,7 +310,7 @@ void MovieManagementWidget::editMovie() {
     mainDialogLayout->setSpacing(16);
 
     QLabel *dlgTitle = new QLabel("Cập Nhật Thông Tin Phim", &dialog);
-    dlgTitle->setStyleSheet("color: #FFD166; font-size: 19px; font-weight: bold;");
+    dlgTitle->setStyleSheet("color: #D97706; font-size: 19px; font-weight: 600;");
     mainDialogLayout->addWidget(dlgTitle);
 
     QHBoxLayout *contentLayout = new QHBoxLayout();
@@ -313,7 +320,7 @@ void MovieManagementWidget::editMovie() {
     leftForm->setSpacing(6);
     auto lbl = [&dialog](const QString& t) {
         QLabel* l = new QLabel(t, &dialog);
-        l->setStyleSheet("color: #A3ABC9; font-size: 12px; font-weight: 600;");
+        l->setStyleSheet("color: #64748B; font-size: 12px; font-weight: 600;");
         return l;
     };
 
@@ -341,7 +348,7 @@ void MovieManagementWidget::editMovie() {
     QLabel *lblPreview = new QLabel(&dialog);
     lblPreview->setFixedSize(140, 200);
     lblPreview->setAlignment(Qt::AlignCenter);
-    lblPreview->setStyleSheet("background-color: #181B2C; border: 1.5px solid #353C61; border-radius: 14px; color: #7C84A8;");
+    lblPreview->setStyleSheet("background-color: #F9FAFB; border: 1.5px solid #E5E7EB; border-radius: 8px; color: #94A3B8;");
 
     QString currentPoster = QString::fromStdString(m->getPoster());
     QPixmap initPx = Theme::loadPosterPixmap(currentPoster);

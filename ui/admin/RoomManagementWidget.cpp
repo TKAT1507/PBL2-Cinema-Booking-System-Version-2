@@ -21,11 +21,8 @@ RoomManagementWidget::RoomManagementWidget(RoomManager* roomMgr, QWidget* parent
     QHBoxLayout* topRow = new QHBoxLayout();
     QVBoxLayout* titleCol = new QVBoxLayout();
     titleCol->setSpacing(2);
-    QLabel* lblEyebrow = new QLabel("CẤU HÌNH HẠ TẦNG PHÒNG CHIẾU", this);
-    lblEyebrow->setStyleSheet(Theme::sectionEyebrowStyle());
-    QLabel* lblTitle = new QLabel("QUẢN LÝ PHÒNG CHIẾU", this);
+    QLabel* lblTitle = new QLabel("Quản lý phòng chiếu", this);
     lblTitle->setStyleSheet(Theme::sectionTitleStyle());
-    titleCol->addWidget(lblEyebrow);
     titleCol->addWidget(lblTitle);
 
     topRow->addLayout(titleCol);
@@ -79,7 +76,7 @@ void RoomManagementWidget::loadData() {
         QTableWidgetItem* idItem = new QTableWidgetItem(QString::fromStdString(rooms[i].getMaPhong()));
         idItem->setTextAlignment(Qt::AlignCenter);
         idItem->setFont(boldFont);
-        idItem->setForeground(QBrush(QColor("#8C92FF")));
+        idItem->setForeground(QBrush(QColor("#64748B")));
         table->setItem(i, 0, idItem);
 
         QTableWidgetItem* nameItem = new QTableWidgetItem(QString::fromStdString(rooms[i].getTenPhong()));
@@ -98,7 +95,7 @@ void RoomManagementWidget::loadData() {
         QTableWidgetItem* statusItem = new QTableWidgetItem(active ? "Đang hoạt động" : "Ngừng hoạt động");
         statusItem->setTextAlignment(Qt::AlignCenter);
         statusItem->setFont(boldFont);
-        statusItem->setForeground(QBrush(QColor(active ? "#34D399" : "#707899")));
+        statusItem->setForeground(QBrush(QColor(active ? "#059669" : "#94A3B8")));
         table->setItem(i, 4, statusItem);
     }
 }
@@ -107,19 +104,19 @@ void RoomManagementWidget::addRoom() {
     QDialog dialog(this);
     dialog.setWindowTitle("Thêm Phòng Chiếu");
     dialog.setFixedWidth(430);
-    dialog.setStyleSheet("QDialog { background-color: #1F2338; border: 1px solid #353C61; border-radius: 18px; }");
+    dialog.setStyleSheet("QDialog { background-color: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 10px; }");
 
     QVBoxLayout *layout = new QVBoxLayout(&dialog);
     layout->setContentsMargins(26, 24, 26, 24);
     layout->setSpacing(10);
 
     QLabel *dlgTitle = new QLabel("Thêm Phòng Chiếu Mới", &dialog);
-    dlgTitle->setStyleSheet("color: #FFD166; font-size: 18px; font-weight: bold;");
+    dlgTitle->setStyleSheet("color: #D97706; font-size: 18px; font-weight: 600;");
     layout->addWidget(dlgTitle);
 
     auto lbl = [&dialog](const QString& t) {
         QLabel* l = new QLabel(t, &dialog);
-        l->setStyleSheet("color: #A3ABC9; font-size: 12px; font-weight: 600;");
+        l->setStyleSheet("color: #64748B; font-size: 12px; font-weight: 600;");
         return l;
     };
 
@@ -176,19 +173,19 @@ void RoomManagementWidget::editRoom() {
     QDialog dialog(this);
     dialog.setWindowTitle("Sửa Phòng Chiếu");
     dialog.setFixedWidth(430);
-    dialog.setStyleSheet("QDialog { background-color: #1F2338; border: 1px solid #353C61; border-radius: 18px; }");
+    dialog.setStyleSheet("QDialog { background-color: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 10px; }");
 
     QVBoxLayout *layout = new QVBoxLayout(&dialog);
     layout->setContentsMargins(26, 24, 26, 24);
     layout->setSpacing(10);
 
     QLabel *dlgTitle = new QLabel("Cập Nhật Phòng Chiếu", &dialog);
-    dlgTitle->setStyleSheet("color: #FFD166; font-size: 18px; font-weight: bold;");
+    dlgTitle->setStyleSheet("color: #D97706; font-size: 18px; font-weight: 600;");
     layout->addWidget(dlgTitle);
 
     auto lbl = [&dialog](const QString& t) {
         QLabel* l = new QLabel(t, &dialog);
-        l->setStyleSheet("color: #A3ABC9; font-size: 12px; font-weight: 600;");
+        l->setStyleSheet("color: #64748B; font-size: 12px; font-weight: 600;");
         return l;
     };
 

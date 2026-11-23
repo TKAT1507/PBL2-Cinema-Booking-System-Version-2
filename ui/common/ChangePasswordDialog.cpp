@@ -13,9 +13,9 @@ ChangePasswordDialog::ChangePasswordDialog(UserManager *userManager, const std::
     setFixedSize(440, 450);
     setStyleSheet(R"(
         QDialog {
-            background-color: #1F2338;
-            border: 1px solid #353C61;
-            border-radius: 18px;
+            background-color: #FFFFFF;
+            border: 1px solid #E5E7EB;
+            border-radius: 10px;
         }
     )");
 
@@ -23,21 +23,18 @@ ChangePasswordDialog::ChangePasswordDialog(UserManager *userManager, const std::
     layout->setSpacing(10);
     layout->setContentsMargins(32, 28, 32, 28);
 
-    QLabel *lblEyebrow = new QLabel("BẢO MẬT TÀI KHOẢN", this);
-    lblEyebrow->setAlignment(Qt::AlignCenter);
-    lblEyebrow->setStyleSheet(Theme::sectionEyebrowStyle());
 
     QLabel *lblTitle = new QLabel("Đổi Mật Khẩu", this);
-    lblTitle->setStyleSheet("color: #F3F4FA; font-size: 22px; font-weight: bold;");
+    lblTitle->setStyleSheet("color: #1E293B; font-size: 22px; font-weight: 600;");
     lblTitle->setAlignment(Qt::AlignCenter);
 
     QFrame *line = new QFrame(this);
     line->setFrameShape(QFrame::HLine);
-    line->setStyleSheet("background-color: #303654; max-height: 1px; border: none;");
+    line->setStyleSheet("background-color: #E5E7EB; max-height: 1px; border: none;");
 
     auto makeFieldLabel = [this](const QString& text) {
         QLabel* lbl = new QLabel(text, this);
-        lbl->setStyleSheet("color: #A3ABC9; font-size: 12px; font-weight: 600;");
+        lbl->setStyleSheet("color: #64748B; font-size: 12px; font-weight: 600;");
         return lbl;
     };
 
@@ -78,7 +75,6 @@ ChangePasswordDialog::ChangePasswordDialog(UserManager *userManager, const std::
     btnLayout->addWidget(btnCancel);
     btnLayout->addWidget(btnConfirm);
 
-    layout->addWidget(lblEyebrow);
     layout->addWidget(lblTitle);
     layout->addSpacing(4);
     layout->addWidget(line);

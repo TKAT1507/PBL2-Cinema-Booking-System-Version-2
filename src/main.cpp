@@ -12,23 +12,23 @@ int main(int argc, char *argv[]) {
         app.setStyle(QStyleFactory::create("Fusion"));
     }
 
-    // Soft Midnight & Electric Coral Palette
-    QPalette midnightPalette;
-    midnightPalette.setColor(QPalette::Window, QColor("#161827"));
-    midnightPalette.setColor(QPalette::WindowText, QColor("#F3F4FA"));
-    midnightPalette.setColor(QPalette::Base, QColor("#1E2236"));
-    midnightPalette.setColor(QPalette::AlternateBase, QColor("#23273E"));
-    midnightPalette.setColor(QPalette::ToolTipBase, QColor("#2B304D"));
-    midnightPalette.setColor(QPalette::ToolTipText, QColor("#F3F4FA"));
-    midnightPalette.setColor(QPalette::Text, QColor("#F3F4FA"));
-    midnightPalette.setColor(QPalette::PlaceholderText, QColor("#747D9E"));
-    midnightPalette.setColor(QPalette::Button, QColor("#282C45"));
-    midnightPalette.setColor(QPalette::ButtonText, QColor("#F3F4FA"));
-    midnightPalette.setColor(QPalette::Highlight, QColor("#FF6B6B"));
-    midnightPalette.setColor(QPalette::HighlightedText, QColor("#FFFFFF"));
-    midnightPalette.setColor(QPalette::Disabled, QPalette::Text, QColor("#606785"));
-    midnightPalette.setColor(QPalette::Disabled, QPalette::ButtonText, QColor("#606785"));
-    app.setPalette(midnightPalette);
+    // Soft Light & Gentle Rose Palette
+    QPalette appPalette;
+    appPalette.setColor(QPalette::Window, QColor("#F5F6F8"));
+    appPalette.setColor(QPalette::WindowText, QColor("#1E293B"));
+    appPalette.setColor(QPalette::Base, QColor("#FFFFFF"));
+    appPalette.setColor(QPalette::AlternateBase, QColor("#FAFBFD"));
+    appPalette.setColor(QPalette::ToolTipBase, QColor("#1E293B"));
+    appPalette.setColor(QPalette::ToolTipText, QColor("#FFFFFF"));
+    appPalette.setColor(QPalette::Text, QColor("#1E293B"));
+    appPalette.setColor(QPalette::PlaceholderText, QColor("#94A3B8"));
+    appPalette.setColor(QPalette::Button, QColor("#FFFFFF"));
+    appPalette.setColor(QPalette::ButtonText, QColor("#1E293B"));
+    appPalette.setColor(QPalette::Highlight, QColor("#FEF2F2"));
+    appPalette.setColor(QPalette::HighlightedText, QColor("#1E293B"));
+    appPalette.setColor(QPalette::Disabled, QPalette::Text, QColor("#94A3B8"));
+    appPalette.setColor(QPalette::Disabled, QPalette::ButtonText, QColor("#94A3B8"));
+    app.setPalette(appPalette);
 
     try {
         MainWindow mainWindow;

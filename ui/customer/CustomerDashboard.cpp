@@ -41,19 +41,15 @@ CustomerDashboard::CustomerDashboard(const QString& maKH, UserManager* userMgr, 
     sidebarLayout->setAlignment(Qt::AlignTop);
 
     QLabel *lblBrandMain = new QLabel("PBL2 CINEMA", sidebarWidget);
-    lblBrandMain->setAlignment(Qt::AlignCenter);
-    lblBrandMain->setStyleSheet("color: #F3F4FA; font-size: 19px; font-weight: bold; letter-spacing: 2px; background: transparent;");
+    lblBrandMain->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+    lblBrandMain->setStyleSheet("color: #1E293B; font-size: 16px; font-weight: 600; background: transparent; padding-left: 6px;");
 
-    QLabel *lblBrandSub = new QLabel("MIDNIGHT • VIBE", sidebarWidget);
-    lblBrandSub->setAlignment(Qt::AlignCenter);
-    lblBrandSub->setStyleSheet("color: #FF7675; font-size: 10px; font-weight: bold; letter-spacing: 2.5px; background: transparent;");
 
     QFrame *brandDivider = new QFrame(sidebarWidget);
     brandDivider->setFrameShape(QFrame::HLine);
-    brandDivider->setStyleSheet("background-color: #2D3252; max-height: 1px; border: none;");
+    brandDivider->setStyleSheet("background-color: #E5E7EB; max-height: 1px; border: none;");
 
     sidebarLayout->addWidget(lblBrandMain);
-    sidebarLayout->addWidget(lblBrandSub);
     sidebarLayout->addSpacing(6);
     sidebarLayout->addWidget(brandDivider);
     sidebarLayout->addSpacing(6);
@@ -67,24 +63,21 @@ CustomerDashboard::CustomerDashboard(const QString& maKH, UserManager* userMgr, 
     headerLayout->setContentsMargins(14, 12, 14, 12);
     headerLayout->setSpacing(3);
 
-    QLabel *lblRole = new QLabel("KHÁCH HÀNG THÀNH VIÊN", headerFrame);
-    lblRole->setStyleSheet("color: #FFD166; font-size: 10px; font-weight: bold; letter-spacing: 1px; background: transparent; border: none;");
+    QLabel *lblRole = new QLabel("Khách hàng", headerFrame);
+    lblRole->setStyleSheet("color: #D97706; font-size: 10px; font-weight: 600; background: transparent; border: none;");
 
     QString userDisplay = maKhachHang;
     if (customerAge > 0) {
         userDisplay += QString("  •  %1 tuổi").arg(customerAge);
     }
     QLabel *lblUser = new QLabel(userDisplay, headerFrame);
-    lblUser->setStyleSheet("color: #F3F4FA; font-size: 14px; font-weight: bold; background: transparent; border: none;");
+    lblUser->setStyleSheet("color: #1E293B; font-size: 14px; font-weight: 600; background: transparent; border: none;");
 
     headerLayout->addWidget(lblRole);
     headerLayout->addWidget(lblUser);
     sidebarLayout->addWidget(headerFrame);
     sidebarLayout->addSpacing(12);
 
-    QLabel *lblMenu = new QLabel("KHÁM PHÁ", sidebarWidget);
-    lblMenu->setStyleSheet("color: #707899; font-size: 10px; font-weight: bold; letter-spacing: 2px; padding-left: 8px; background: transparent;");
-    sidebarLayout->addWidget(lblMenu);
 
     QPushButton *btnMovies = new QPushButton("  Danh Sách Phim", sidebarWidget);
     btnMovies->setCursor(Qt::PointingHandCursor);
@@ -104,7 +97,7 @@ CustomerDashboard::CustomerDashboard(const QString& maKH, UserManager* userMgr, 
 
     QFrame *bottomDivider = new QFrame(sidebarWidget);
     bottomDivider->setFrameShape(QFrame::HLine);
-    bottomDivider->setStyleSheet("background-color: #2D3252; max-height: 1px; border: none;");
+    bottomDivider->setStyleSheet("background-color: #E5E7EB; max-height: 1px; border: none;");
     sidebarLayout->addWidget(bottomDivider);
     sidebarLayout->addSpacing(6);
 
@@ -121,7 +114,7 @@ CustomerDashboard::CustomerDashboard(const QString& maKH, UserManager* userMgr, 
 
     // Main Content Area — Soft Midnight Canvas
     stackedWidget = new QStackedWidget(this);
-    stackedWidget->setStyleSheet("QStackedWidget { background-color: #161827; }");
+    stackedWidget->setStyleSheet("QStackedWidget { background-color: #F5F6F8; }");
 
     movieListWidget = new MovieListWidget(movieManager, showtimeManager, this);
     movieDetailWidget = new MovieDetailWidget(movieManager, this);
