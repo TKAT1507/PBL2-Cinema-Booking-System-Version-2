@@ -8,6 +8,7 @@
 #include <QGridLayout>
 #include <QSpinBox>
 #include <QLabel>
+#include <QList>
 #include <string>
 #include "core/DynamicArray.h"
 #include "models/SeatMap.h"
@@ -34,19 +35,21 @@ private:
     ComboManager* comboManager;
 
     QStackedWidget* stepWidget;
-    
+    QList<QLabel*> stepIndicators;
+    void updateStepIndicator(int currentStep);
+
     // Step 1
     QTableWidget* movieTable;
     void setupStep1(QWidget* page);
     void loadMovies();
     std::string selectedMovieId;
-    
+
     // Step 2
     QTableWidget* showtimeTable;
     void setupStep2(QWidget* page);
     void loadShowtimes();
     std::string selectedShowtimeId;
-    
+
     // Step 3
     QWidget* seatGridWidget;
     QGridLayout* seatGridLayout;
@@ -55,21 +58,21 @@ private:
     void loadSeats();
     void updateSelectedSeatsLabel();
     DynamicArray<std::pair<int, int>> selectedSeats;
-    
+
     // Step 4
     QTableWidget* comboTable;
     void setupStep4(QWidget* page);
     void loadCombos();
     DynamicArray<std::pair<std::string, int>> selectedCombos;
-    
+
     // Step 5
     QLabel* previewLabel;
     void setupStep5(QWidget* page);
     void generatePreview();
-    
+
     // Step 6
     QLabel* confirmLabel;
     void setupStep6(QWidget* page);
-    
+
     void createTickets();
 };

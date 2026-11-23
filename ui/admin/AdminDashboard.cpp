@@ -5,6 +5,7 @@
 #include "ComboManagementWidget.h"
 #include "StatisticsWidget.h"
 #include "../common/ChangePasswordDialog.h"
+#include "../common/Theme.h"
 #include "managers/UserManager.h"
 #include <QFrame>
 
@@ -20,92 +21,87 @@ AdminDashboard::AdminDashboard(const std::string& maQL, const std::string& tenQL
 
 void AdminDashboard::setupUI() {
     QHBoxLayout* mainLayout = new QHBoxLayout(this);
-    mainLayout->setContentsMargins(0, 0, 14, 0);
-    mainLayout->setSpacing(14);
-    
-    // Left Sidebar: Dính sát viền trái, vuông vức (border-radius: 0px), màu vàng mù tạt #EAB02F
+    mainLayout->setContentsMargins(0, 0, 0, 0);
+    mainLayout->setSpacing(0);
+
+    // Left Sidebar — Soft Midnight Twilight
     QWidget* sidebar = new QWidget(this);
-    sidebar->setFixedWidth(240);
-    sidebar->setStyleSheet(R"(
-        QWidget {
-            background-color: #EAB02F;
-            border: none;
-            border-radius: 0px;
-        }
-    )");
+    sidebar->setObjectName("sidebarContainer");
+    sidebar->setAttribute(Qt::WA_StyledBackground, true);
+    sidebar->setFixedWidth(252);
+    sidebar->setStyleSheet(Theme::sidebarContainerStyle());
 
     QVBoxLayout* sidebarLayout = new QVBoxLayout(sidebar);
-    sidebarLayout->setContentsMargins(12, 16, 12, 16);
-    sidebarLayout->setSpacing(10);
+    sidebarLayout->setContentsMargins(18, 24, 18, 20);
+    sidebarLayout->setSpacing(8);
     sidebarLayout->setAlignment(Qt::AlignTop);
-    
-    // Top Greeting Frame: Bo tròn như cũ, màu đỏ gạch #A52C20
+
+    QLabel* lblBrandMain = new QLabel("PBL2 CINEMA", sidebar);
+    lblBrandMain->setAlignment(Qt::AlignCenter);
+    lblBrandMain->setStyleSheet("color: #F3F4FA; font-size: 19px; font-weight: bold; letter-spacing: 2px; background: transparent;");
+
+    QLabel* lblBrandSub = new QLabel("STUDIO MANAGEMENT", sidebar);
+    lblBrandSub->setAlignment(Qt::AlignCenter);
+    lblBrandSub->setStyleSheet("color: #FF7675; font-size: 10px; font-weight: bold; letter-spacing: 2px; background: transparent;");
+
+    QFrame* brandDivider = new QFrame(sidebar);
+    brandDivider->setFrameShape(QFrame::HLine);
+    brandDivider->setStyleSheet("background-color: #2D3252; max-height: 1px; border: none;");
+
+    sidebarLayout->addWidget(lblBrandMain);
+    sidebarLayout->addWidget(lblBrandSub);
+    sidebarLayout->addSpacing(6);
+    sidebarLayout->addWidget(brandDivider);
+    sidebarLayout->addSpacing(6);
+
+    // Profile Card
     QFrame* headerFrame = new QFrame(sidebar);
-    headerFrame->setStyleSheet(R"(
-        QFrame {
-            background-color: #A52C20;
-            border-radius: 8px;
-            padding: 0px;
-        }
-    )");
+    headerFrame->setObjectName("profileCard");
+    headerFrame->setStyleSheet(Theme::sidebarProfileCardStyle());
+
     QVBoxLayout* headerLayout = new QVBoxLayout(headerFrame);
-    headerLayout->setContentsMargins(5, 8, 5, 8);
-    headerLayout->setSpacing(0);
+    headerLayout->setContentsMargins(14, 12, 14, 12);
+    headerLayout->setSpacing(3);
 
-    QLabel* lblGreeting = new QLabel("Xin chào", headerFrame);
-    lblGreeting->setAlignment(Qt::AlignCenter);
-    lblGreeting->setStyleSheet("color: #FFFFFF; font-size: 13px; background: transparent; border: none;");
+    QLabel* lblRole = new QLabel("QUẢN LÝ RẠP PHIM", headerFrame);
+    lblRole->setStyleSheet("color: #FFD166; font-size: 10px; font-weight: bold; letter-spacing: 1px; background: transparent; border: none;");
 
-    QLabel* lblName = new QLabel("Quản lý\n" + QString::fromStdString(tenQuanLy), headerFrame);
-    lblName->setAlignment(Qt::AlignCenter);
-    lblName->setStyleSheet("color: #FFFFFF; font-size: 15px; font-weight: bold; background: transparent; border: none;");
+    QLabel* lblName = new QLabel(QString::fromStdString(tenQuanLy), headerFrame);
+    lblName->setWordWrap(true);
+    lblName->setStyleSheet("color: #F3F4FA; font-size: 14px; font-weight: bold; background: transparent; border: none;");
 
-    headerLayout->addWidget(lblGreeting);
+    headerLayout->addWidget(lblRole);
     headerLayout->addWidget(lblName);
     sidebarLayout->addWidget(headerFrame);
-    sidebarLayout->addSpacing(15);
-    
-    // Navigation Tabs: Bo tròn như cũ, màu kem #F9F1E5
-    QString tabBtnStyle = R"(
-        QPushButton {
-            background-color: #F9F1E5;
-            color: #1A1A1A;
-            border: 1px solid #2B1810;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: bold;
-            min-height: 38px;
-            padding: 5px 10px;
-            text-align: center;
-        }
-        QPushButton:hover {
-            background-color: #FFFFFF;
-            border-color: #A52C20;
-        }
-        QPushButton:pressed {
-            background-color: #EAB02F;
-        }
-    )";
+    sidebarLayout->addSpacing(12);
 
-    QPushButton* btnMovie = new QPushButton("Quản Lý Phim", sidebar);
+    QLabel* lblMenu = new QLabel("QUẢN TRỊ HỆ THỐNG", sidebar);
+    lblMenu->setStyleSheet("color: #707899; font-size: 10px; font-weight: bold; letter-spacing: 2px; padding-left: 8px; background: transparent;");
+    sidebarLayout->addWidget(lblMenu);
+
+    QPushButton* btnMovie = new QPushButton("  Quản Lý Phim", sidebar);
     btnMovie->setCursor(Qt::PointingHandCursor);
-    btnMovie->setStyleSheet(tabBtnStyle);
 
-    QPushButton* btnRoom = new QPushButton("Quản Lý Phòng", sidebar);
+    QPushButton* btnRoom = new QPushButton("  Quản Lý Phòng", sidebar);
     btnRoom->setCursor(Qt::PointingHandCursor);
-    btnRoom->setStyleSheet(tabBtnStyle);
 
-    QPushButton* btnShowtime = new QPushButton("Quản Lý Suất Chiếu", sidebar);
+    QPushButton* btnShowtime = new QPushButton("  Quản Lý Suất Chiếu", sidebar);
     btnShowtime->setCursor(Qt::PointingHandCursor);
-    btnShowtime->setStyleSheet(tabBtnStyle);
 
-    QPushButton* btnCombo = new QPushButton("Quản Lý Combo", sidebar);
+    QPushButton* btnCombo = new QPushButton("  Quản Lý Combo", sidebar);
     btnCombo->setCursor(Qt::PointingHandCursor);
-    btnCombo->setStyleSheet(tabBtnStyle);
 
-    QPushButton* btnStat = new QPushButton("Báo Cáo Thống Kê", sidebar);
+    QPushButton* btnStat = new QPushButton("  Báo Cáo Thống Kê", sidebar);
     btnStat->setCursor(Qt::PointingHandCursor);
-    btnStat->setStyleSheet(tabBtnStyle);
+
+    auto setActiveTab = [btnMovie, btnRoom, btnShowtime, btnCombo, btnStat](int index) {
+        btnMovie->setStyleSheet(Theme::sidebarNavButtonStyle(index == 0));
+        btnRoom->setStyleSheet(Theme::sidebarNavButtonStyle(index == 1));
+        btnShowtime->setStyleSheet(Theme::sidebarNavButtonStyle(index == 2));
+        btnCombo->setStyleSheet(Theme::sidebarNavButtonStyle(index == 3));
+        btnStat->setStyleSheet(Theme::sidebarNavButtonStyle(index == 4));
+    };
+    setActiveTab(0);
 
     sidebarLayout->addWidget(btnMovie);
     sidebarLayout->addWidget(btnRoom);
@@ -113,71 +109,64 @@ void AdminDashboard::setupUI() {
     sidebarLayout->addWidget(btnCombo);
     sidebarLayout->addWidget(btnStat);
     sidebarLayout->addStretch();
-    
-    // Bottom Buttons: Bo tròn như cũ
+
+    QFrame* bottomDivider = new QFrame(sidebar);
+    bottomDivider->setFrameShape(QFrame::HLine);
+    bottomDivider->setStyleSheet("background-color: #2D3252; max-height: 1px; border: none;");
+    sidebarLayout->addWidget(bottomDivider);
+    sidebarLayout->addSpacing(6);
+
     QPushButton* btnChangePassword = new QPushButton("Đổi Mật Khẩu", sidebar);
     btnChangePassword->setCursor(Qt::PointingHandCursor);
-    btnChangePassword->setStyleSheet(R"(
-        QPushButton {
-            background-color: #F9F1E5;
-            color: #A52C20;
-            border: 1px solid #A52C20;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: bold;
-            min-height: 38px;
-        }
-        QPushButton:hover {
-            background-color: #A52C20;
-            color: #FFFFFF;
-        }
-    )");
+    btnChangePassword->setStyleSheet(Theme::secondaryButtonStyle(40, 13));
 
     QPushButton* btnLogout = new QPushButton("Đăng Xuất", sidebar);
     btnLogout->setCursor(Qt::PointingHandCursor);
-    btnLogout->setStyleSheet(R"(
-        QPushButton {
-            background-color: #A52C20;
-            color: #FFFFFF;
-            border: 1px solid #822017;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: bold;
-            min-height: 38px;
-        }
-        QPushButton:hover {
-            background-color: #BD362A;
-        }
-    )");
-    
+    btnLogout->setStyleSheet(Theme::dangerOutlineButtonStyle(40, 13));
+
     sidebarLayout->addWidget(btnChangePassword);
     sidebarLayout->addWidget(btnLogout);
-    
+
     // Right Content
     stackedWidget = new QStackedWidget(this);
-    stackedWidget->setStyleSheet("QStackedWidget { background: transparent; }");
+    stackedWidget->setStyleSheet("QStackedWidget { background-color: #161827; }");
 
     MovieManagementWidget* movieWidget = new MovieManagementWidget(movieManager, this);
     RoomManagementWidget* roomWidget = new RoomManagementWidget(roomManager, this);
     ShowtimeManagementWidget* showtimeWidget = new ShowtimeManagementWidget(showtimeManager, movieManager, roomManager, this);
     ComboManagementWidget* comboWidget = new ComboManagementWidget(comboManager, this);
     StatisticsWidget* statWidget = new StatisticsWidget(ticketManager, showtimeManager, movieManager, this);
-    
+
     stackedWidget->addWidget(movieWidget);    // 0
     stackedWidget->addWidget(roomWidget);     // 1
     stackedWidget->addWidget(showtimeWidget); // 2
     stackedWidget->addWidget(comboWidget);    // 3
     stackedWidget->addWidget(statWidget);     // 4
-    
+
     mainLayout->addWidget(sidebar, 0);
     mainLayout->addWidget(stackedWidget, 1);
-    
-    // Connections
-    connect(btnMovie, &QPushButton::clicked, [this]() { stackedWidget->setCurrentIndex(0); });
-    connect(btnRoom, &QPushButton::clicked, [this]() { stackedWidget->setCurrentIndex(1); });
-    connect(btnShowtime, &QPushButton::clicked, [this]() { stackedWidget->setCurrentIndex(2); });
-    connect(btnCombo, &QPushButton::clicked, [this]() { stackedWidget->setCurrentIndex(3); });
-    connect(btnStat, &QPushButton::clicked, [this]() { stackedWidget->setCurrentIndex(4); });
+
+    connect(btnMovie, &QPushButton::clicked, this, [this, setActiveTab]() {
+        setActiveTab(0);
+        stackedWidget->setCurrentIndex(0);
+    });
+    connect(btnRoom, &QPushButton::clicked, this, [this, setActiveTab]() {
+        setActiveTab(1);
+        stackedWidget->setCurrentIndex(1);
+    });
+    connect(btnShowtime, &QPushButton::clicked, this, [this, setActiveTab]() {
+        setActiveTab(2);
+        stackedWidget->setCurrentIndex(2);
+    });
+    connect(btnCombo, &QPushButton::clicked, this, [this, setActiveTab]() {
+        setActiveTab(3);
+        stackedWidget->setCurrentIndex(3);
+    });
+    connect(btnStat, &QPushButton::clicked, this, [this, setActiveTab, statWidget]() {
+        setActiveTab(4);
+        statWidget->refreshData();
+        stackedWidget->setCurrentIndex(4);
+    });
 
     connect(btnChangePassword, &QPushButton::clicked, this, [this]() {
         std::string taiKhoan = maQuanLy;

@@ -1,10 +1,9 @@
 #include "MovieManagementWidget.h"
+#include "../common/Theme.h"
 #include "managers/MovieManager.h"
 #include "models/Movie.h"
-#include "utils/IDGenerator.h"
 #include <QHeaderView>
 #include <QMessageBox>
-#include <QInputDialog>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QDialog>
@@ -20,158 +19,174 @@
 #include <QIcon>
 
 MovieManagementWidget::MovieManagementWidget(MovieManager* movieMgr, QWidget* parent)
-    : QWidget(parent), movieManager(movieMgr) {
-    
+    : QWidget(parent), movieManager(movieMgr)
+{
     QVBoxLayout* layout = new QVBoxLayout(this);
-    layout->setContentsMargins(15, 15, 15, 15);
-    layout->setSpacing(12);
+    layout->setContentsMargins(26, 22, 26, 20);
+    layout->setSpacing(14);
 
-    QLabel *lblTitle = new QLabel("QUẢN LÝ DANH SÁCH PHIM", this);
-    lblTitle->setStyleSheet("color: #EAB02F; font-size: 18px; font-weight: bold;");
-    layout->addWidget(lblTitle);
-    
-    QHBoxLayout* btnLayout = new QHBoxLayout();
-    btnLayout->setSpacing(10);
+    QHBoxLayout* topRow = new QHBoxLayout();
+    QVBoxLayout* titleCol = new QVBoxLayout();
+    titleCol->setSpacing(2);
+    QLabel* lblEyebrow = new QLabel("DANH MỤC TÁC PHẨM ĐIỆN ẢNH", this);
+    lblEyebrow->setStyleSheet(Theme::sectionEyebrowStyle());
+    QLabel* lblTitle = new QLabel("QUẢN LÝ DANH SÁCH PHIM", this);
+    lblTitle->setStyleSheet(Theme::sectionTitleStyle());
+    titleCol->addWidget(lblEyebrow);
+    titleCol->addWidget(lblTitle);
+
+    topRow->addLayout(titleCol);
+    topRow->addStretch();
+
     btnAdd = new QPushButton("+ Thêm Phim Mới", this);
     btnAdd->setCursor(Qt::PointingHandCursor);
-    btnAdd->setStyleSheet("background-color: #28A745; color: white; font-weight: bold; min-height: 34px; padding: 0 15px; border-radius: 5px;");
+    btnAdd->setStyleSheet(Theme::primaryButtonStyle(38, 13));
 
     btnEdit = new QPushButton("Sửa Phim", this);
     btnEdit->setCursor(Qt::PointingHandCursor);
-    btnEdit->setStyleSheet("background-color: #EAB02F; color: #1A1A1A; font-weight: bold; min-height: 34px; padding: 0 15px; border-radius: 5px;");
+    btnEdit->setStyleSheet(Theme::goldOutlineButtonStyle(38, 13));
 
-    btnDelete = new QPushButton("Xóa / Ngừng Chiếu", this);
+    btnDelete = new QPushButton("Ngừng Chiếu", this);
     btnDelete->setCursor(Qt::PointingHandCursor);
-    btnDelete->setStyleSheet("background-color: #A52C20; color: white; font-weight: bold; min-height: 34px; padding: 0 15px; border-radius: 5px;");
+    btnDelete->setStyleSheet(Theme::dangerOutlineButtonStyle(38, 13));
 
-    btnLayout->addWidget(btnAdd);
-    btnLayout->addWidget(btnEdit);
-    btnLayout->addWidget(btnDelete);
-    btnLayout->addStretch();
-    
+    topRow->addWidget(btnAdd, 0, Qt::AlignVCenter);
+    topRow->addWidget(btnEdit, 0, Qt::AlignVCenter);
+    topRow->addWidget(btnDelete, 0, Qt::AlignVCenter);
+    layout->addLayout(topRow);
+
     table = new QTableWidget(0, 6, this);
     table->setHorizontalHeaderLabels({"Mã Phim", "Poster", "Tên Phim", "Thể Loại", "Thời Lượng", "Trạng Thái"});
     table->setSelectionBehavior(QAbstractItemView::SelectRows);
+    table->setSelectionMode(QAbstractItemView::SingleSelection);
     table->setEditTriggers(QAbstractItemView::NoEditTriggers);
     table->setAlternatingRowColors(true);
-    table->setIconSize(QSize(36, 48));
-    table->verticalHeader()->setDefaultSectionSize(54);
+    table->setIconSize(QSize(38, 50));
+    table->verticalHeader()->setDefaultSectionSize(58);
+    table->verticalHeader()->setVisible(false);
     table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
     table->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
     table->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
     table->horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
     table->horizontalHeader()->setSectionResizeMode(4, QHeaderView::ResizeToContents);
     table->horizontalHeader()->setSectionResizeMode(5, QHeaderView::ResizeToContents);
-    
-    layout->addLayout(btnLayout);
-    layout->addWidget(table);
-    
+
+    layout->addWidget(table, 1);
+
     connect(btnAdd, &QPushButton::clicked, this, &MovieManagementWidget::addMovie);
     connect(btnEdit, &QPushButton::clicked, this, &MovieManagementWidget::editMovie);
     connect(btnDelete, &QPushButton::clicked, this, &MovieManagementWidget::deleteMovie);
-    
-    loadData();
-}
 
-static QPixmap loadMoviePixmap(const QString& posterPath) {
-    QPixmap pixmap;
-    if (QFileInfo::exists(posterPath)) {
-        pixmap.load(posterPath);
-    } else {
-        QString alt1 = "posters/" + QFileInfo(posterPath).fileName();
-        if (QFileInfo::exists(alt1)) {
-            pixmap.load(alt1);
-        } else {
-            QString alt2 = QCoreApplication::applicationDirPath() + "/" + posterPath;
-            if (QFileInfo::exists(alt2)) {
-                pixmap.load(alt2);
-            }
-        }
-    }
-    return pixmap;
+    loadData();
 }
 
 void MovieManagementWidget::loadData() {
     table->setRowCount(0);
     auto& movies = movieManager->getAllMovies();
-    for(int i = 0; i < movies.size(); ++i) {
+    QFont boldFont = table->font();
+    boldFont.setBold(true);
+
+    for (int i = 0; i < movies.size(); ++i) {
         table->insertRow(i);
-        // Col 0: Ma Phim
+
         QTableWidgetItem* idItem = new QTableWidgetItem(QString::fromStdString(movies[i].getMaPhim()));
         idItem->setTextAlignment(Qt::AlignCenter);
+        idItem->setFont(boldFont);
+        idItem->setForeground(QBrush(QColor("#8C92FF")));
         table->setItem(i, 0, idItem);
 
-        // Col 1: Poster Thumbnail & filename
         QString posterPath = QString::fromStdString(movies[i].getPoster());
-        QPixmap px = loadMoviePixmap(posterPath);
+        QPixmap px = Theme::loadPosterPixmap(posterPath);
         QTableWidgetItem* posterItem = new QTableWidgetItem(QFileInfo(posterPath).fileName());
-        posterItem->setTextAlignment(Qt::AlignCenter);
+        posterItem->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+        posterItem->setForeground(QBrush(QColor("#A3ABC9")));
         if (!px.isNull()) {
-            posterItem->setIcon(QIcon(px.scaled(36, 48, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+            posterItem->setIcon(QIcon(Theme::roundedCoverPixmap(px, 38, 50, 7)));
         }
         table->setItem(i, 1, posterItem);
-        
-        // Col 2: Ten Phim
-        table->setItem(i, 2, new QTableWidgetItem(QString::fromStdString(movies[i].getTenPhim())));
 
-        // Col 3: The Loai
+        QTableWidgetItem* nameItem = new QTableWidgetItem(QString::fromStdString(movies[i].getTenPhim()));
+        nameItem->setFont(boldFont);
+        table->setItem(i, 2, nameItem);
+
         table->setItem(i, 3, new QTableWidgetItem(QString::fromStdString(movies[i].getTheLoai())));
-        
-        // Col 4: Thoi Luong
+
         QTableWidgetItem* durationItem = new QTableWidgetItem(QString::number(movies[i].getThoiLuong()) + " phút");
         durationItem->setTextAlignment(Qt::AlignCenter);
         table->setItem(i, 4, durationItem);
-        
-        // Col 5: Trang Thai
-        QString status = movies[i].getTrangThai() ? "Đang Chiếu" : "Ngừng Chiếu";
-        QTableWidgetItem* statusItem = new QTableWidgetItem(status);
+
+        bool active = movies[i].getTrangThai();
+        QTableWidgetItem* statusItem = new QTableWidgetItem(active ? "Đang chiếu" : "Ngừng chiếu");
         statusItem->setTextAlignment(Qt::AlignCenter);
-        if(!movies[i].getTrangThai()) statusItem->setBackground(Qt::gray);
+        statusItem->setFont(boldFont);
+        statusItem->setForeground(QBrush(QColor(active ? "#34D399" : "#707899")));
         table->setItem(i, 5, statusItem);
     }
+}
+
+static void styleAdminDialog(QDialog& dialog) {
+    dialog.setStyleSheet(R"(
+        QDialog {
+            background-color: #1F2338;
+            border: 1px solid #353C61;
+            border-radius: 18px;
+        }
+    )");
 }
 
 void MovieManagementWidget::addMovie() {
     QDialog dialog(this);
     dialog.setWindowTitle("Thêm Phim Mới");
-    dialog.setMinimumWidth(580);
-    
+    dialog.setMinimumWidth(650);
+    styleAdminDialog(dialog);
+
     QVBoxLayout *mainDialogLayout = new QVBoxLayout(&dialog);
+    mainDialogLayout->setContentsMargins(26, 24, 26, 24);
+    mainDialogLayout->setSpacing(16);
+
+    QLabel *dlgTitle = new QLabel("Thêm Phim Mới", &dialog);
+    dlgTitle->setStyleSheet("color: #FFD166; font-size: 19px; font-weight: bold;");
+    mainDialogLayout->addWidget(dlgTitle);
+
     QHBoxLayout *contentLayout = new QHBoxLayout();
-    
-    // Left Form: Thông tin phim
+    contentLayout->setSpacing(20);
+
     QVBoxLayout *leftForm = new QVBoxLayout();
-    QLineEdit *edtTen = new QLineEdit(&dialog); edtTen->setPlaceholderText("Tên phim");
-    QLineEdit *edtTheLoai = new QLineEdit(&dialog); edtTheLoai->setPlaceholderText("Thể loại (Hành động, Hoạt hình...)");
+    leftForm->setSpacing(6);
+    auto lbl = [&dialog](const QString& t) {
+        QLabel* l = new QLabel(t, &dialog);
+        l->setStyleSheet("color: #A3ABC9; font-size: 12px; font-weight: 600;");
+        return l;
+    };
+
+    QLineEdit *edtTen = new QLineEdit(&dialog); edtTen->setPlaceholderText("Nhập tên phim");
+    QLineEdit *edtTheLoai = new QLineEdit(&dialog); edtTheLoai->setPlaceholderText("Hành động, Tâm lý, Hoạt hình...");
     QSpinBox *spnThoiLuong = new QSpinBox(&dialog); spnThoiLuong->setRange(30, 300); spnThoiLuong->setValue(120); spnThoiLuong->setSuffix(" phút");
-    QSpinBox *spnDoTuoi = new QSpinBox(&dialog); spnDoTuoi->setRange(0, 21); spnDoTuoi->setValue(13);
-    QLineEdit *edtMoTa = new QLineEdit(&dialog); edtMoTa->setPlaceholderText("Mô tả ngắn");
+    QSpinBox *spnDoTuoi = new QSpinBox(&dialog); spnDoTuoi->setRange(0, 21); spnDoTuoi->setValue(13); spnDoTuoi->setSuffix(" tuổi");
+    QLineEdit *edtMoTa = new QLineEdit(&dialog); edtMoTa->setPlaceholderText("Mô tả ngắn gọn");
     QLineEdit *edtNoiDung = new QLineEdit(&dialog); edtNoiDung->setPlaceholderText("Nội dung tóm tắt phim");
-    
-    leftForm->addWidget(new QLabel("Tên phim:", &dialog)); leftForm->addWidget(edtTen);
-    leftForm->addWidget(new QLabel("Thể loại:", &dialog)); leftForm->addWidget(edtTheLoai);
-    leftForm->addWidget(new QLabel("Thời lượng:", &dialog)); leftForm->addWidget(spnThoiLuong);
-    leftForm->addWidget(new QLabel("Độ tuổi:", &dialog)); leftForm->addWidget(spnDoTuoi);
-    leftForm->addWidget(new QLabel("Mô tả:", &dialog)); leftForm->addWidget(edtMoTa);
-    leftForm->addWidget(new QLabel("Nội dung:", &dialog)); leftForm->addWidget(edtNoiDung);
+
+    leftForm->addWidget(lbl("Tên phim:")); leftForm->addWidget(edtTen);
+    leftForm->addWidget(lbl("Thể loại:")); leftForm->addWidget(edtTheLoai);
+    leftForm->addWidget(lbl("Thời lượng:")); leftForm->addWidget(spnThoiLuong);
+    leftForm->addWidget(lbl("Giới hạn độ tuổi (0 = P):")); leftForm->addWidget(spnDoTuoi);
+    leftForm->addWidget(lbl("Mô tả ngắn:")); leftForm->addWidget(edtMoTa);
+    leftForm->addWidget(lbl("Nội dung chi tiết:")); leftForm->addWidget(edtNoiDung);
     contentLayout->addLayout(leftForm, 3);
 
-    // Right Form: Poster Selection & Preview
     QVBoxLayout *rightForm = new QVBoxLayout();
+    rightForm->setSpacing(8);
     rightForm->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
 
-    QLabel *lblPosterTitle = new QLabel("Poster Phim:", &dialog);
-    lblPosterTitle->setStyleSheet("font-weight: bold;");
-    rightForm->addWidget(lblPosterTitle);
+    rightForm->addWidget(lbl("Ảnh Poster:"));
 
     QLabel *lblPreview = new QLabel(&dialog);
-    lblPreview->setFixedSize(130, 185);
+    lblPreview->setFixedSize(140, 200);
     lblPreview->setAlignment(Qt::AlignCenter);
-    lblPreview->setStyleSheet("background-color: #121330; border: 1px solid #EAB02F; border-radius: 6px;");
+    lblPreview->setStyleSheet("background-color: #181B2C; border: 1.5px solid #353C61; border-radius: 14px; color: #7C84A8;");
     lblPreview->setText("Chưa chọn poster");
     lblPreview->setWordWrap(true);
-    lblPreview->setScaledContents(true);
-    rightForm->addWidget(lblPreview);
+    rightForm->addWidget(lblPreview, 0, Qt::AlignHCenter);
 
     QLineEdit *edtPoster = new QLineEdit(&dialog);
     edtPoster->setPlaceholderText("Đường dẫn poster");
@@ -179,12 +194,11 @@ void MovieManagementWidget::addMovie() {
     edtPoster->setReadOnly(true);
     rightForm->addWidget(edtPoster);
 
-    QPushButton *btnBrowse = new QPushButton("📂 Chọn Ảnh từ Máy...", &dialog);
+    QPushButton *btnBrowse = new QPushButton("Chọn Ảnh từ Máy...", &dialog);
     btnBrowse->setCursor(Qt::PointingHandCursor);
-    btnBrowse->setStyleSheet("background-color: #2C2E6A; color: white; font-weight: bold; min-height: 28px; border-radius: 4px;");
+    btnBrowse->setStyleSheet(Theme::secondaryButtonStyle(36, 12));
     rightForm->addWidget(btnBrowse);
 
-    // Quick select from existing posters in posters/ folder
     QComboBox *cbExisting = new QComboBox(&dialog);
     cbExisting->addItem("-- Chọn từ kho poster có sẵn --", "");
     QDir posterDir("posters");
@@ -200,7 +214,7 @@ void MovieManagementWidget::addMovie() {
             edtPoster->setText(file);
             QPixmap px(file);
             if (!px.isNull()) {
-                lblPreview->setPixmap(px.scaled(130, 185, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+                lblPreview->setPixmap(Theme::roundedCoverPixmap(px, 138, 198, 12));
             }
         }
     });
@@ -209,32 +223,35 @@ void MovieManagementWidget::addMovie() {
         if (index > 0) {
             QString relPath = cbExisting->currentData().toString();
             edtPoster->setText(relPath);
-            QPixmap px = loadMoviePixmap(relPath);
+            QPixmap px = Theme::loadPosterPixmap(relPath);
             if (!px.isNull()) {
-                lblPreview->setPixmap(px.scaled(130, 185, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+                lblPreview->setPixmap(Theme::roundedCoverPixmap(px, 138, 198, 12));
             }
         }
     });
 
     contentLayout->addLayout(rightForm, 2);
     mainDialogLayout->addLayout(contentLayout);
-    
-    // Bottom Action Buttons
+
+    QPushButton *btnCancel = new QPushButton("Hủy Bỏ", &dialog);
+    btnCancel->setCursor(Qt::PointingHandCursor);
+    btnCancel->setStyleSheet(Theme::secondaryButtonStyle(40, 13));
+
     QPushButton *btnOk = new QPushButton("Thêm Phim", &dialog);
-    btnOk->setStyleSheet("background-color: #28A745; color: white; font-weight: bold; min-height: 32px; border-radius: 5px;");
-    QPushButton *btnCancel = new QPushButton("Hủy", &dialog);
-    btnCancel->setStyleSheet("background-color: #A52C20; color: white; font-weight: bold; min-height: 32px; border-radius: 5px;");
+    btnOk->setCursor(Qt::PointingHandCursor);
+    btnOk->setStyleSheet(Theme::primaryButtonStyle(40, 13));
 
     QHBoxLayout *btnLayout = new QHBoxLayout();
+    btnLayout->setSpacing(10);
     btnLayout->addStretch();
-    btnLayout->addWidget(btnOk);
     btnLayout->addWidget(btnCancel);
+    btnLayout->addWidget(btnOk);
     mainDialogLayout->addLayout(btnLayout);
-    
+
     connect(btnOk, &QPushButton::clicked, &dialog, &QDialog::accept);
     connect(btnCancel, &QPushButton::clicked, &dialog, &QDialog::reject);
-    
-    if (dialog.exec() == QDialog::Accepted && !edtTen->text().isEmpty()) {
+
+    if (dialog.exec() == QDialog::Accepted && !edtTen->text().trimmed().isEmpty()) {
         QString finalPoster = edtPoster->text().trimmed();
         if (finalPoster.isEmpty()) {
             finalPoster = "posters/default.jpg";
@@ -256,11 +273,10 @@ void MovieManagementWidget::addMovie() {
             }
         }
 
-        // Manager generates the ID automatically
-        Movie m("", edtTen->text().toStdString(), edtTheLoai->text().toStdString(),
-                spnThoiLuong->value(), spnDoTuoi->value(), 
-                edtMoTa->text().toStdString(), edtNoiDung->text().toStdString(), finalPoster.toStdString(), true);
-        if(movieManager->addMovie(m)) {
+        Movie m("", edtTen->text().trimmed().toStdString(), edtTheLoai->text().trimmed().toStdString(),
+                spnThoiLuong->value(), spnDoTuoi->value(),
+                edtMoTa->text().trimmed().toStdString(), edtNoiDung->text().trimmed().toStdString(), finalPoster.toStdString(), true);
+        if (movieManager->addMovie(m)) {
             movieManager->save();
             loadData();
         }
@@ -269,72 +285,83 @@ void MovieManagementWidget::addMovie() {
 
 void MovieManagementWidget::editMovie() {
     int row = table->currentRow();
-    if(row < 0) {
+    if (row < 0) {
         QMessageBox::warning(this, "Cảnh Báo", "Vui lòng chọn phim cần sửa!");
         return;
     }
     std::string id = table->item(row, 0)->text().toStdString();
     Movie* m = movieManager->findById(id);
-    if(!m) return;
-    
+    if (!m) return;
+
     QDialog dialog(this);
     dialog.setWindowTitle("Sửa Phim: " + QString::fromStdString(m->getTenPhim()));
-    dialog.setMinimumWidth(580);
-    
+    dialog.setMinimumWidth(650);
+    styleAdminDialog(dialog);
+
     QVBoxLayout *mainDialogLayout = new QVBoxLayout(&dialog);
+    mainDialogLayout->setContentsMargins(26, 24, 26, 24);
+    mainDialogLayout->setSpacing(16);
+
+    QLabel *dlgTitle = new QLabel("Cập Nhật Thông Tin Phim", &dialog);
+    dlgTitle->setStyleSheet("color: #FFD166; font-size: 19px; font-weight: bold;");
+    mainDialogLayout->addWidget(dlgTitle);
+
     QHBoxLayout *contentLayout = new QHBoxLayout();
-    
-    // Left Form: Thông tin phim
+    contentLayout->setSpacing(20);
+
     QVBoxLayout *leftForm = new QVBoxLayout();
+    leftForm->setSpacing(6);
+    auto lbl = [&dialog](const QString& t) {
+        QLabel* l = new QLabel(t, &dialog);
+        l->setStyleSheet("color: #A3ABC9; font-size: 12px; font-weight: 600;");
+        return l;
+    };
+
     QLineEdit *edtTen = new QLineEdit(QString::fromStdString(m->getTenPhim()), &dialog);
     QLineEdit *edtTheLoai = new QLineEdit(QString::fromStdString(m->getTheLoai()), &dialog);
     QSpinBox *spnThoiLuong = new QSpinBox(&dialog); spnThoiLuong->setRange(30, 300); spnThoiLuong->setValue(m->getThoiLuong()); spnThoiLuong->setSuffix(" phút");
-    QSpinBox *spnDoTuoi = new QSpinBox(&dialog); spnDoTuoi->setRange(0, 21); spnDoTuoi->setValue(m->getDoTuoi());
+    QSpinBox *spnDoTuoi = new QSpinBox(&dialog); spnDoTuoi->setRange(0, 21); spnDoTuoi->setValue(m->getDoTuoi()); spnDoTuoi->setSuffix(" tuổi");
     QLineEdit *edtMoTa = new QLineEdit(QString::fromStdString(m->getMoTa()), &dialog);
     QLineEdit *edtNoiDung = new QLineEdit(QString::fromStdString(m->getNoiDung()), &dialog);
-    
-    leftForm->addWidget(new QLabel("Tên phim:", &dialog)); leftForm->addWidget(edtTen);
-    leftForm->addWidget(new QLabel("Thể loại:", &dialog)); leftForm->addWidget(edtTheLoai);
-    leftForm->addWidget(new QLabel("Thời lượng:", &dialog)); leftForm->addWidget(spnThoiLuong);
-    leftForm->addWidget(new QLabel("Độ tuổi:", &dialog)); leftForm->addWidget(spnDoTuoi);
-    leftForm->addWidget(new QLabel("Mô tả:", &dialog)); leftForm->addWidget(edtMoTa);
-    leftForm->addWidget(new QLabel("Nội dung:", &dialog)); leftForm->addWidget(edtNoiDung);
+
+    leftForm->addWidget(lbl("Tên phim:")); leftForm->addWidget(edtTen);
+    leftForm->addWidget(lbl("Thể loại:")); leftForm->addWidget(edtTheLoai);
+    leftForm->addWidget(lbl("Thời lượng:")); leftForm->addWidget(spnThoiLuong);
+    leftForm->addWidget(lbl("Giới hạn độ tuổi (0 = P):")); leftForm->addWidget(spnDoTuoi);
+    leftForm->addWidget(lbl("Mô tả ngắn:")); leftForm->addWidget(edtMoTa);
+    leftForm->addWidget(lbl("Nội dung chi tiết:")); leftForm->addWidget(edtNoiDung);
     contentLayout->addLayout(leftForm, 3);
 
-    // Right Form: Poster Selection & Preview
     QVBoxLayout *rightForm = new QVBoxLayout();
+    rightForm->setSpacing(8);
     rightForm->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
 
-    QLabel *lblPosterTitle = new QLabel("Poster Phim:", &dialog);
-    lblPosterTitle->setStyleSheet("font-weight: bold;");
-    rightForm->addWidget(lblPosterTitle);
+    rightForm->addWidget(lbl("Ảnh Poster:"));
 
     QLabel *lblPreview = new QLabel(&dialog);
-    lblPreview->setFixedSize(130, 185);
+    lblPreview->setFixedSize(140, 200);
     lblPreview->setAlignment(Qt::AlignCenter);
-    lblPreview->setStyleSheet("background-color: #121330; border: 1px solid #EAB02F; border-radius: 6px;");
-    lblPreview->setScaledContents(true);
+    lblPreview->setStyleSheet("background-color: #181B2C; border: 1.5px solid #353C61; border-radius: 14px; color: #7C84A8;");
 
     QString currentPoster = QString::fromStdString(m->getPoster());
-    QPixmap initPx = loadMoviePixmap(currentPoster);
+    QPixmap initPx = Theme::loadPosterPixmap(currentPoster);
     if (!initPx.isNull()) {
-        lblPreview->setPixmap(initPx.scaled(130, 185, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        lblPreview->setPixmap(Theme::roundedCoverPixmap(initPx, 138, 198, 12));
     } else {
         lblPreview->setText("Chưa có ảnh");
     }
-    rightForm->addWidget(lblPreview);
+    rightForm->addWidget(lblPreview, 0, Qt::AlignHCenter);
 
     QLineEdit *edtPoster = new QLineEdit(&dialog);
     edtPoster->setText(currentPoster);
     edtPoster->setReadOnly(true);
     rightForm->addWidget(edtPoster);
 
-    QPushButton *btnBrowse = new QPushButton("📂 Thay Đổi Ảnh từ Máy...", &dialog);
+    QPushButton *btnBrowse = new QPushButton("Thay Đổi Ảnh từ Máy...", &dialog);
     btnBrowse->setCursor(Qt::PointingHandCursor);
-    btnBrowse->setStyleSheet("background-color: #2C2E6A; color: white; font-weight: bold; min-height: 28px; border-radius: 4px;");
+    btnBrowse->setStyleSheet(Theme::secondaryButtonStyle(36, 12));
     rightForm->addWidget(btnBrowse);
 
-    // Quick select from existing posters in posters/ folder
     QComboBox *cbExisting = new QComboBox(&dialog);
     cbExisting->addItem("-- Chọn từ kho poster có sẵn --", "");
     QDir posterDir("posters");
@@ -350,7 +377,7 @@ void MovieManagementWidget::editMovie() {
             edtPoster->setText(file);
             QPixmap px(file);
             if (!px.isNull()) {
-                lblPreview->setPixmap(px.scaled(130, 185, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+                lblPreview->setPixmap(Theme::roundedCoverPixmap(px, 138, 198, 12));
             }
         }
     });
@@ -359,9 +386,9 @@ void MovieManagementWidget::editMovie() {
         if (index > 0) {
             QString relPath = cbExisting->currentData().toString();
             edtPoster->setText(relPath);
-            QPixmap px = loadMoviePixmap(relPath);
+            QPixmap px = Theme::loadPosterPixmap(relPath);
             if (!px.isNull()) {
-                lblPreview->setPixmap(px.scaled(130, 185, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+                lblPreview->setPixmap(Theme::roundedCoverPixmap(px, 138, 198, 12));
             }
         }
     });
@@ -369,22 +396,25 @@ void MovieManagementWidget::editMovie() {
     contentLayout->addLayout(rightForm, 2);
     mainDialogLayout->addLayout(contentLayout);
 
-    // Bottom Action Buttons
+    QPushButton *btnCancel = new QPushButton("Hủy Bỏ", &dialog);
+    btnCancel->setCursor(Qt::PointingHandCursor);
+    btnCancel->setStyleSheet(Theme::secondaryButtonStyle(40, 13));
+
     QPushButton *btnOk = new QPushButton("Lưu Thay Đổi", &dialog);
-    btnOk->setStyleSheet("background-color: #28A745; color: white; font-weight: bold; min-height: 32px; border-radius: 5px;");
-    QPushButton *btnCancel = new QPushButton("Hủy", &dialog);
-    btnCancel->setStyleSheet("background-color: #A52C20; color: white; font-weight: bold; min-height: 32px; border-radius: 5px;");
+    btnOk->setCursor(Qt::PointingHandCursor);
+    btnOk->setStyleSheet(Theme::primaryButtonStyle(40, 13));
 
     QHBoxLayout *btnLayout = new QHBoxLayout();
+    btnLayout->setSpacing(10);
     btnLayout->addStretch();
-    btnLayout->addWidget(btnOk);
     btnLayout->addWidget(btnCancel);
+    btnLayout->addWidget(btnOk);
     mainDialogLayout->addLayout(btnLayout);
 
     connect(btnOk, &QPushButton::clicked, &dialog, &QDialog::accept);
     connect(btnCancel, &QPushButton::clicked, &dialog, &QDialog::reject);
-    
-    if (dialog.exec() == QDialog::Accepted && !edtTen->text().isEmpty()) {
+
+    if (dialog.exec() == QDialog::Accepted && !edtTen->text().trimmed().isEmpty()) {
         QString finalPoster = edtPoster->text().trimmed();
         if (finalPoster.isEmpty()) {
             finalPoster = "posters/default.jpg";
@@ -406,12 +436,12 @@ void MovieManagementWidget::editMovie() {
             }
         }
 
-        m->setTenPhim(edtTen->text().toStdString());
-        m->setTheLoai(edtTheLoai->text().toStdString());
+        m->setTenPhim(edtTen->text().trimmed().toStdString());
+        m->setTheLoai(edtTheLoai->text().trimmed().toStdString());
         m->setThoiLuong(spnThoiLuong->value());
         m->setDoTuoi(spnDoTuoi->value());
-        m->setMoTa(edtMoTa->text().toStdString());
-        m->setNoiDung(edtNoiDung->text().toStdString());
+        m->setMoTa(edtMoTa->text().trimmed().toStdString());
+        m->setNoiDung(edtNoiDung->text().trimmed().toStdString());
         m->setPoster(finalPoster.toStdString());
 
         movieManager->updateMovie(id, *m);
@@ -422,13 +452,15 @@ void MovieManagementWidget::editMovie() {
 
 void MovieManagementWidget::deleteMovie() {
     int row = table->currentRow();
-    if(row >= 0) {
-        std::string id = table->item(row, 0)->text().toStdString();
-        if(QMessageBox::question(this, "Xác Nhận", "Bạn có muốn xóa (ngừng chiếu) phim này?") == QMessageBox::Yes) {
-            if(movieManager->deleteMovie(id)) {
-                movieManager->save();
-                loadData();
-            }
+    if (row < 0) {
+        QMessageBox::warning(this, "Cảnh Báo", "Vui lòng chọn phim cần ngừng chiếu!");
+        return;
+    }
+    std::string id = table->item(row, 0)->text().toStdString();
+    if (QMessageBox::question(this, "Xác Nhận", "Bạn có muốn xóa (ngừng chiếu) phim này?") == QMessageBox::Yes) {
+        if (movieManager->deleteMovie(id)) {
+            movieManager->save();
+            loadData();
         }
     }
 }

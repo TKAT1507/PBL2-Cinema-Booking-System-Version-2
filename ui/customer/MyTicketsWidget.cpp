@@ -1,63 +1,46 @@
 #include "MyTicketsWidget.h"
+#include "../common/Theme.h"
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QHeaderView>
 #include <QLabel>
 
-MyTicketsWidget::MyTicketsWidget(const QString& maKH, TicketManager* ticketManager, 
+MyTicketsWidget::MyTicketsWidget(const QString& maKH, TicketManager* ticketManager,
                                  ShowtimeManager* showtimeManager, MovieManager* movieManager, QWidget *parent)
     : QWidget(parent), maKhachHang(maKH), ticketManager(ticketManager), showtimeManager(showtimeManager), movieManager(movieManager)
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
-    layout->setContentsMargins(15, 15, 15, 15);
+    layout->setContentsMargins(26, 22, 26, 20);
     layout->setSpacing(14);
 
-    // Title & Search Bar
     QHBoxLayout *topLayout = new QHBoxLayout();
-    
+    topLayout->setSpacing(12);
+
+    QVBoxLayout *titleCol = new QVBoxLayout();
+    titleCol->setSpacing(2);
+    QLabel *lblEyebrow = new QLabel("LỊCH SỬ ĐẶT VÉ CỦA BẠN", this);
+    lblEyebrow->setStyleSheet(Theme::sectionEyebrowStyle());
     QLabel *lblTitle = new QLabel("VÉ CỦA TÔI", this);
-    lblTitle->setStyleSheet("color: #EAB02F; font-size: 20px; font-weight: bold;");
-    topLayout->addWidget(lblTitle);
+    lblTitle->setStyleSheet(Theme::sectionTitleStyle());
+    titleCol->addWidget(lblEyebrow);
+    titleCol->addWidget(lblTitle);
+
+    topLayout->addLayout(titleCol);
     topLayout->addStretch();
 
     txtSearch = new QLineEdit(this);
-    txtSearch->setPlaceholderText("Tìm vé bằng mã vé / mã đơn...");
+    txtSearch->setPlaceholderText("Tìm theo mã vé hoặc mã đơn...");
     txtSearch->setFixedWidth(280);
-    txtSearch->setStyleSheet(R"(
-        QLineEdit {
-            background-color: #EAB02F;
-            color: #1A1A1A;
-            font-size: 13px;
-            font-weight: bold;
-            border-radius: 5px;
-            padding: 4px 10px;
-            min-height: 28px;
-        }
-    )");
+    txtSearch->setFixedHeight(40);
 
-    QPushButton *btnSearch = new QPushButton("Tìm", this);
+    QPushButton *btnSearch = new QPushButton("Tìm Kiếm", this);
     btnSearch->setCursor(Qt::PointingHandCursor);
-    btnSearch->setStyleSheet(R"(
-        QPushButton {
-            background-color: #A52C20;
-            color: #FFFFFF;
-            font-size: 13px;
-            font-weight: bold;
-            border-radius: 5px;
-            border: none;
-            min-height: 30px;
-            padding: 4px 16px;
-        }
-        QPushButton:hover {
-            background-color: #BD362A;
-        }
-    )");
+    btnSearch->setStyleSheet(Theme::primaryButtonStyle(38, 13));
 
-    topLayout->addWidget(txtSearch);
-    topLayout->addWidget(btnSearch);
+    topLayout->addWidget(txtSearch, 0, Qt::AlignVCenter);
+    topLayout->addWidget(btnSearch, 0, Qt::AlignVCenter);
     layout->addLayout(topLayout);
 
-    // Tickets Table
     tableTickets = new QTableWidget(this);
     tableTickets->setColumnCount(8);
     tableTickets->setHorizontalHeaderLabels(QStringList() << "STT" << "Mã Vé" << "Mã Đơn" << "Tên Phim" << "Suất Chiếu" << "Ghế" << "Giá Tiền" << "Trạng Thái");
@@ -69,13 +52,14 @@ MyTicketsWidget::MyTicketsWidget(const QString& maKH, TicketManager* ticketManag
     tableTickets->horizontalHeader()->setSectionResizeMode(5, QHeaderView::ResizeToContents);
     tableTickets->horizontalHeader()->setSectionResizeMode(6, QHeaderView::ResizeToContents);
     tableTickets->horizontalHeader()->setSectionResizeMode(7, QHeaderView::ResizeToContents);
+    tableTickets->verticalHeader()->setDefaultSectionSize(46);
     tableTickets->setSelectionBehavior(QAbstractItemView::SelectRows);
     tableTickets->setSelectionMode(QAbstractItemView::SingleSelection);
     tableTickets->setEditTriggers(QAbstractItemView::NoEditTriggers);
     tableTickets->setAlternatingRowColors(true);
     tableTickets->verticalHeader()->setVisible(false);
 
-    layout->addWidget(tableTickets);
+    layout->addWidget(tableTickets, 1);
 
     connect(btnSearch, &QPushButton::clicked, this, &MyTicketsWidget::loadTickets);
     connect(txtSearch, &QLineEdit::returnPressed, this, &MyTicketsWidget::loadTickets);
@@ -85,15 +69,14 @@ MyTicketsWidget::MyTicketsWidget(const QString& maKH, TicketManager* ticketManag
 
 void MyTicketsWidget::loadTickets() {
     auto tickets = ticketManager->getTicketsByCustomer(maKhachHang.toStdString());
-    
     QString search = txtSearch->text().trimmed();
-    
+
     tableTickets->setRowCount(0);
-    
+
     int rowCount = 0;
     for (int i = 0; i < tickets.size(); ++i) {
         auto t = tickets[i];
-        
+
         QString maVe = QString::fromStdString(t.getMaVe());
         QString maCumVe = QString::fromStdString(t.getMaCumVe());
 
@@ -102,81 +85,78 @@ void MyTicketsWidget::loadTickets() {
                 continue;
             }
         }
-        
+
         tableTickets->insertRow(rowCount);
-        
+
         auto showtime = showtimeManager->findById(t.getMaSuatChieu());
-        QString tenPhim = "Unknown";
-        QString suatInfo = "Unknown";
+        QString tenPhim = "Không xác định";
+        QString suatInfo = "Không xác định";
         if (showtime) {
             auto movie = movieManager->findById(showtime->getMaPhim());
             if (movie) tenPhim = QString::fromStdString(movie->getTenPhim());
-            suatInfo = QString::fromStdString(showtime->getNgayChieu() + " " + showtime->getGioChieu());
+            suatInfo = QString::fromStdString(showtime->getNgayChieu() + "  " + showtime->getGioChieu());
         }
 
         QString ghe = QString(QChar('A' + t.getHang())) + QString::number(t.getCot() + 1);
-        
+
         QString trangThaiStr;
         QColor statusColor;
         std::string status = t.getTrangThai();
         if (status == "PENDING") {
             trangThaiStr = "Đang chờ duyệt";
-            statusColor = QColor("#EAB02F"); // Yellow-gold
+            statusColor = QColor("#FFD166");
         } else if (status == "VALID") {
             trangThaiStr = "Hợp lệ";
-            statusColor = QColor("#28A745"); // Green
+            statusColor = QColor("#34D399");
         } else if (status == "USED") {
             trangThaiStr = "Đã sử dụng";
-            statusColor = QColor("#AAAAAA"); // Gray
+            statusColor = QColor("#9AA2C2");
         } else {
             trangThaiStr = "Đã hủy";
-            statusColor = QColor("#FF4D4D"); // Red
+            statusColor = QColor("#FF858D");
         }
 
-        // STT column
+        QFont boldFont = tableTickets->font();
+        boldFont.setBold(true);
+
         QTableWidgetItem* itemIdx = new QTableWidgetItem(QString::number(rowCount + 1));
         itemIdx->setTextAlignment(Qt::AlignCenter);
         tableTickets->setItem(rowCount, 0, itemIdx);
 
-        // Ma Ve
         QTableWidgetItem* itemMaVe = new QTableWidgetItem(maVe);
         itemMaVe->setTextAlignment(Qt::AlignCenter);
-        itemMaVe->setFont(QFont("Segoe UI", 9, QFont::Bold));
+        itemMaVe->setFont(boldFont);
         tableTickets->setItem(rowCount, 1, itemMaVe);
 
-        // Ma Cum Ve / Don
-        QTableWidgetItem* itemMaDon = new QTableWidgetItem(maCumVe.isEmpty() ? "-" : maCumVe);
+        QTableWidgetItem* itemMaDon = new QTableWidgetItem(maCumVe.isEmpty() ? "—" : maCumVe);
         itemMaDon->setTextAlignment(Qt::AlignCenter);
-        itemMaDon->setForeground(QBrush(QColor("#EAB02F")));
+        itemMaDon->setFont(boldFont);
+        itemMaDon->setForeground(QBrush(QColor("#8C92FF")));
         tableTickets->setItem(rowCount, 2, itemMaDon);
 
-        // Ten Phim
         tableTickets->setItem(rowCount, 3, new QTableWidgetItem(tenPhim));
 
-        // Suat
         QTableWidgetItem* itemSuat = new QTableWidgetItem(suatInfo);
         itemSuat->setTextAlignment(Qt::AlignCenter);
         tableTickets->setItem(rowCount, 4, itemSuat);
-        
-        // Ghe
+
         QTableWidgetItem* seatItem = new QTableWidgetItem(ghe);
         seatItem->setTextAlignment(Qt::AlignCenter);
-        seatItem->setFont(QFont("Segoe UI", 9, QFont::Bold));
+        seatItem->setFont(boldFont);
         tableTickets->setItem(rowCount, 5, seatItem);
-        
-        // Gia
+
         QTableWidgetItem* priceItem = new QTableWidgetItem(QString("%L1 VND").arg(t.getGiaVe(), 0, 'f', 0));
         priceItem->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
-        priceItem->setForeground(QBrush(QColor("#EAB02F")));
+        priceItem->setFont(boldFont);
+        priceItem->setForeground(QBrush(QColor("#FFD166")));
         tableTickets->setItem(rowCount, 6, priceItem);
-        
-        // Trang Thai
+
         QTableWidgetItem *statusItem = new QTableWidgetItem(trangThaiStr);
         statusItem->setTextAlignment(Qt::AlignCenter);
-        statusItem->setFont(QFont("Segoe UI", 9, QFont::Bold));
+        statusItem->setFont(boldFont);
         statusItem->setForeground(QBrush(statusColor));
         tableTickets->setItem(rowCount, 7, statusItem);
-        
+
         rowCount++;
     }
 }

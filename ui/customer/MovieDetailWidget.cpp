@@ -1,54 +1,68 @@
 #include "MovieDetailWidget.h"
+#include "../common/Theme.h"
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QPixmap>
 #include <QMessageBox>
-#include <QFileInfo>
-#include <QCoreApplication>
 #include <QFrame>
-#include <QScrollArea>
 
 MovieDetailWidget::MovieDetailWidget(MovieManager* movieManager, QWidget *parent)
     : QWidget(parent), movieManager(movieManager), customerAge(0)
 {
-    QHBoxLayout *rootLayout = new QHBoxLayout(this);
-    rootLayout->setContentsMargins(15, 15, 15, 15);
-    rootLayout->setSpacing(20);
+    QVBoxLayout *outerLayout = new QVBoxLayout(this);
+    outerLayout->setContentsMargins(26, 22, 26, 20);
+    outerLayout->setSpacing(16);
 
-    // Left side: Large Poster
-    lblPoster = new QLabel(this);
-    lblPoster->setFixedSize(300, 440);
-    lblPoster->setAlignment(Qt::AlignCenter);
-    lblPoster->setStyleSheet(R"(
-        QLabel {
-            background-color: #121330;
-            border: 2px solid #EAB02F;
-            border-radius: 10px;
+    QLabel *lblEyebrow = new QLabel("THÔNG TIN TÁC PHẨM", this);
+    lblEyebrow->setStyleSheet(Theme::sectionEyebrowStyle());
+    outerLayout->addWidget(lblEyebrow);
+
+    QHBoxLayout *contentLayout = new QHBoxLayout();
+    contentLayout->setSpacing(26);
+
+    // Left side: Soft Framed Poster
+    QFrame *posterFrame = new QFrame(this);
+    posterFrame->setFixedSize(316, 460);
+    posterFrame->setStyleSheet(R"(
+        QFrame {
+            background-color: #22263C;
+            border: 1.5px solid #3A4166;
+            border-radius: 20px;
         }
     )");
-    lblPoster->setScaledContents(true);
+    QVBoxLayout *posterLayout = new QVBoxLayout(posterFrame);
+    posterLayout->setContentsMargins(9, 9, 9, 9);
+
+    lblPoster = new QLabel(posterFrame);
+    lblPoster->setFixedSize(298, 442);
+    lblPoster->setAlignment(Qt::AlignCenter);
+    lblPoster->setStyleSheet("background-color: #181B2C; border-radius: 14px; border: none;");
+    posterLayout->addWidget(lblPoster);
 
     // Right side: Info Container
     QWidget *rightContainer = new QWidget(this);
+    rightContainer->setStyleSheet("background: transparent;");
     QVBoxLayout *infoLayout = new QVBoxLayout(rightContainer);
     infoLayout->setContentsMargins(0, 0, 0, 0);
-    infoLayout->setSpacing(12);
+    infoLayout->setSpacing(14);
 
-    lblTenPhim = new QLabel(this);
-    lblTenPhim->setStyleSheet("color: #EAB02F; font-size: 22px; font-weight: bold;");
+    lblTenPhim = new QLabel(rightContainer);
+    lblTenPhim->setStyleSheet("color: #F3F4FA; font-size: 26px; font-weight: bold;");
     lblTenPhim->setWordWrap(true);
 
     QHBoxLayout *tagsLayout = new QHBoxLayout();
-    tagsLayout->setSpacing(15);
+    tagsLayout->setSpacing(10);
 
-    lblTheLoai = new QLabel(this);
-    lblTheLoai->setStyleSheet("color: #FFFFFF; font-size: 13px; font-weight: bold; background-color: #26295C; padding: 4px 10px; border-radius: 4px; border: 1px solid #434994;");
+    QString pillStyle = "color: #C5CAFF; font-size: 12px; font-weight: 600; background-color: #282D4F; padding: 6px 14px; border-radius: 10px; border: 1px solid #444C80;";
 
-    lblThoiLuong = new QLabel(this);
-    lblThoiLuong->setStyleSheet("color: #FFFFFF; font-size: 13px; font-weight: bold; background-color: #26295C; padding: 4px 10px; border-radius: 4px; border: 1px solid #434994;");
+    lblTheLoai = new QLabel(rightContainer);
+    lblTheLoai->setStyleSheet(pillStyle);
 
-    lblDoTuoi = new QLabel(this);
-    lblDoTuoi->setStyleSheet("color: #FFFFFF; font-size: 13px; font-weight: bold; background-color: #A52C20; padding: 4px 10px; border-radius: 4px;");
+    lblThoiLuong = new QLabel(rightContainer);
+    lblThoiLuong->setStyleSheet(pillStyle);
+
+    lblDoTuoi = new QLabel(rightContainer);
+    lblDoTuoi->setStyleSheet(Theme::ageBadgeStyle(18));
 
     tagsLayout->addWidget(lblTheLoai);
     tagsLayout->addWidget(lblThoiLuong);
@@ -56,100 +70,84 @@ MovieDetailWidget::MovieDetailWidget(MovieManager* movieManager, QWidget *parent
     tagsLayout->addStretch();
 
     // Box: MÔ TẢ
-    QFrame *boxMoTa = new QFrame(this);
+    QFrame *boxMoTa = new QFrame(rightContainer);
+    boxMoTa->setObjectName("detailBox");
     boxMoTa->setStyleSheet(R"(
-        QFrame {
-            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #2C2E6A, stop:1 #20224F);
-            border: 1px solid #4A4D94;
-            border-radius: 8px;
-            padding: 10px;
+        QFrame#detailBox {
+            background-color: #22263C;
+            border: 1px solid #323859;
+            border-radius: 16px;
         }
     )");
     QVBoxLayout *layoutMoTa = new QVBoxLayout(boxMoTa);
-    layoutMoTa->setContentsMargins(10, 8, 10, 8);
+    layoutMoTa->setContentsMargins(18, 14, 18, 14);
     layoutMoTa->setSpacing(6);
 
-    QLabel *lblTitleMoTa = new QLabel("MÔ TẢ", boxMoTa);
-    lblTitleMoTa->setStyleSheet("color: #EAB02F; font-size: 14px; font-weight: bold; border: none; background: transparent;");
+    QLabel *lblTitleMoTa = new QLabel("MÔ TẢ NGẮN", boxMoTa);
+    lblTitleMoTa->setStyleSheet("color: #FFD166; font-size: 11px; font-weight: bold; letter-spacing: 1.5px; border: none; background: transparent;");
     lblMoTa = new QLabel(boxMoTa);
-    lblMoTa->setStyleSheet("color: #E6E6FA; font-size: 13px; border: none; background: transparent;");
+    lblMoTa->setStyleSheet("color: #E2E5F5; font-size: 13px; border: none; background: transparent;");
     lblMoTa->setWordWrap(true);
 
     layoutMoTa->addWidget(lblTitleMoTa);
     layoutMoTa->addWidget(lblMoTa);
 
     // Box: NỘI DUNG PHIM
-    QFrame *boxNoiDung = new QFrame(this);
+    QFrame *boxNoiDung = new QFrame(rightContainer);
+    boxNoiDung->setObjectName("detailBoxContent");
     boxNoiDung->setStyleSheet(R"(
-        QFrame {
-            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #2C2E6A, stop:1 #20224F);
-            border: 1px solid #4A4D94;
-            border-radius: 8px;
-            padding: 10px;
+        QFrame#detailBoxContent {
+            background-color: #22263C;
+            border: 1px solid #323859;
+            border-radius: 16px;
         }
     )");
     QVBoxLayout *layoutNoiDung = new QVBoxLayout(boxNoiDung);
-    layoutNoiDung->setContentsMargins(10, 8, 10, 8);
+    layoutNoiDung->setContentsMargins(18, 14, 18, 14);
     layoutNoiDung->setSpacing(6);
 
     QLabel *lblTitleNoiDung = new QLabel("NỘI DUNG PHIM", boxNoiDung);
-    lblTitleNoiDung->setStyleSheet("color: #EAB02F; font-size: 14px; font-weight: bold; border: none; background: transparent;");
+    lblTitleNoiDung->setStyleSheet("color: #8C92FF; font-size: 11px; font-weight: bold; letter-spacing: 1.5px; border: none; background: transparent;");
     lblNoiDung = new QLabel(boxNoiDung);
-    lblNoiDung->setStyleSheet("color: #E6E6FA; font-size: 13px; border: none; background: transparent;");
+    lblNoiDung->setStyleSheet("color: #C8CEE8; font-size: 13px; border: none; background: transparent;");
     lblNoiDung->setWordWrap(true);
 
     layoutNoiDung->addWidget(lblTitleNoiDung);
     layoutNoiDung->addWidget(lblNoiDung);
 
-    // Action buttons
-    QHBoxLayout *btnLayout = new QHBoxLayout();
-    btnLayout->setSpacing(15);
-
-    QString btnStyle = R"(
-        QPushButton {
-            background-color: #A52C20;
-            color: #FFFFFF;
-            font-size: 14px;
-            font-weight: bold;
-            border-radius: 6px;
-            border: none;
-            min-height: 40px;
-            padding: 6px 20px;
-        }
-        QPushButton:hover {
-            background-color: #BD362A;
-            border: 1px solid #EAB02F;
-        }
-    )";
-
-    btnBook = new QPushButton("Đặt Vé", this);
-    btnBook->setCursor(Qt::PointingHandCursor);
-    btnBook->setStyleSheet(btnStyle);
-
-    btnBack = new QPushButton("<- Quay Lại", this);
-    btnBack->setCursor(Qt::PointingHandCursor);
-    btnBack->setStyleSheet(btnStyle);
-
-    btnLayout->addWidget(btnBook);
-    btnLayout->addWidget(btnBack);
-    btnLayout->addStretch();
-
     // Age Warning Banner
-    lblAgeWarning = new QLabel(this);
+    lblAgeWarning = new QLabel(rightContainer);
     lblAgeWarning->setWordWrap(true);
-    lblAgeWarning->setStyleSheet("background-color: #A52C20; color: #FFFFFF; font-size: 13px; font-weight: bold; padding: 10px 14px; border-radius: 6px; border: 1px solid #FF8080;");
+    lblAgeWarning->setStyleSheet("background-color: #3B2030; color: #FFA1AA; font-size: 13px; font-weight: 600; padding: 14px 16px; border-radius: 12px; border: 1px solid #8F3448;");
     lblAgeWarning->setVisible(false);
+
+    QHBoxLayout *btnLayout = new QHBoxLayout();
+    btnLayout->setSpacing(12);
+
+    btnBack = new QPushButton("Quay Lại", rightContainer);
+    btnBack->setCursor(Qt::PointingHandCursor);
+    btnBack->setStyleSheet(Theme::secondaryButtonStyle(44, 14));
+
+    btnBook = new QPushButton("Đặt Vé Ngay", rightContainer);
+    btnBook->setCursor(Qt::PointingHandCursor);
+    btnBook->setStyleSheet(Theme::primaryButtonStyle(44, 14));
+
+    btnLayout->addWidget(btnBack);
+    btnLayout->addWidget(btnBook);
+    btnLayout->addStretch();
 
     infoLayout->addWidget(lblTenPhim);
     infoLayout->addLayout(tagsLayout);
     infoLayout->addWidget(boxMoTa);
     infoLayout->addWidget(boxNoiDung);
     infoLayout->addWidget(lblAgeWarning);
-    infoLayout->addStretch();
+    infoLayout->addSpacing(14);
     infoLayout->addLayout(btnLayout);
+    infoLayout->addStretch();
 
-    rootLayout->addWidget(lblPoster, 0, Qt::AlignTop);
-    rootLayout->addWidget(rightContainer, 1);
+    contentLayout->addWidget(posterFrame, 0, Qt::AlignTop);
+    contentLayout->addWidget(rightContainer, 1);
+    outerLayout->addLayout(contentLayout, 1);
 
     connect(btnBook, &QPushButton::clicked, this, [this]() {
         if (!currentMaPhim.isEmpty()) emit bookMovie(currentMaPhim);
@@ -165,66 +163,40 @@ void MovieDetailWidget::showMovie(const QString& maPhim) {
     auto m = movieManager->findById(maPhim.toStdString());
     if (m) {
         currentMaPhim = maPhim;
-        QString titleText = QString::fromStdString(m->getTenPhim()).toUpper();
+        QString titleText = QString::fromStdString(m->getTenPhim());
         lblTenPhim->setText(titleText);
         lblTheLoai->setText("Thể loại: " + QString::fromStdString(m->getTheLoai()));
         lblThoiLuong->setText(QString("Thời lượng: %1 phút").arg(m->getThoiLuong()));
-        
-        // Age Tag Formatting
-        if (m->getDoTuoi() == 0) {
-            lblDoTuoi->setText("P - Mọi lứa tuổi");
-            lblDoTuoi->setStyleSheet("color: #FFFFFF; font-size: 13px; font-weight: bold; background-color: #28A745; padding: 4px 10px; border-radius: 4px;");
-        } else if (m->getDoTuoi() == 13) {
-            lblDoTuoi->setText("C13 - Từ 13 tuổi");
-            lblDoTuoi->setStyleSheet("color: #1A1A1A; font-size: 13px; font-weight: bold; background-color: #EAB02F; padding: 4px 10px; border-radius: 4px;");
-        } else if (m->getDoTuoi() == 16) {
-            lblDoTuoi->setText("C16 - Từ 16 tuổi");
-            lblDoTuoi->setStyleSheet("color: #FFFFFF; font-size: 13px; font-weight: bold; background-color: #E06D14; padding: 4px 10px; border-radius: 4px;");
-        } else {
-            lblDoTuoi->setText(QString("C%1 - Từ %1 tuổi").arg(m->getDoTuoi()));
-            lblDoTuoi->setStyleSheet("color: #FFFFFF; font-size: 13px; font-weight: bold; background-color: #A52C20; padding: 4px 10px; border-radius: 4px;");
-        }
 
-        // Age check against current Customer
+        lblDoTuoi->setText(Theme::ageBadgeText(m->getDoTuoi(), true));
+        lblDoTuoi->setStyleSheet(Theme::ageBadgeStyle(m->getDoTuoi()));
+
         if (customerAge > 0 && m->getDoTuoi() > 0 && customerAge < m->getDoTuoi()) {
-            lblAgeWarning->setText(QString("⛔ GIỚI HẠN ĐỘ TUỔI: Phim này được dán nhãn C%1 (Khán giả từ đủ %1 tuổi trở lên).\n"
+            lblAgeWarning->setText(QString("GIỚI HẠN ĐỘ TUỔI: Phim này được dán nhãn C%1 (dành cho khán giả từ đủ %1 tuổi trở lên).\n"
                                            "Tài khoản của bạn hiện %2 tuổi, chưa đủ điều kiện theo quy định của Cục Điện ảnh để đặt vé xem phim này.")
                                        .arg(m->getDoTuoi())
                                        .arg(customerAge));
             lblAgeWarning->setVisible(true);
             btnBook->setText(QString("Chưa Đủ Tuổi (C%1)").arg(m->getDoTuoi()));
             btnBook->setEnabled(false);
-            btnBook->setStyleSheet("background-color: #555566; color: #BBBBBB; font-size: 14px; font-weight: bold; border-radius: 6px; min-height: 40px; padding: 6px 25px; border: none;");
+            btnBook->setStyleSheet(Theme::primaryButtonStyle(44, 14));
         } else {
             lblAgeWarning->setVisible(false);
             btnBook->setText("Đặt Vé Ngay");
             btnBook->setEnabled(true);
-            btnBook->setStyleSheet("background-color: #A52C20; color: #FFFFFF; font-size: 14px; font-weight: bold; border-radius: 6px; min-height: 40px; padding: 6px 25px; border: none;");
+            btnBook->setStyleSheet(Theme::primaryButtonStyle(44, 14));
         }
 
         lblMoTa->setText(QString::fromStdString(m->getMoTa()));
         lblNoiDung->setText(QString::fromStdString(m->getNoiDung()));
-        
-        QString posterPath = QString::fromStdString(m->getPoster());
-        QPixmap pixmap;
-        if (QFileInfo::exists(posterPath)) {
-            pixmap.load(posterPath);
-        } else {
-            QString alt1 = "posters/" + QFileInfo(posterPath).fileName();
-            if (QFileInfo::exists(alt1)) {
-                pixmap.load(alt1);
-            } else {
-                QString alt2 = QCoreApplication::applicationDirPath() + "/" + posterPath;
-                if (QFileInfo::exists(alt2)) {
-                    pixmap.load(alt2);
-                }
-            }
-        }
 
+        QPixmap pixmap = Theme::loadPosterPixmap(QString::fromStdString(m->getPoster()));
         if (!pixmap.isNull()) {
-            lblPoster->setPixmap(pixmap.scaled(300, 440, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            lblPoster->setPixmap(Theme::roundedCoverPixmap(pixmap, 298, 442, 14));
         } else {
+            lblPoster->setPixmap(QPixmap());
             lblPoster->setText("POSTER PHIM\n" + QString::fromStdString(m->getTenPhim()));
+            lblPoster->setWordWrap(true);
         }
     } else {
         QMessageBox::critical(this, "Lỗi", "Không tìm thấy phim!");

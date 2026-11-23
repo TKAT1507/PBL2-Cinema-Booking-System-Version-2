@@ -1,4 +1,5 @@
 #include "SaleWidget.h"
+#include "../common/Theme.h"
 #include <QDate>
 #include <QScrollArea>
 #include <QFrame>
@@ -18,37 +19,88 @@ SaleWidget::SaleWidget(const std::string& maNV, MovieManager* movieMgr, RoomMana
                        ShowtimeManager* showtimeMgr, TicketManager* ticketMgr,
                        ComboManager* comboMgr, QWidget* parent)
     : QWidget(parent), maNhanVien(maNV), movieManager(movieMgr), roomManager(roomMgr),
-      showtimeManager(showtimeMgr), ticketManager(ticketMgr), comboManager(comboMgr) {
-    
+      showtimeManager(showtimeMgr), ticketManager(ticketMgr), comboManager(comboMgr),
+      lblSelectedSeats(nullptr)
+{
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
+    mainLayout->setContentsMargins(26, 20, 26, 18);
+    mainLayout->setSpacing(14);
+
+    // Top Soft Pill Stepper Bar
+    QFrame* stepperFrame = new QFrame(this);
+    stepperFrame->setStyleSheet("QFrame { background-color: #22263C; border: 1px solid #323859; border-radius: 16px; }");
+    QHBoxLayout* stepperLayout = new QHBoxLayout(stepperFrame);
+    stepperLayout->setContentsMargins(14, 10, 14, 10);
+    stepperLayout->setSpacing(8);
+
+    QStringList stepNames = {
+        "1. Chọn Phim",
+        "2. Suất Chiếu",
+        "3. Chọn Ghế",
+        "4. Combo",
+        "5. Xác Nhận",
+        "6. Hoàn Tất"
+    };
+    for (int i = 0; i < stepNames.size(); ++i) {
+        QLabel* lbl = new QLabel(stepNames[i], stepperFrame);
+        lbl->setAlignment(Qt::AlignCenter);
+        lbl->setMinimumHeight(32);
+        stepIndicators.append(lbl);
+        stepperLayout->addWidget(lbl, 1);
+    }
+    mainLayout->addWidget(stepperFrame);
+
     stepWidget = new QStackedWidget(this);
-    
+    stepWidget->setStyleSheet("QStackedWidget { background: transparent; }");
+
     QWidget* step1 = new QWidget(); setupStep1(step1);
     QWidget* step2 = new QWidget(); setupStep2(step2);
     QWidget* step3 = new QWidget(); setupStep3(step3);
     QWidget* step4 = new QWidget(); setupStep4(step4);
     QWidget* step5 = new QWidget(); setupStep5(step5);
     QWidget* step6 = new QWidget(); setupStep6(step6);
-    
+
     stepWidget->addWidget(step1);
     stepWidget->addWidget(step2);
     stepWidget->addWidget(step3);
     stepWidget->addWidget(step4);
     stepWidget->addWidget(step5);
     stepWidget->addWidget(step6);
-    
-    mainLayout->addWidget(stepWidget);
-    
+
+    mainLayout->addWidget(stepWidget, 1);
+
+    connect(stepWidget, &QStackedWidget::currentChanged, this, &SaleWidget::updateStepIndicator);
+    updateStepIndicator(0);
+
     loadMovies();
+}
+
+void SaleWidget::updateStepIndicator(int currentStep) {
+    for (int i = 0; i < stepIndicators.size(); ++i) {
+        if (i == currentStep) {
+            stepIndicators[i]->setStyleSheet(
+                "background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #FF6B6B, stop:1 #FF8E72); "
+                "color: #FFFFFF; font-size: 12px; font-weight: bold; "
+                "border-radius: 10px; padding: 4px 10px; border: none;");
+        } else if (i < currentStep) {
+            stepIndicators[i]->setStyleSheet(
+                "background-color: #1B3635; color: #34D399; font-size: 12px; font-weight: bold; "
+                "border-radius: 10px; padding: 4px 10px; border: 1px solid #2A6E5C;");
+        } else {
+            stepIndicators[i]->setStyleSheet(
+                "background-color: #1A1D2F; color: #7C84A8; font-size: 12px; font-weight: 600; "
+                "border-radius: 10px; padding: 4px 10px; border: 1px solid #2D3352;");
+        }
+    }
 }
 
 void SaleWidget::setupStep1(QWidget* page) {
     QVBoxLayout* layout = new QVBoxLayout(page);
-    layout->setContentsMargins(15, 12, 15, 12);
+    layout->setContentsMargins(0, 4, 0, 0);
     layout->setSpacing(12);
 
-    QLabel *lblTitle = new QLabel("BƯỚC 1: CHỌN PHIM BÁN VÉ", page);
-    lblTitle->setStyleSheet("color: #EAB02F; font-size: 16px; font-weight: bold;");
+    QLabel *lblTitle = new QLabel("CHỌN PHIM BÁN VÉ TẠI QUẦY", page);
+    lblTitle->setStyleSheet(Theme::sectionTitleStyle());
     layout->addWidget(lblTitle);
 
     movieTable = new QTableWidget(0, 4, page);
@@ -57,29 +109,35 @@ void SaleWidget::setupStep1(QWidget* page) {
     movieTable->setSelectionMode(QAbstractItemView::SingleSelection);
     movieTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     movieTable->setAlternatingRowColors(true);
-    movieTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    movieTable->verticalHeader()->setDefaultSectionSize(40);
+    movieTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
+    movieTable->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+    movieTable->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
+    movieTable->horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
+    movieTable->verticalHeader()->setDefaultSectionSize(46);
     movieTable->verticalHeader()->setVisible(false);
-    layout->addWidget(movieTable);
-    
+    layout->addWidget(movieTable, 1);
+
     QHBoxLayout *btnLayout = new QHBoxLayout();
-    QPushButton* nextBtn = new QPushButton("Tiếp Tục ->", page);
+    QPushButton* nextBtn = new QPushButton("Tiếp Tục Chọn Suất", page);
     nextBtn->setCursor(Qt::PointingHandCursor);
-    nextBtn->setStyleSheet("background-color: #28A745; color: white; padding: 8px 24px; font-weight: bold; border-radius: 6px; min-height: 36px;");
+    nextBtn->setStyleSheet(Theme::primaryButtonStyle(42, 14));
     btnLayout->addStretch();
     btnLayout->addWidget(nextBtn);
     layout->addLayout(btnLayout);
-    
-    connect(nextBtn, &QPushButton::clicked, [this]() {
+
+    auto proceed = [this]() {
         int row = movieTable->currentRow();
-        if(row >= 0) {
+        if (row >= 0) {
             selectedMovieId = movieTable->item(row, 0)->text().toStdString();
             loadShowtimes();
             stepWidget->setCurrentIndex(1);
         } else {
-            QMessageBox::warning(this, "Thông báo", "Vui lòng chọn 1 bộ phim.");
+            QMessageBox::warning(this, "Thông Báo", "Vui lòng chọn 1 bộ phim.");
         }
-    });
+    };
+
+    connect(nextBtn, &QPushButton::clicked, this, proceed);
+    connect(movieTable, &QTableWidget::doubleClicked, this, proceed);
 }
 
 void SaleWidget::loadMovies() {
@@ -87,20 +145,32 @@ void SaleWidget::loadMovies() {
     movieTable->setColumnCount(4);
     movieTable->setHorizontalHeaderLabels({"Mã Phim", "Tên Phim", "Độ Tuổi", "Thời Lượng"});
     auto movies = movieManager->getActiveMovies();
-    for(int i = 0; i < movies.size(); ++i) {
+    QFont boldFont = movieTable->font();
+    boldFont.setBold(true);
+
+    for (int i = 0; i < movies.size(); ++i) {
         movieTable->insertRow(i);
-        movieTable->setItem(i, 0, new QTableWidgetItem(QString::fromStdString(movies[i].getMaPhim())));
-        movieTable->setItem(i, 1, new QTableWidgetItem(QString::fromStdString(movies[i].getTenPhim())));
-        
+
+        QTableWidgetItem* idItem = new QTableWidgetItem(QString::fromStdString(movies[i].getMaPhim()));
+        idItem->setTextAlignment(Qt::AlignCenter);
+        idItem->setForeground(QBrush(QColor("#8C92FF")));
+        idItem->setFont(boldFont);
+        movieTable->setItem(i, 0, idItem);
+
+        QTableWidgetItem* nameItem = new QTableWidgetItem(QString::fromStdString(movies[i].getTenPhim()));
+        nameItem->setFont(boldFont);
+        movieTable->setItem(i, 1, nameItem);
+
         QString ageStr = movies[i].getDoTuoi() == 0 ? "P (Mọi lứa tuổi)" : QString("C%1 (%1+)").arg(movies[i].getDoTuoi());
         QTableWidgetItem* ageItem = new QTableWidgetItem(ageStr);
         ageItem->setTextAlignment(Qt::AlignCenter);
+        ageItem->setFont(boldFont);
         if (movies[i].getDoTuoi() >= 18) {
-            ageItem->setForeground(QBrush(QColor("#FF6B6B")));
+            ageItem->setForeground(QBrush(QColor("#FF858D")));
         } else if (movies[i].getDoTuoi() >= 13) {
-            ageItem->setForeground(QBrush(QColor("#EAB02F")));
+            ageItem->setForeground(QBrush(QColor("#FFD166")));
         } else {
-            ageItem->setForeground(QBrush(QColor("#51CF66")));
+            ageItem->setForeground(QBrush(QColor("#34D399")));
         }
         movieTable->setItem(i, 2, ageItem);
 
@@ -112,86 +182,99 @@ void SaleWidget::loadMovies() {
 
 void SaleWidget::setupStep2(QWidget* page) {
     QVBoxLayout* layout = new QVBoxLayout(page);
-    layout->setContentsMargins(15, 12, 15, 12);
+    layout->setContentsMargins(0, 4, 0, 0);
     layout->setSpacing(12);
 
-    QLabel *lblTitle = new QLabel("BƯỚC 2: CHỌN SUẤT CHIẾU", page);
-    lblTitle->setStyleSheet("color: #EAB02F; font-size: 16px; font-weight: bold;");
+    QLabel *lblTitle = new QLabel("CHỌN SUẤT CHIẾU", page);
+    lblTitle->setStyleSheet(Theme::sectionTitleStyle());
     layout->addWidget(lblTitle);
 
     showtimeTable = new QTableWidget(0, 4, page);
-    showtimeTable->setHorizontalHeaderLabels({"Mã Suất Chiếu", "Phòng", "Ngày", "Giờ"});
+    showtimeTable->setHorizontalHeaderLabels({"Mã Suất Chiếu", "Phòng", "Ngày Chiếu", "Giờ Chiếu"});
     showtimeTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     showtimeTable->setSelectionMode(QAbstractItemView::SingleSelection);
     showtimeTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     showtimeTable->setAlternatingRowColors(true);
     showtimeTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    showtimeTable->verticalHeader()->setDefaultSectionSize(40);
+    showtimeTable->verticalHeader()->setDefaultSectionSize(46);
     showtimeTable->verticalHeader()->setVisible(false);
-    layout->addWidget(showtimeTable);
-    
-    QHBoxLayout* btnLayout = new QHBoxLayout();
-    btnLayout->setSpacing(15);
-    QPushButton* backBtn = new QPushButton("<- Quay Lại", page);
-    backBtn->setCursor(Qt::PointingHandCursor);
-    backBtn->setStyleSheet("background-color: #A52C20; color: white; padding: 8px 20px; font-weight: bold; border-radius: 6px; min-height: 36px;");
+    layout->addWidget(showtimeTable, 1);
 
-    QPushButton* nextBtn = new QPushButton("Tiếp Tục ->", page);
+    QHBoxLayout* btnLayout = new QHBoxLayout();
+    btnLayout->setSpacing(12);
+    QPushButton* backBtn = new QPushButton("Quay Lại", page);
+    backBtn->setCursor(Qt::PointingHandCursor);
+    backBtn->setStyleSheet(Theme::secondaryButtonStyle(42, 14));
+
+    QPushButton* nextBtn = new QPushButton("Tiếp Tục Chọn Ghế", page);
     nextBtn->setCursor(Qt::PointingHandCursor);
-    nextBtn->setStyleSheet("background-color: #28A745; color: white; padding: 8px 24px; font-weight: bold; border-radius: 6px; min-height: 36px;");
+    nextBtn->setStyleSheet(Theme::primaryButtonStyle(42, 14));
 
     btnLayout->addWidget(backBtn);
     btnLayout->addStretch();
     btnLayout->addWidget(nextBtn);
     layout->addLayout(btnLayout);
-    
-    connect(backBtn, &QPushButton::clicked, [this]() { stepWidget->setCurrentIndex(0); });
-    connect(nextBtn, &QPushButton::clicked, [this]() {
+
+    auto proceed = [this]() {
         int row = showtimeTable->currentRow();
-        if(row >= 0) {
+        if (row >= 0) {
             selectedShowtimeId = showtimeTable->item(row, 0)->text().toStdString();
-            
+
             Movie* m = movieManager ? movieManager->findById(selectedMovieId) : nullptr;
             if (m && m->getDoTuoi() > 0) {
                 QMessageBox msg(this);
                 msg.setWindowTitle("Lưu Ý Độ Tuổi");
                 msg.setIcon(QMessageBox::Warning);
-                msg.setText(QString("⚠️ <b>PHIM GIỚI HẠN ĐỘ TUỔI: C%1</b> (Dành cho khán giả từ đủ %1 tuổi trở lên)<br><br>"
+                msg.setText(QString("<b>PHIM GIỚI HẠN ĐỘ TUỔI: C%1</b> (Dành cho khán giả từ đủ %1 tuổi trở lên)<br><br>"
                                     "Phim: <b>%2</b><br><br>"
-                                    "Thu ngân vui lòng <b>kiểm tra giấy tờ tùy thân (CCCD/Thẻ học sinh)</b> của khách trước khi in vé!")
+                                    "Thu ngân vui lòng <b>kiểm tra giấy tờ tùy thân (CCCD / Thẻ học sinh)</b> của khách trước khi in vé!")
                                 .arg(m->getDoTuoi())
                                 .arg(QString::fromStdString(m->getTenPhim())));
-                msg.addButton("Đã Kiểm Tra & Tiếp Tục", QMessageBox::AcceptRole);
+                msg.addButton("Đã Kiểm Tra && Tiếp Tục", QMessageBox::AcceptRole);
                 msg.exec();
             }
 
             loadSeats();
             stepWidget->setCurrentIndex(2);
         } else {
-            QMessageBox::warning(this, "Thông báo", "Vui lòng chọn 1 suất chiếu.");
+            QMessageBox::warning(this, "Thông Báo", "Vui lòng chọn 1 suất chiếu.");
         }
-    });
+    };
+
+    connect(backBtn, &QPushButton::clicked, this, [this]() { stepWidget->setCurrentIndex(0); });
+    connect(nextBtn, &QPushButton::clicked, this, proceed);
+    connect(showtimeTable, &QTableWidget::doubleClicked, this, proceed);
 }
 
 void SaleWidget::loadShowtimes() {
     showtimeTable->setRowCount(0);
     auto showtimes = showtimeManager->getShowtimesByMovie(selectedMovieId);
+    QFont boldFont = showtimeTable->font();
+    boldFont.setBold(true);
+
     int rowCount = 0;
-    for(int i = 0; i < showtimes.size(); ++i) {
-        if(showtimes[i].getTrangThai()) {
+    for (int i = 0; i < showtimes.size(); ++i) {
+        if (showtimes[i].getTrangThai()) {
             showtimeTable->insertRow(rowCount);
-            showtimeTable->setItem(rowCount, 0, new QTableWidgetItem(QString::fromStdString(showtimes[i].getMaSuatChieu())));
-            
+
+            QTableWidgetItem* idItem = new QTableWidgetItem(QString::fromStdString(showtimes[i].getMaSuatChieu()));
+            idItem->setTextAlignment(Qt::AlignCenter);
+            idItem->setFont(boldFont);
+            idItem->setForeground(QBrush(QColor("#8C92FF")));
+            showtimeTable->setItem(rowCount, 0, idItem);
+
             QTableWidgetItem* roomItem = new QTableWidgetItem(QString::fromStdString(showtimes[i].getMaPhong()));
             roomItem->setTextAlignment(Qt::AlignCenter);
             showtimeTable->setItem(rowCount, 1, roomItem);
-            
+
             QTableWidgetItem* dateItem = new QTableWidgetItem(QString::fromStdString(showtimes[i].getNgayChieu()));
             dateItem->setTextAlignment(Qt::AlignCenter);
             showtimeTable->setItem(rowCount, 2, dateItem);
-            
+
             QTableWidgetItem* timeItem = new QTableWidgetItem(QString::fromStdString(showtimes[i].getGioChieu()));
             timeItem->setTextAlignment(Qt::AlignCenter);
+            timeItem->setFont(boldFont);
+            timeItem->setForeground(QBrush(QColor("#FFD166")));
             showtimeTable->setItem(rowCount, 3, timeItem);
             rowCount++;
         }
@@ -199,136 +282,109 @@ void SaleWidget::loadShowtimes() {
 }
 
 void SaleWidget::updateSelectedSeatsLabel() {
-    if (lblSelectedSeats) {
-        lblSelectedSeats->setText(QString("Ghế đã chọn: %1 ghế").arg(selectedSeats.size()));
+    if (!lblSelectedSeats) return;
+    if (selectedSeats.size() == 0) {
+        lblSelectedSeats->setText("Ghế đã chọn: Chưa chọn ghế");
+        return;
     }
+    QStringList names;
+    for (int i = 0; i < selectedSeats.size(); ++i) {
+        names << QString(QChar('A' + selectedSeats[i].first)) + QString::number(selectedSeats[i].second + 1);
+    }
+    lblSelectedSeats->setText(QString("Đã chọn %1 ghế:  %2").arg(selectedSeats.size()).arg(names.join(", ")));
 }
 
 void SaleWidget::setupStep3(QWidget* page) {
     QVBoxLayout* layout = new QVBoxLayout(page);
-    layout->setContentsMargins(15, 12, 15, 12);
-    layout->setSpacing(10);
+    layout->setContentsMargins(0, 4, 0, 0);
+    layout->setSpacing(12);
 
-    // 1. Legend
-    QHBoxLayout *legendLayout = new QHBoxLayout();
+    QFrame* legendFrame = new QFrame(page);
+    legendFrame->setStyleSheet("QFrame { background-color: #22263C; border: 1px solid #323859; border-radius: 14px; }");
+    QHBoxLayout *legendLayout = new QHBoxLayout(legendFrame);
     legendLayout->setAlignment(Qt::AlignCenter);
-    legendLayout->setSpacing(14);
+    legendLayout->setContentsMargins(16, 8, 16, 8);
+    legendLayout->setSpacing(16);
 
-    auto createLegendItem = [page](const QString& text, const QString& style) {
-        QWidget* item = new QWidget(page);
+    auto createLegendItem = [legendFrame](const QString& text, int swatchType) {
+        QWidget* item = new QWidget(legendFrame);
+        item->setStyleSheet("background: transparent; border: none;");
         QHBoxLayout* l = new QHBoxLayout(item);
-        l->setContentsMargins(2, 2, 2, 2);
+        l->setContentsMargins(0, 0, 0, 0);
         l->setSpacing(6);
         QLabel* badge = new QLabel(item);
-        badge->setFixedSize(18, 18);
-        badge->setStyleSheet(style);
+        badge->setFixedSize(16, 16);
+        badge->setStyleSheet(Theme::seatLegendSwatchStyle(swatchType));
         QLabel* lbl = new QLabel(text, item);
-        lbl->setStyleSheet("color: #FFFFFF; font-size: 12px; font-weight: bold;");
+        lbl->setStyleSheet("color: #C8CEE8; font-size: 11px; font-weight: 600; background: transparent; border: none;");
         l->addWidget(badge);
         l->addWidget(lbl);
         return item;
     };
 
-    legendLayout->addWidget(createLegendItem("Thường trống", "background-color: #2E8B57; border-radius: 4px; border: 1px solid #1E5E3A;"));
-    legendLayout->addWidget(createLegendItem("Thường đã đặt", "background-color: #3D3D5C; border-radius: 4px; border: 1px solid #28283D;"));
-    legendLayout->addWidget(createLegendItem("VIP trống", "background-color: #EAB02F; border-radius: 4px; border: 1px solid #B88626;"));
-    legendLayout->addWidget(createLegendItem("VIP đã đặt", "background-color: #822017; border-radius: 4px; border: 1px solid #52100E;"));
-    legendLayout->addWidget(createLegendItem("Đang chọn", "background-color: #2980B9; border-radius: 4px; border: 1px solid #00D2D3;"));
-    layout->addLayout(legendLayout);
+    legendLayout->addWidget(createLegendItem("Thường trống", 0));
+    legendLayout->addWidget(createLegendItem("Thường đã đặt", 1));
+    legendLayout->addWidget(createLegendItem("VIP trống", 2));
+    legendLayout->addWidget(createLegendItem("VIP đã đặt", 3));
+    legendLayout->addWidget(createLegendItem("Đang chọn", 4));
+    layout->addWidget(legendFrame);
 
-    // 2. Simulated Screen Bar
-    QLabel *lblScreen = new QLabel("--- MÀN HÌNH CHIẾU PHIM ---", page);
+    QLabel *lblScreen = new QLabel("MÀN HÌNH CHIẾU PHIM", page);
     lblScreen->setAlignment(Qt::AlignCenter);
-    lblScreen->setFixedHeight(36);
-    lblScreen->setStyleSheet(R"(
-        QLabel {
-            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #B22824, stop:1 #7D1916);
-            color: #FFFFFF;
-            border: 1px solid #EAB02F;
-            border-radius: 6px;
-            font-weight: bold;
-            letter-spacing: 4px;
-            font-size: 13px;
-        }
-    )");
+    lblScreen->setFixedHeight(34);
+    lblScreen->setStyleSheet(Theme::screenBannerStyle());
     layout->addWidget(lblScreen);
 
-    // 3. Scroll Area for Seat Grid
-    QScrollArea *scrollArea = new QScrollArea(page);
+    QFrame* auditoriumFrame = new QFrame(page);
+    auditoriumFrame->setObjectName("cashierAuditorium");
+    auditoriumFrame->setStyleSheet("QFrame#cashierAuditorium { background-color: #1D2034; border: 1px solid #303654; border-radius: 20px; }");
+    QVBoxLayout* audLayout = new QVBoxLayout(auditoriumFrame);
+    audLayout->setContentsMargins(12, 12, 12, 12);
+
+    QScrollArea *scrollArea = new QScrollArea(auditoriumFrame);
     scrollArea->setWidgetResizable(true);
     scrollArea->setStyleSheet("QScrollArea { background: transparent; border: none; }");
 
     seatGridWidget = new QWidget(scrollArea);
     seatGridWidget->setStyleSheet("background: transparent;");
     seatGridLayout = new QGridLayout(seatGridWidget);
-    seatGridLayout->setSpacing(5);
+    seatGridLayout->setSpacing(7);
     seatGridLayout->setAlignment(Qt::AlignCenter);
 
     scrollArea->setWidget(seatGridWidget);
-    layout->addWidget(scrollArea, 1);
+    audLayout->addWidget(scrollArea);
+    layout->addWidget(auditoriumFrame, 1);
 
-    // 4. Bottom Info and Actions
-    QHBoxLayout *bottomLayout = new QHBoxLayout();
-    bottomLayout->setSpacing(15);
+    QFrame* bottomBar = new QFrame(page);
+    bottomBar->setStyleSheet("QFrame { background-color: #22263C; border: 1px solid #323859; border-radius: 16px; }");
+    QHBoxLayout *bottomLayout = new QHBoxLayout(bottomBar);
+    bottomLayout->setContentsMargins(18, 10, 18, 10);
+    bottomLayout->setSpacing(12);
 
-    lblSelectedSeats = new QLabel("Ghế đã chọn: 0 ghế", page);
-    lblSelectedSeats->setStyleSheet("font-size: 15px; font-weight: bold; color: #EAB02F;");
+    lblSelectedSeats = new QLabel("Ghế đã chọn: Chưa chọn ghế", bottomBar);
+    lblSelectedSeats->setStyleSheet("font-size: 14px; font-weight: bold; color: #FFD166; background: transparent; border: none;");
+    lblSelectedSeats->setWordWrap(true);
 
-    QString btnBackStyle = R"(
-        QPushButton {
-            background-color: #A52C20;
-            color: #FFFFFF;
-            font-size: 14px;
-            font-weight: bold;
-            border-radius: 6px;
-            border: none;
-            min-height: 38px;
-            padding: 6px 20px;
-        }
-        QPushButton:hover {
-            background-color: #BD362A;
-            border: 1px solid #EAB02F;
-        }
-    )";
-
-    QString btnNextStyle = R"(
-        QPushButton {
-            background-color: #28A745;
-            color: #FFFFFF;
-            font-size: 14px;
-            font-weight: bold;
-            border-radius: 6px;
-            border: none;
-            min-height: 38px;
-            padding: 6px 20px;
-        }
-        QPushButton:hover {
-            background-color: #34C759;
-            border: 1px solid #FFFFFF;
-        }
-    )";
-
-    QPushButton* backBtn = new QPushButton("<- Quay Lại", page);
+    QPushButton* backBtn = new QPushButton("Quay Lại", bottomBar);
     backBtn->setCursor(Qt::PointingHandCursor);
-    backBtn->setStyleSheet(btnBackStyle);
+    backBtn->setStyleSheet(Theme::secondaryButtonStyle(42, 14));
 
-    QPushButton* nextBtn = new QPushButton("Tiếp Tục ->", page);
+    QPushButton* nextBtn = new QPushButton("Tiếp Tục Chọn Combo", bottomBar);
     nextBtn->setCursor(Qt::PointingHandCursor);
-    nextBtn->setStyleSheet(btnNextStyle);
+    nextBtn->setStyleSheet(Theme::primaryButtonStyle(42, 14));
 
-    bottomLayout->addWidget(lblSelectedSeats);
-    bottomLayout->addStretch();
+    bottomLayout->addWidget(lblSelectedSeats, 1);
     bottomLayout->addWidget(backBtn);
     bottomLayout->addWidget(nextBtn);
-    layout->addLayout(bottomLayout);
+    layout->addWidget(bottomBar);
 
-    connect(backBtn, &QPushButton::clicked, [this]() { stepWidget->setCurrentIndex(1); });
-    connect(nextBtn, &QPushButton::clicked, [this]() {
-        if(selectedSeats.size() > 0) {
+    connect(backBtn, &QPushButton::clicked, this, [this]() { stepWidget->setCurrentIndex(1); });
+    connect(nextBtn, &QPushButton::clicked, this, [this]() {
+        if (selectedSeats.size() > 0) {
             loadCombos();
             stepWidget->setCurrentIndex(3);
         } else {
-            QMessageBox::warning(this, "Thông báo", "Vui lòng chọn ít nhất 1 ghế.");
+            QMessageBox::warning(this, "Thông Báo", "Vui lòng chọn ít nhất 1 ghế.");
         }
     });
 }
@@ -343,152 +399,67 @@ void SaleWidget::loadSeats() {
     updateSelectedSeatsLabel();
 
     SeatMap* sm = showtimeManager->findSeatMap(selectedShowtimeId);
-    if(!sm) return;
+    if (!sm) return;
 
     int rows = sm->getSoHang();
     int cols = sm->getSoCot();
 
-    for(int i = 0; i < rows; ++i) {
-        for(int j = 0; j < cols; ++j) {
+    for (int i = 0; i < rows; ++i) {
+        QLabel* rowLblLeft = new QLabel(QString(QChar('A' + i)), seatGridWidget);
+        rowLblLeft->setFixedSize(22, 36);
+        rowLblLeft->setAlignment(Qt::AlignCenter);
+        rowLblLeft->setStyleSheet("color: #707899; font-size: 11px; font-weight: bold; background: transparent;");
+        seatGridLayout->addWidget(rowLblLeft, i, 0);
+
+        for (int j = 0; j < cols; ++j) {
             QString seatName = QString(QChar('A' + i)) + QString::number(j + 1);
             QPushButton* btn = new QPushButton(seatName, seatGridWidget);
             btn->setFixedSize(38, 36);
 
             int status = sm->getSeatStatus(i, j);
+            btn->setStyleSheet(Theme::seatButtonStyle(status, false));
 
-            if(status == 0) { // Thuong trong
-                btn->setStyleSheet(R"(
-                    QPushButton {
-                        background-color: #2E8B57;
-                        color: #FFFFFF;
-                        border: 1px solid #1E5E3A;
-                        border-radius: 4px;
-                        font-weight: bold;
-                        font-size: 10px;
-                        padding: 0;
-                    }
-                    QPushButton:hover {
-                        border: 1px solid #FFFFFF;
-                    }
-                )");
-                btn->setCursor(Qt::PointingHandCursor);
-            } else if(status == 1) { // Thuong da dat
-                btn->setStyleSheet(R"(
-                    QPushButton {
-                        background-color: #3D3D5C;
-                        color: #888899;
-                        border: 1px solid #28283D;
-                        border-radius: 4px;
-                        font-weight: bold;
-                        font-size: 10px;
-                        padding: 0;
-                    }
-                )");
+            if (status == 1 || status == 3) {
                 btn->setEnabled(false);
                 btn->setCursor(Qt::ForbiddenCursor);
-            } else if(status == 2) { // VIP trong
-                btn->setStyleSheet(R"(
-                    QPushButton {
-                        background-color: #EAB02F;
-                        color: #1A1A1A;
-                        border: 1px solid #B88626;
-                        border-radius: 4px;
-                        font-weight: bold;
-                        font-size: 10px;
-                        padding: 0;
-                    }
-                    QPushButton:hover {
-                        border: 1px solid #FFFFFF;
-                    }
-                )");
+            } else {
                 btn->setCursor(Qt::PointingHandCursor);
-            } else if(status == 3) { // VIP da dat
-                btn->setStyleSheet(R"(
-                    QPushButton {
-                        background-color: #822017;
-                        color: #B37D7C;
-                        border: 1px solid #52100E;
-                        border-radius: 4px;
-                        font-weight: bold;
-                        font-size: 10px;
-                        padding: 0;
-                    }
-                )");
-                btn->setEnabled(false);
-                btn->setCursor(Qt::ForbiddenCursor);
-            }
-
-            if(status == 0 || status == 2) {
                 btn->setCheckable(true);
-                connect(btn, &QPushButton::toggled, [this, i, j, btn, status](bool checked) {
-                    if(checked) {
+                connect(btn, &QPushButton::toggled, this, [this, i, j, btn, status](bool checked) {
+                    if (checked) {
                         selectedSeats.push_back({i, j});
-                        btn->setStyleSheet(R"(
-                            QPushButton {
-                                background-color: #2980B9;
-                                color: #FFFFFF;
-                                border: 2px solid #00D2D3;
-                                border-radius: 4px;
-                                font-weight: bold;
-                                font-size: 10px;
-                                padding: 0;
-                            }
-                        )");
+                        btn->setStyleSheet(Theme::seatButtonStyle(status, true));
                     } else {
-                        for(int k = 0; k < selectedSeats.size(); ++k) {
-                            if(selectedSeats[k].first == i && selectedSeats[k].second == j) {
+                        for (int k = 0; k < selectedSeats.size(); ++k) {
+                            if (selectedSeats[k].first == i && selectedSeats[k].second == j) {
                                 selectedSeats.removeAt(k);
                                 break;
                             }
                         }
-                        if(status == 2) {
-                            btn->setStyleSheet(R"(
-                                QPushButton {
-                                    background-color: #EAB02F;
-                                    color: #1A1A1A;
-                                    border: 1px solid #B88626;
-                                    border-radius: 4px;
-                                    font-weight: bold;
-                                    font-size: 10px;
-                                    padding: 0;
-                                }
-                                QPushButton:hover {
-                                    border: 1px solid #FFFFFF;
-                                }
-                            )");
-                        } else {
-                            btn->setStyleSheet(R"(
-                                QPushButton {
-                                    background-color: #2E8B57;
-                                    color: #FFFFFF;
-                                    border: 1px solid #1E5E3A;
-                                    border-radius: 4px;
-                                    font-weight: bold;
-                                    font-size: 10px;
-                                    padding: 0;
-                                }
-                                QPushButton:hover {
-                                    border: 1px solid #FFFFFF;
-                                }
-                            )");
-                        }
+                        btn->setStyleSheet(Theme::seatButtonStyle(status, false));
                     }
                     updateSelectedSeatsLabel();
                 });
             }
 
-            seatGridLayout->addWidget(btn, i, j);
+            seatGridLayout->addWidget(btn, i, j + 1);
         }
+
+        QLabel* rowLblRight = new QLabel(QString(QChar('A' + i)), seatGridWidget);
+        rowLblRight->setFixedSize(22, 36);
+        rowLblRight->setAlignment(Qt::AlignCenter);
+        rowLblRight->setStyleSheet("color: #707899; font-size: 11px; font-weight: bold; background: transparent;");
+        seatGridLayout->addWidget(rowLblRight, i, cols + 1);
     }
 }
 
 void SaleWidget::setupStep4(QWidget* page) {
     QVBoxLayout* layout = new QVBoxLayout(page);
-    layout->setContentsMargins(15, 12, 15, 12);
+    layout->setContentsMargins(0, 4, 0, 0);
     layout->setSpacing(12);
 
     QLabel *lblTitle = new QLabel("CHỌN COMBO BẮP NƯỚC (NẾU CÓ)", page);
-    lblTitle->setStyleSheet("color: #EAB02F; font-size: 16px; font-weight: bold;");
+    lblTitle->setStyleSheet(Theme::sectionTitleStyle());
     layout->addWidget(lblTitle);
 
     comboTable = new QTableWidget(0, 4, page);
@@ -500,44 +471,45 @@ void SaleWidget::setupStep4(QWidget* page) {
     comboTable->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
     comboTable->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
     comboTable->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Fixed);
-    comboTable->setColumnWidth(3, 120);
-    comboTable->verticalHeader()->setDefaultSectionSize(48);
+    comboTable->setColumnWidth(3, 130);
+    comboTable->verticalHeader()->setDefaultSectionSize(52);
     comboTable->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     comboTable->verticalHeader()->setVisible(false);
-    layout->addWidget(comboTable);
-    
+    layout->addWidget(comboTable, 1);
+
     QHBoxLayout* btnLayout = new QHBoxLayout();
-    btnLayout->setSpacing(15);
-    QPushButton* backBtn = new QPushButton("<- Quay Lại", page);
+    btnLayout->setSpacing(12);
+
+    QPushButton* backBtn = new QPushButton("Quay Lại", page);
     backBtn->setCursor(Qt::PointingHandCursor);
-    backBtn->setStyleSheet("background-color: #A52C20; color: white; padding: 8px 20px; font-weight: bold; border-radius: 6px; min-height: 36px;");
+    backBtn->setStyleSheet(Theme::secondaryButtonStyle(42, 14));
 
     QPushButton* skipBtn = new QPushButton("Bỏ Qua Combo", page);
     skipBtn->setCursor(Qt::PointingHandCursor);
-    skipBtn->setStyleSheet("background-color: #EAB02F; color: #1A1A1A; padding: 8px 16px; font-weight: bold; border-radius: 6px; min-height: 36px;");
+    skipBtn->setStyleSheet(Theme::goldOutlineButtonStyle(42, 14));
 
-    QPushButton* nextBtn = new QPushButton("Tiếp Tục ->", page);
+    QPushButton* nextBtn = new QPushButton("Tiếp Tục Xác Nhận", page);
     nextBtn->setCursor(Qt::PointingHandCursor);
-    nextBtn->setStyleSheet("background-color: #28A745; color: white; padding: 8px 20px; font-weight: bold; border-radius: 6px; min-height: 36px;");
+    nextBtn->setStyleSheet(Theme::primaryButtonStyle(42, 14));
 
     btnLayout->addWidget(backBtn);
     btnLayout->addWidget(skipBtn);
     btnLayout->addStretch();
     btnLayout->addWidget(nextBtn);
     layout->addLayout(btnLayout);
-    
-    connect(backBtn, &QPushButton::clicked, [this]() { stepWidget->setCurrentIndex(2); });
-    connect(skipBtn, &QPushButton::clicked, [this]() {
+
+    connect(backBtn, &QPushButton::clicked, this, [this]() { stepWidget->setCurrentIndex(2); });
+    connect(skipBtn, &QPushButton::clicked, this, [this]() {
         selectedCombos = DynamicArray<std::pair<std::string, int>>();
         generatePreview();
         stepWidget->setCurrentIndex(4);
     });
-    connect(nextBtn, &QPushButton::clicked, [this]() {
+    connect(nextBtn, &QPushButton::clicked, this, [this]() {
         selectedCombos = DynamicArray<std::pair<std::string, int>>();
-        for(int i = 0; i < comboTable->rowCount(); ++i) {
+        for (int i = 0; i < comboTable->rowCount(); ++i) {
             QWidget* pWidget = comboTable->cellWidget(i, 3);
             QSpinBox* spin = pWidget ? pWidget->findChild<QSpinBox*>() : nullptr;
-            if(spin && spin->value() > 0) {
+            if (spin && spin->value() > 0) {
                 selectedCombos.push_back({comboTable->item(i, 0)->text().toStdString(), spin->value()});
             }
         }
@@ -549,17 +521,33 @@ void SaleWidget::setupStep4(QWidget* page) {
 void SaleWidget::loadCombos() {
     comboTable->setRowCount(0);
     auto combos = comboManager->getActiveCombos();
-    for(int i = 0; i < combos.size(); ++i) {
+    QFont boldFont = comboTable->font();
+    boldFont.setBold(true);
+
+    for (int i = 0; i < combos.size(); ++i) {
         comboTable->insertRow(i);
-        comboTable->setItem(i, 0, new QTableWidgetItem(QString::fromStdString(combos[i].getMaCombo())));
-        comboTable->setItem(i, 1, new QTableWidgetItem(QString::fromStdString(combos[i].getTenCombo())));
-        
+
+        QTableWidgetItem* idItem = new QTableWidgetItem(QString::fromStdString(combos[i].getMaCombo()));
+        idItem->setTextAlignment(Qt::AlignCenter);
+        idItem->setFlags(idItem->flags() & ~Qt::ItemIsEditable);
+        idItem->setForeground(QBrush(QColor("#8C92FF")));
+        idItem->setFont(boldFont);
+        comboTable->setItem(i, 0, idItem);
+
+        QTableWidgetItem* nameItem = new QTableWidgetItem(QString::fromStdString(combos[i].getTenCombo()));
+        nameItem->setFlags(nameItem->flags() & ~Qt::ItemIsEditable);
+        nameItem->setFont(boldFont);
+        comboTable->setItem(i, 1, nameItem);
+
         QTableWidgetItem* priceItem = new QTableWidgetItem(QString("%L1 VND").arg(combos[i].getGia(), 0, 'f', 0));
         priceItem->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
-        priceItem->setForeground(QBrush(QColor("#EAB02F")));
+        priceItem->setFlags(priceItem->flags() & ~Qt::ItemIsEditable);
+        priceItem->setFont(boldFont);
+        priceItem->setForeground(QBrush(QColor("#FFD166")));
         comboTable->setItem(i, 2, priceItem);
-        
+
         QWidget* pWidget = new QWidget();
+        pWidget->setStyleSheet("background: transparent;");
         QHBoxLayout* pLayout = new QHBoxLayout(pWidget);
         pLayout->setContentsMargins(4, 2, 4, 2);
         pLayout->setAlignment(Qt::AlignCenter);
@@ -568,21 +556,19 @@ void SaleWidget::loadCombos() {
         spinBox->setRange(0, 20);
         spinBox->setValue(0);
         spinBox->setAlignment(Qt::AlignCenter);
-        spinBox->setFixedSize(85, 30);
+        spinBox->setFixedSize(94, 34);
         spinBox->setStyleSheet(R"(
             QSpinBox {
-                background-color: #EAB02F;
-                color: #1A1A1A;
+                background-color: #1A1D2F;
+                color: #F3F4FA;
                 font-size: 13px;
                 font-weight: bold;
-                border: 1px solid #C49129;
-                border-radius: 4px;
-                padding: 0px 4px;
-                min-height: 26px;
-                max-height: 28px;
+                border: 1.5px solid #3D446B;
+                border-radius: 10px;
+                padding: 0px 6px;
             }
-            QSpinBox::up-button, QSpinBox::down-button {
-                width: 18px;
+            QSpinBox:focus {
+                border: 1.5px solid #FF6B6B;
             }
         )");
         pLayout->addWidget(spinBox);
@@ -592,52 +578,67 @@ void SaleWidget::loadCombos() {
 
 void SaleWidget::setupStep5(QWidget* page) {
     QVBoxLayout* layout = new QVBoxLayout(page);
-    layout->setContentsMargins(20, 15, 20, 15);
+    layout->setContentsMargins(10, 10, 10, 10);
     layout->setSpacing(14);
     layout->setAlignment(Qt::AlignCenter);
 
     QFrame *card = new QFrame(page);
-    card->setMaximumWidth(600);
-    card->setStyleSheet(R"(
-        QFrame {
-            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #2C2E6A, stop:1 #101224);
-            border: 2px solid #EAB02F;
-            border-radius: 10px;
-            padding: 20px;
-        }
-    )");
+    card->setObjectName("saleConfirmCard");
+    card->setMinimumWidth(560);
+    card->setMaximumWidth(660);
+    card->setStyleSheet(Theme::luxuryCardStyle("saleConfirmCard"));
+
     QVBoxLayout *cardLayout = new QVBoxLayout(card);
+    cardLayout->setContentsMargins(30, 26, 30, 26);
     cardLayout->setSpacing(14);
 
-    QLabel* title = new QLabel("XÁC NHẬN BÁN VÉ TẠI QUẦY", card);
-    title->setStyleSheet("color: #EAB02F; font-size: 18px; font-weight: bold; border: none; background: transparent;");
+    QLabel* eyebrow = new QLabel("BÁN VÉ TRỰC TIẾP TẠI QUẦY", card);
+    eyebrow->setAlignment(Qt::AlignCenter);
+    eyebrow->setStyleSheet(Theme::sectionEyebrowStyle());
+
+    QLabel* title = new QLabel("Xác Nhận Thanh Toán", card);
+    title->setStyleSheet("color: #F3F4FA; font-size: 21px; font-weight: bold; border: none; background: transparent;");
     title->setAlignment(Qt::AlignCenter);
-    cardLayout->addWidget(title);
+
+    QFrame* divider = new QFrame(card);
+    divider->setFrameShape(QFrame::HLine);
+    divider->setStyleSheet("background-color: #323859; max-height: 1px; border: none;");
 
     previewLabel = new QLabel(card);
-    previewLabel->setStyleSheet("color: #FFFFFF; font-size: 13px; line-height: 1.5; border: none; background: transparent;");
+    previewLabel->setStyleSheet("color: #F3F4FA; font-size: 13px; border: none; background: transparent; padding: 10px;");
     previewLabel->setWordWrap(true);
-    cardLayout->addWidget(previewLabel);
-    
+    previewLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+
+    QScrollArea* scroll = new QScrollArea(card);
+    scroll->setWidgetResizable(true);
+    scroll->setMinimumHeight(240);
+    scroll->setStyleSheet("QScrollArea { background-color: #1A1D2F; border: 1px solid #303654; border-radius: 14px; }");
+    scroll->setWidget(previewLabel);
+
     QHBoxLayout* btnLayout = new QHBoxLayout();
-    btnLayout->setSpacing(15);
+    btnLayout->setSpacing(12);
 
-    QPushButton* backBtn = new QPushButton("Hủy Bỏ", card);
+    QPushButton* backBtn = new QPushButton("Quay Lại", card);
     backBtn->setCursor(Qt::PointingHandCursor);
-    backBtn->setStyleSheet("background-color: #A52C20; color: white; padding: 8px 24px; font-weight: bold; border-radius: 6px; min-height: 38px; border: none;");
+    backBtn->setStyleSheet(Theme::secondaryButtonStyle(44, 14));
 
-    QPushButton* nextBtn = new QPushButton("Xác Nhận & Thanh Toán", card);
+    QPushButton* nextBtn = new QPushButton("Xác Nhận && Thanh Toán", card);
     nextBtn->setCursor(Qt::PointingHandCursor);
-    nextBtn->setStyleSheet("background-color: #28A745; color: white; padding: 8px 24px; font-weight: bold; border-radius: 6px; min-height: 38px; border: none;");
+    nextBtn->setStyleSheet(Theme::successButtonStyle(44, 14));
 
-    btnLayout->addWidget(backBtn);
-    btnLayout->addWidget(nextBtn);
+    btnLayout->addWidget(backBtn, 1);
+    btnLayout->addWidget(nextBtn, 2);
+
+    cardLayout->addWidget(eyebrow);
+    cardLayout->addWidget(title);
+    cardLayout->addWidget(divider);
+    cardLayout->addWidget(scroll, 1);
     cardLayout->addLayout(btnLayout);
 
     layout->addWidget(card);
-    
-    connect(backBtn, &QPushButton::clicked, [this]() { stepWidget->setCurrentIndex(3); });
-    connect(nextBtn, &QPushButton::clicked, [this]() {
+
+    connect(backBtn, &QPushButton::clicked, this, [this]() { stepWidget->setCurrentIndex(3); });
+    connect(nextBtn, &QPushButton::clicked, this, [this]() {
         createTickets();
         stepWidget->setCurrentIndex(5);
     });
@@ -646,49 +647,53 @@ void SaleWidget::setupStep5(QWidget* page) {
 void SaleWidget::generatePreview() {
     Showtime* st = showtimeManager->findById(selectedShowtimeId);
     Movie* mv = movieManager->findById(selectedMovieId);
-    if(!st || !mv) return;
-    
+    if (!st || !mv) return;
+
     SeatMap* sm = showtimeManager->findSeatMap(selectedShowtimeId);
-    
-    QString preview = QString("• <b>Phim:</b> %1<br>"
-                              "• <b>Suất chiếu:</b> %2 %3 | <b>Phòng:</b> %4<br><br>")
+
+    QString preview = QString(
+        "<div style='line-height: 1.7; color: #F3F4FA;'>"
+        "<div style='color:#8C92FF; font-weight:bold; letter-spacing:1px; margin-bottom:4px;'>THÔNG TIN SUẤT CHIẾU</div>"
+        "• <span style='color:#9AA2C2;'>Phim:</span> <b>%1</b><br>"
+        "• <span style='color:#9AA2C2;'>Suất chiếu:</span> <b>%2</b> &nbsp;|&nbsp; <b style='color:#FFD166;'>%3</b> &nbsp;|&nbsp; <span style='color:#9AA2C2;'>Phòng:</span> <b>%4</b><br><br>")
         .arg(QString::fromStdString(mv->getTenPhim()).toUpper())
         .arg(QString::fromStdString(st->getNgayChieu()))
         .arg(QString::fromStdString(st->getGioChieu()))
         .arg(QString::fromStdString(st->getMaPhong()));
-    
+
     double total = 0;
-    preview += "<b>Danh sách ghế:</b><br>";
-    for(int i = 0; i < selectedSeats.size(); ++i) {
+    preview += "<div style='color:#8C92FF; font-weight:bold; letter-spacing:1px; margin-bottom:4px;'>DANH SÁCH GHẾ</div>";
+    for (int i = 0; i < selectedSeats.size(); ++i) {
         int r = selectedSeats[i].first;
         int c = selectedSeats[i].second;
         int type = sm ? sm->getSeatStatus(r, c) : 0;
         double price = PriceCalculator::calculateTicketPrice(type, st->getNgayChieu(), st->getGioChieu());
         total += price;
         bool isVip = (type == 2 || type == 3);
-        preview += QString(" - Ghế <b>%1%2</b> (%3): %L4 VND<br>")
+        preview += QString("• Ghế <b>%1%2</b> (%3): <b>%L4 VND</b><br>")
             .arg((char)('A' + r))
             .arg(c + 1)
-            .arg(isVip ? "<span style='color: #EAB02F;'>VIP</span>" : "Thường")
+            .arg(isVip ? "<span style='color: #FFD166; font-weight:bold;'>VIP</span>" : "<span style='color:#A3ABC9;'>Thường</span>")
             .arg(price, 0, 'f', 0);
     }
-    
-    if(selectedCombos.size() > 0) {
-        preview += "<br><b>Combo bắp nước:</b><br>";
-        for(int i = 0; i < selectedCombos.size(); ++i) {
+
+    if (selectedCombos.size() > 0) {
+        preview += "<br><div style='color:#8C92FF; font-weight:bold; letter-spacing:1px; margin-bottom:4px;'>COMBO BẮP NƯỚC</div>";
+        for (int i = 0; i < selectedCombos.size(); ++i) {
             Combo* cb = comboManager->findById(selectedCombos[i].first);
-            if(cb) {
+            if (cb) {
                 double cbTotal = cb->getGia() * selectedCombos[i].second;
                 total += cbTotal;
-                preview += QString(" - %1 x%2 = %L3 VND<br>")
+                preview += QString("• %1 &times; %2 = <b style='color:#FFD166;'>%L3 VND</b><br>")
                     .arg(QString::fromStdString(cb->getTenCombo()))
                     .arg(selectedCombos[i].second)
                     .arg(cbTotal, 0, 'f', 0);
             }
         }
     }
-    
-    preview += QString("<br><div style='font-size: 16px; color: #EAB02F;'><b>TỔNG CỘNG: %L1 VND</b></div>").arg(total, 0, 'f', 0);
+
+    preview += QString("<br><div style='background-color:#2E2538; border:1px solid #6E4458; padding:10px; text-align:center; font-size:17px; color:#FFD166;'>"
+                       "<b>TỔNG THANH TOÁN: %L1 VND</b></div></div>").arg(total, 0, 'f', 0);
     previewLabel->setText(preview);
 }
 
@@ -697,37 +702,45 @@ void SaleWidget::setupStep6(QWidget* page) {
     layout->setAlignment(Qt::AlignCenter);
 
     QFrame *card = new QFrame(page);
-    card->setMaximumWidth(450);
+    card->setObjectName("saleDoneCard");
+    card->setFixedWidth(480);
     card->setStyleSheet(R"(
-        QFrame {
-            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #2C2E6A, stop:1 #101224);
-            border: 2px solid #28A745;
-            border-radius: 10px;
-            padding: 25px;
+        QFrame#saleDoneCard {
+            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #1B3335, stop:1 #1F2338);
+            border: 1.5px solid #2A6E5C;
+            border-radius: 22px;
         }
     )");
     QVBoxLayout *cardLayout = new QVBoxLayout(card);
-    cardLayout->setSpacing(15);
+    cardLayout->setContentsMargins(34, 34, 34, 34);
+    cardLayout->setSpacing(14);
     cardLayout->setAlignment(Qt::AlignCenter);
 
-    QLabel *icon = new QLabel("✅", card);
-    icon->setStyleSheet("font-size: 36px; border: none; background: transparent;");
-    icon->setAlignment(Qt::AlignCenter);
+    QLabel *badge = new QLabel("HOÀN TẤT GIAO DỊCH", card);
+    badge->setAlignment(Qt::AlignCenter);
+    badge->setStyleSheet("color: #34D399; font-size: 11px; font-weight: bold; letter-spacing: 2.5px; border: none; background: transparent;");
 
-    confirmLabel = new QLabel("THANH TOÁN THÀNH CÔNG!\nVé đã được in và kích hoạt hợp lệ.", card);
-    confirmLabel->setStyleSheet("color: #FFFFFF; font-size: 15px; font-weight: bold; border: none; background: transparent;");
+    confirmLabel = new QLabel("Thanh Toán Thành Công!", card);
+    confirmLabel->setStyleSheet("color: #F3F4FA; font-size: 22px; font-weight: bold; border: none; background: transparent;");
     confirmLabel->setAlignment(Qt::AlignCenter);
+
+    QLabel *sub = new QLabel("Vé đã được xuất và kích hoạt hợp lệ ngay lập tức.", card);
+    sub->setStyleSheet("color: #A3ABC9; font-size: 13px; border: none; background: transparent;");
+    sub->setAlignment(Qt::AlignCenter);
+    sub->setWordWrap(true);
 
     QPushButton* inVeBtn = new QPushButton("Hoàn Tất / Bán Đơn Tiếp", card);
     inVeBtn->setCursor(Qt::PointingHandCursor);
-    inVeBtn->setStyleSheet("background-color: #28A745; color: white; padding: 10px 24px; font-weight: bold; border-radius: 6px; font-size: 14px;");
+    inVeBtn->setStyleSheet(Theme::primaryButtonStyle(46, 14));
 
-    cardLayout->addWidget(icon);
+    cardLayout->addWidget(badge);
     cardLayout->addWidget(confirmLabel);
+    cardLayout->addWidget(sub);
+    cardLayout->addSpacing(8);
     cardLayout->addWidget(inVeBtn);
     layout->addWidget(card);
-    
-    connect(inVeBtn, &QPushButton::clicked, [this]() {
+
+    connect(inVeBtn, &QPushButton::clicked, this, [this]() {
         loadMovies();
         stepWidget->setCurrentIndex(0);
     });
@@ -736,39 +749,36 @@ void SaleWidget::setupStep6(QWidget* page) {
 void SaleWidget::createTickets() {
     Showtime* st = showtimeManager->findById(selectedShowtimeId);
     SeatMap* sm = showtimeManager->findSeatMap(selectedShowtimeId);
-    if(!st || !sm) return;
-    
-    // Build combo string and calculate total combo price
+    if (!st || !sm) return;
+
     std::string comboStr = "";
     double totalComboPrice = 0.0;
-    for(int i = 0; i < selectedCombos.size(); ++i) {
+    for (int i = 0; i < selectedCombos.size(); ++i) {
         Combo* cb = comboManager->findById(selectedCombos[i].first);
-        if(cb) {
+        if (cb) {
             if (!comboStr.empty()) comboStr += "; ";
             comboStr += cb->getTenCombo() + " x" + std::to_string(selectedCombos[i].second);
             totalComboPrice += cb->getGia() * selectedCombos[i].second;
         }
     }
-    // Distribute combo cost evenly across seats
     double comboPricePerTicket = (selectedSeats.size() > 0) ? (totalComboPrice / selectedSeats.size()) : 0;
-    
-    for(int i = 0; i < selectedSeats.size(); ++i) {
+
+    for (int i = 0; i < selectedSeats.size(); ++i) {
         int r = selectedSeats[i].first;
         int c = selectedSeats[i].second;
         if (!sm->isSeatAvailable(r, c)) {
-            QMessageBox::warning(this, "Loi", QString("Ghe %1%2 da co nguoi dat!").arg((char)('A' + r)).arg(c + 1));
+            QMessageBox::warning(this, "Lỗi", QString("Ghế %1%2 đã có người đặt!").arg((char)('A' + r)).arg(c + 1));
             return;
         }
     }
 
-    for(int i = 0; i < selectedSeats.size(); ++i) {
+    for (int i = 0; i < selectedSeats.size(); ++i) {
         int r = selectedSeats[i].first;
         int c = selectedSeats[i].second;
         double seatPrice = PriceCalculator::calculateTicketPrice(sm->getSeatStatus(r, c), st->getNgayChieu(), st->getGioChieu());
         double finalPrice = seatPrice + comboPricePerTicket;
-        
+
         std::string ngayMua = QDate::currentDate().toString("dd/MM/yyyy").toStdString();
-        // Counter sales are paid and valid immediately
         ticketManager->createTicket(selectedShowtimeId, "", maNhanVien, r, c, finalPrice, comboStr, ngayMua, "", "VALID");
         sm->bookSeat(r, c);
     }

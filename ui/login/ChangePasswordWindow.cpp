@@ -1,155 +1,153 @@
 #include "ChangePasswordWindow.h"
+#include "../common/Theme.h"
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QMessageBox>
 #include <QLabel>
-#include <QFont>
 #include <QFrame>
 
 ChangePasswordWindow::ChangePasswordWindow(UserManager *userManager, QWidget *parent)
     : QWidget(parent), userManager(userManager)
 {
+    setObjectName("changePwdPage");
+    setAttribute(Qt::WA_StyledBackground, true);
+    setStyleSheet(R"(
+        QWidget#changePwdPage {
+            background: qradialgradient(cx:0.5, cy:0.18, radius:0.9, fx:0.5, fy:0.12,
+                stop:0 #2B254D, stop:0.5 #1B1D33, stop:1 #131524);
+        }
+    )");
+
     QVBoxLayout *rootLayout = new QVBoxLayout(this);
     rootLayout->setAlignment(Qt::AlignCenter);
+    rootLayout->setContentsMargins(24, 24, 24, 24);
 
-    // Center container (no card frame, flat on #101224)
-    QWidget *container = new QWidget(this);
-    container->setStyleSheet("background: transparent; border: none;");
+    QFrame *card = new QFrame(this);
+    card->setObjectName("authCard");
+    card->setFixedWidth(460);
+    card->setStyleSheet(Theme::authCardStyle());
 
-    QVBoxLayout *containerLayout = new QVBoxLayout(container);
-    containerLayout->setSpacing(14);
-    containerLayout->setAlignment(Qt::AlignCenter);
+    QVBoxLayout *cardLayout = new QVBoxLayout(card);
+    cardLayout->setContentsMargins(38, 32, 38, 32);
+    cardLayout->setSpacing(10);
 
-    // Title: ———— Đổi Mật Khẩu ————
-    QHBoxLayout *titleRow = new QHBoxLayout();
-    titleRow->setSpacing(14);
-    titleRow->setAlignment(Qt::AlignCenter);
+    QLabel *lblBrand = new QLabel("PBL2 CINEMA • BẢO MẬT", card);
+    lblBrand->setAlignment(Qt::AlignCenter);
+    lblBrand->setStyleSheet(Theme::sectionEyebrowStyle());
 
-    QFrame *lineLeft = new QFrame(container);
-    lineLeft->setFixedHeight(5);
-    lineLeft->setFixedWidth(100);
-    lineLeft->setStyleSheet("background-color: #FFFFFF; border: none;");
-
-    QLabel *lblTitle = new QLabel("ĐỔI MẬT KHẨU", container);
-    lblTitle->setStyleSheet("color: #FFFFFF; font-size: 24px; font-weight: bold; border: none; background: transparent;");
+    QLabel *lblTitle = new QLabel("Đổi Mật Khẩu", card);
     lblTitle->setAlignment(Qt::AlignCenter);
+    lblTitle->setStyleSheet("color: #F3F4FA; font-size: 24px; font-weight: bold; background: transparent; border: none;");
 
-    QFrame *lineRight = new QFrame(container);
-    lineRight->setFixedHeight(5);
-    lineRight->setFixedWidth(100);
-    lineRight->setStyleSheet("background-color: #FFFFFF; border: none;");
+    QFrame *divider = new QFrame(card);
+    divider->setFrameShape(QFrame::HLine);
+    divider->setStyleSheet("background-color: #303654; max-height: 1px; border: none;");
 
-    titleRow->addWidget(lineLeft);
-    titleRow->addWidget(lblTitle);
-    titleRow->addWidget(lineRight);
+    auto makeFieldLabel = [card](const QString& text) {
+        QLabel* lbl = new QLabel(text, card);
+        lbl->setStyleSheet("color: #B6BEDE; font-size: 12px; font-weight: 600; background: transparent; border: none;");
+        return lbl;
+    };
 
     QString inputStyle = R"(
         QLineEdit {
-            background-color: #EAB02F;
-            color: #FFFFFF;
+            background-color: #191C2E;
+            color: #F3F4FA;
             font-size: 14px;
-            font-weight: bold;
-            border: none;
-            border-radius: 0px;
+            border: 1.5px solid #33395A;
+            border-radius: 12px;
             padding: 0 14px;
-            min-height: 42px;
+        }
+        QLineEdit:hover {
+            border-color: #525B8A;
+            background-color: #1E2238;
         }
         QLineEdit:focus {
-            border: 2px solid #FFFFFF;
+            border: 1.5px solid #FF6B6B;
+            background-color: #212640;
         }
     )";
 
-    txtTaiKhoan = new QLineEdit(container);
+    txtTaiKhoan = new QLineEdit(card);
     txtTaiKhoan->setPlaceholderText("Tài khoản");
-    txtTaiKhoan->setFixedSize(420, 42);
+    txtTaiKhoan->setFixedHeight(44);
     txtTaiKhoan->setStyleSheet(inputStyle);
 
-    txtMatKhauCu = new QLineEdit(container);
+    txtMatKhauCu = new QLineEdit(card);
     txtMatKhauCu->setPlaceholderText("Mật khẩu cũ");
     txtMatKhauCu->setEchoMode(QLineEdit::Password);
-    txtMatKhauCu->setFixedSize(420, 42);
+    txtMatKhauCu->setFixedHeight(44);
     txtMatKhauCu->setStyleSheet(inputStyle);
 
-    txtMatKhauMoi = new QLineEdit(container);
+    txtMatKhauMoi = new QLineEdit(card);
     txtMatKhauMoi->setPlaceholderText("Mật khẩu mới");
     txtMatKhauMoi->setEchoMode(QLineEdit::Password);
-    txtMatKhauMoi->setFixedSize(420, 42);
+    txtMatKhauMoi->setFixedHeight(44);
     txtMatKhauMoi->setStyleSheet(inputStyle);
 
-    txtXacNhanMatKhauMoi = new QLineEdit(container);
+    txtXacNhanMatKhauMoi = new QLineEdit(card);
     txtXacNhanMatKhauMoi->setPlaceholderText("Xác nhận mật khẩu mới");
     txtXacNhanMatKhauMoi->setEchoMode(QLineEdit::Password);
-    txtXacNhanMatKhauMoi->setFixedSize(420, 42);
+    txtXacNhanMatKhauMoi->setFixedHeight(44);
     txtXacNhanMatKhauMoi->setStyleSheet(inputStyle);
 
-    // Buttons row
     QHBoxLayout *btnLayout = new QHBoxLayout();
-    btnLayout->setSpacing(20);
-    btnLayout->setAlignment(Qt::AlignCenter);
+    btnLayout->setSpacing(12);
 
-    QString btnStyle = R"(
-        QPushButton {
-            background-color: #A52C20;
-            color: #FFFFFF;
-            font-size: 14px;
-            font-weight: bold;
-            border-radius: 0px;
-            border: none;
-        }
-        QPushButton:hover {
-            background-color: #BD362A;
-        }
-        QPushButton:pressed {
-            background-color: #822017;
-        }
-    )";
-
-    btnChange = new QPushButton("Xác Nhận", container);
-    btnChange->setFixedSize(200, 44);
-    btnChange->setCursor(Qt::PointingHandCursor);
-    btnChange->setStyleSheet(btnStyle);
-
-    btnBack = new QPushButton("Quay Lại", container);
-    btnBack->setFixedSize(200, 44);
+    btnBack = new QPushButton("Quay Lại", card);
+    btnBack->setFixedHeight(46);
     btnBack->setCursor(Qt::PointingHandCursor);
-    btnBack->setStyleSheet(btnStyle);
+    btnBack->setStyleSheet(Theme::secondaryButtonStyle(46, 14));
 
-    btnLayout->addWidget(btnChange);
-    btnLayout->addWidget(btnBack);
+    btnChange = new QPushButton("Xác Nhận", card);
+    btnChange->setFixedHeight(46);
+    btnChange->setCursor(Qt::PointingHandCursor);
+    btnChange->setStyleSheet(Theme::primaryButtonStyle(46, 14));
 
-    containerLayout->addLayout(titleRow);
-    containerLayout->addSpacing(10);
-    containerLayout->addWidget(txtTaiKhoan, 0, Qt::AlignCenter);
-    containerLayout->addWidget(txtMatKhauCu, 0, Qt::AlignCenter);
-    containerLayout->addWidget(txtMatKhauMoi, 0, Qt::AlignCenter);
-    containerLayout->addWidget(txtXacNhanMatKhauMoi, 0, Qt::AlignCenter);
-    containerLayout->addSpacing(10);
-    containerLayout->addLayout(btnLayout);
+    btnLayout->addWidget(btnBack, 1);
+    btnLayout->addWidget(btnChange, 2);
 
-    rootLayout->addWidget(container);
+    cardLayout->addWidget(lblBrand);
+    cardLayout->addWidget(lblTitle);
+    cardLayout->addSpacing(4);
+    cardLayout->addWidget(divider);
+    cardLayout->addSpacing(6);
+    cardLayout->addWidget(makeFieldLabel("Tài khoản"));
+    cardLayout->addWidget(txtTaiKhoan);
+    cardLayout->addWidget(makeFieldLabel("Mật khẩu cũ"));
+    cardLayout->addWidget(txtMatKhauCu);
+    cardLayout->addWidget(makeFieldLabel("Mật khẩu mới"));
+    cardLayout->addWidget(txtMatKhauMoi);
+    cardLayout->addWidget(makeFieldLabel("Xác nhận mật khẩu mới"));
+    cardLayout->addWidget(txtXacNhanMatKhauMoi);
+    cardLayout->addSpacing(12);
+    cardLayout->addLayout(btnLayout);
+
+    rootLayout->addWidget(card, 0, Qt::AlignCenter);
 
     connect(btnChange, &QPushButton::clicked, this, &ChangePasswordWindow::onChangePassword);
     connect(btnBack, &QPushButton::clicked, this, &ChangePasswordWindow::onBack);
+    connect(txtXacNhanMatKhauMoi, &QLineEdit::returnPressed, this, &ChangePasswordWindow::onChangePassword);
 }
 
 void ChangePasswordWindow::onChangePassword() {
-    std::string tk = txtTaiKhoan->text().toStdString();
+    std::string tk = txtTaiKhoan->text().trimmed().toStdString();
     std::string mkCu = txtMatKhauCu->text().toStdString();
     std::string mkMoi = txtMatKhauMoi->text().toStdString();
     std::string xnMk = txtXacNhanMatKhauMoi->text().toStdString();
 
     if (tk.empty() || mkCu.empty() || mkMoi.empty()) {
-        QMessageBox::warning(this, "Thông báo", "Vui lòng nhập đầy đủ thông tin!");
+        QMessageBox::warning(this, "Thông Báo", "Vui lòng nhập đầy đủ thông tin!");
         return;
     }
 
     if (mkMoi != xnMk) {
-        QMessageBox::warning(this, "Thông báo", "Mật khẩu xác nhận không khớp!");
+        QMessageBox::warning(this, "Thông Báo", "Mật khẩu xác nhận không khớp!");
         return;
     }
 
     if (userManager->doiMatKhau(tk, mkCu, mkMoi)) {
-        QMessageBox::information(this, "Thành công", "Đổi mật khẩu thành công!");
+        QMessageBox::information(this, "Thành Công", "Đổi mật khẩu thành công!");
         emit goBack();
     } else {
         QMessageBox::critical(this, "Lỗi", "Tài khoản hoặc mật khẩu cũ không đúng!");

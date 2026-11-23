@@ -12,6 +12,7 @@ class RegisterWindow : public QWidget {
 
 public:
     explicit RegisterWindow(UserManager *userManager, QWidget *parent = nullptr);
+    void resetFields();
 
 signals:
     void registerSuccess();

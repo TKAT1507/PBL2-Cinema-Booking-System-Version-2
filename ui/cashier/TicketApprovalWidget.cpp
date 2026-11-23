@@ -1,72 +1,56 @@
 #include "TicketApprovalWidget.h"
+#include "../common/Theme.h"
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QHeaderView>
 #include <QMessageBox>
 #include <QDialog>
 #include <QTextEdit>
+#include <QFrame>
 #include "models/Showtime.h"
 #include "models/Movie.h"
 #include "models/SeatMap.h"
 
-TicketApprovalWidget::TicketApprovalWidget(TicketManager* ticketMgr, ShowtimeManager* showtimeMgr, 
+TicketApprovalWidget::TicketApprovalWidget(TicketManager* ticketMgr, ShowtimeManager* showtimeMgr,
                                            MovieManager* movieMgr, QWidget* parent)
     : QWidget(parent), ticketManager(ticketMgr), showtimeManager(showtimeMgr), movieManager(movieMgr)
 {
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
-    mainLayout->setContentsMargins(15, 15, 15, 15);
-    mainLayout->setSpacing(12);
+    mainLayout->setContentsMargins(26, 22, 26, 20);
+    mainLayout->setSpacing(14);
 
-    // Top Header & Search / Refresh Bar
     QHBoxLayout *topBar = new QHBoxLayout();
-    
-    QLabel *lblTitle = new QLabel("XÁC NHẬN & DUYỆT ĐƠN VÉ (PENDING)", this);
-    lblTitle->setStyleSheet("color: #EAB02F; font-size: 18px; font-weight: bold;");
-    topBar->addWidget(lblTitle);
+    topBar->setSpacing(10);
+
+    QVBoxLayout *titleCol = new QVBoxLayout();
+    titleCol->setSpacing(2);
+    QLabel *lblEyebrow = new QLabel("PHÊ DUYỆT ĐẶT VÉ TRỰC TUYẾN", this);
+    lblEyebrow->setStyleSheet(Theme::sectionEyebrowStyle());
+    QLabel *lblTitle = new QLabel("XÁC NHẬN & DUYỆT ĐƠN VÉ", this);
+    lblTitle->setStyleSheet(Theme::sectionTitleStyle());
+    titleCol->addWidget(lblEyebrow);
+    titleCol->addWidget(lblTitle);
+
+    topBar->addLayout(titleCol);
     topBar->addStretch();
 
     txtSearch = new QLineEdit(this);
-    txtSearch->setPlaceholderText("Tìm theo mã đơn / mã KH...");
-    txtSearch->setFixedWidth(240);
-    txtSearch->setStyleSheet(R"(
-        QLineEdit {
-            background-color: #EAB02F;
-            color: #1A1A1A;
-            font-size: 13px;
-            font-weight: bold;
-            border-radius: 5px;
-            padding: 4px 10px;
-            min-height: 28px;
-        }
-    )");
+    txtSearch->setPlaceholderText("Tìm theo mã đơn / mã khách hàng...");
+    txtSearch->setFixedWidth(260);
+    txtSearch->setFixedHeight(40);
 
     btnRefresh = new QPushButton("Làm Mới", this);
     btnRefresh->setCursor(Qt::PointingHandCursor);
-    btnRefresh->setStyleSheet(R"(
-        QPushButton {
-            background-color: #EAB02F;
-            color: #1A1A1A;
-            font-size: 13px;
-            font-weight: bold;
-            border-radius: 5px;
-            border: 1px solid #C49129;
-            min-height: 30px;
-            padding: 4px 14px;
-        }
-        QPushButton:hover {
-            background-color: #EDB952;
-        }
-    )");
+    btnRefresh->setStyleSheet(Theme::secondaryButtonStyle(38, 13));
 
-    topBar->addWidget(txtSearch);
-    topBar->addWidget(btnRefresh);
+    topBar->addWidget(txtSearch, 0, Qt::AlignVCenter);
+    topBar->addWidget(btnRefresh, 0, Qt::AlignVCenter);
     mainLayout->addLayout(topBar);
 
-    // Table of Pending Orders
     tableOrders = new QTableWidget(this);
     tableOrders->setColumnCount(9);
-    tableOrders->setHorizontalHeaderLabels(QStringList() << "STT" << "Mã Đơn" << "Khách Hàng" << "Tên Phim" 
-                                                          << "Suất Chiếu" << "Ghế Đặt" << "Combo" 
+    tableOrders->setHorizontalHeaderLabels(QStringList() << "STT" << "Mã Đơn" << "Khách Hàng" << "Tên Phim"
+                                                          << "Suất Chiếu" << "Ghế Đặt" << "Combo"
                                                           << "Tổng Tiền" << "Trạng Thái");
     tableOrders->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
     tableOrders->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
@@ -77,6 +61,7 @@ TicketApprovalWidget::TicketApprovalWidget(TicketManager* ticketMgr, ShowtimeMan
     tableOrders->horizontalHeader()->setSectionResizeMode(6, QHeaderView::ResizeToContents);
     tableOrders->horizontalHeader()->setSectionResizeMode(7, QHeaderView::ResizeToContents);
     tableOrders->horizontalHeader()->setSectionResizeMode(8, QHeaderView::ResizeToContents);
+    tableOrders->verticalHeader()->setDefaultSectionSize(46);
     tableOrders->setSelectionBehavior(QAbstractItemView::SelectRows);
     tableOrders->setSelectionMode(QAbstractItemView::SingleSelection);
     tableOrders->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -84,75 +69,33 @@ TicketApprovalWidget::TicketApprovalWidget(TicketManager* ticketMgr, ShowtimeMan
     tableOrders->verticalHeader()->setVisible(false);
     mainLayout->addWidget(tableOrders, 1);
 
-    // Status label
-    lblStatusCount = new QLabel("Đang chờ duyệt: 0 đơn", this);
-    lblStatusCount->setStyleSheet("color: #EAB02F; font-size: 13px; font-weight: bold;");
+    QFrame *bottomBar = new QFrame(this);
+    bottomBar->setStyleSheet("QFrame { background-color: #22263C; border: 1px solid #323859; border-radius: 16px; }");
+    QHBoxLayout *bottomLayout = new QHBoxLayout(bottomBar);
+    bottomLayout->setContentsMargins(18, 10, 18, 10);
+    bottomLayout->setSpacing(10);
 
-    // Action Buttons
-    QHBoxLayout *bottomLayout = new QHBoxLayout();
+    lblStatusCount = new QLabel("Đang chờ duyệt: 0 đơn", bottomBar);
+    lblStatusCount->setStyleSheet("color: #FFD166; font-size: 13px; font-weight: bold; background: transparent; border: none;");
+
+    btnPrint = new QPushButton("In Hóa Đơn / Vé", bottomBar);
+    btnPrint->setCursor(Qt::PointingHandCursor);
+    btnPrint->setStyleSheet(Theme::goldOutlineButtonStyle(40, 13));
+
+    btnCancel = new QPushButton("Hủy Đơn (Nhả Ghế)", bottomBar);
+    btnCancel->setCursor(Qt::PointingHandCursor);
+    btnCancel->setStyleSheet(Theme::dangerOutlineButtonStyle(40, 13));
+
+    btnApprove = new QPushButton("Duyệt Đơn (Hợp Lệ)", bottomBar);
+    btnApprove->setCursor(Qt::PointingHandCursor);
+    btnApprove->setStyleSheet(Theme::successButtonStyle(40, 13));
+
     bottomLayout->addWidget(lblStatusCount);
     bottomLayout->addStretch();
-
-    btnApprove = new QPushButton("Duyệt Đơn (Hợp Lệ)", this);
-    btnApprove->setCursor(Qt::PointingHandCursor);
-    btnApprove->setStyleSheet(R"(
-        QPushButton {
-            background-color: #28A745;
-            color: #FFFFFF;
-            font-size: 14px;
-            font-weight: bold;
-            border-radius: 6px;
-            border: none;
-            min-height: 38px;
-            padding: 6px 20px;
-        }
-        QPushButton:hover {
-            background-color: #34C759;
-            border: 1px solid #FFFFFF;
-        }
-    )");
-
-    btnCancel = new QPushButton("Hủy Đơn (Nhả Ghế)", this);
-    btnCancel->setCursor(Qt::PointingHandCursor);
-    btnCancel->setStyleSheet(R"(
-        QPushButton {
-            background-color: #A52C20;
-            color: #FFFFFF;
-            font-size: 14px;
-            font-weight: bold;
-            border-radius: 6px;
-            border: none;
-            min-height: 38px;
-            padding: 6px 18px;
-        }
-        QPushButton:hover {
-            background-color: #BD362A;
-        }
-    )");
-
-    btnPrint = new QPushButton("In Hóa Đơn / Vé", this);
-    btnPrint->setCursor(Qt::PointingHandCursor);
-    btnPrint->setStyleSheet(R"(
-        QPushButton {
-            background-color: #EAB02F;
-            color: #1A1A1A;
-            font-size: 14px;
-            font-weight: bold;
-            border-radius: 6px;
-            border: 1px solid #C49129;
-            min-height: 38px;
-            padding: 6px 18px;
-        }
-        QPushButton:hover {
-            background-color: #EDB952;
-            border: 1px solid #FFFFFF;
-        }
-    )");
-
     bottomLayout->addWidget(btnPrint);
     bottomLayout->addWidget(btnCancel);
     bottomLayout->addWidget(btnApprove);
-    mainLayout->addLayout(bottomLayout);
+    mainLayout->addWidget(bottomBar);
 
     connect(btnRefresh, &QPushButton::clicked, this, &TicketApprovalWidget::loadPendingOrders);
     connect(txtSearch, &QLineEdit::textChanged, this, &TicketApprovalWidget::loadPendingOrders);
@@ -174,6 +117,8 @@ void TicketApprovalWidget::loadPendingOrders() {
     QString filter = txtSearch->text().trimmed();
 
     tableOrders->setRowCount(0);
+    QFont boldFont = tableOrders->font();
+    boldFont.setBold(true);
 
     int rowCount = 0;
     for (int i = 0; i < pendingReps.size(); ++i) {
@@ -194,17 +139,15 @@ void TicketApprovalWidget::loadPendingOrders() {
 
         tableOrders->insertRow(rowCount);
 
-        // Movie & Showtime info
         auto showtime = showtimeManager->findById(rep.getMaSuatChieu());
-        QString tenPhim = "Unknown";
-        QString suatInfo = "Unknown";
+        QString tenPhim = "Không xác định";
+        QString suatInfo = "Không xác định";
         if (showtime) {
             auto movie = movieManager->findById(showtime->getMaPhim());
             if (movie) tenPhim = QString::fromStdString(movie->getTenPhim());
             suatInfo = QString::fromStdString(showtime->getNgayChieu() + " " + showtime->getGioChieu() + " (" + showtime->getMaPhong() + ")");
         }
 
-        // Seats and Total Price
         QStringList seatsList;
         double totalGia = 0;
         for (int k = 0; k < ticketsInOrder.size(); ++k) {
@@ -213,52 +156,44 @@ void TicketApprovalWidget::loadPendingOrders() {
             totalGia += t.getGiaVe();
         }
 
-        // #
         QTableWidgetItem* itIdx = new QTableWidgetItem(QString::number(rowCount + 1));
         itIdx->setTextAlignment(Qt::AlignCenter);
         tableOrders->setItem(rowCount, 0, itIdx);
 
-        // Ma Don
         QTableWidgetItem* itDon = new QTableWidgetItem(QString::fromStdString(maCum));
         itDon->setTextAlignment(Qt::AlignCenter);
-        itDon->setFont(QFont("Segoe UI", 9, QFont::Bold));
-        itDon->setForeground(QBrush(QColor("#EAB02F")));
+        itDon->setFont(boldFont);
+        itDon->setForeground(QBrush(QColor("#8C92FF")));
         tableOrders->setItem(rowCount, 1, itDon);
 
-        // Khach Hang
         QTableWidgetItem* itKH = new QTableWidgetItem(QString::fromStdString(maKH));
         itKH->setTextAlignment(Qt::AlignCenter);
         tableOrders->setItem(rowCount, 2, itKH);
 
-        // Ten Phim
         tableOrders->setItem(rowCount, 3, new QTableWidgetItem(tenPhim));
 
-        // Suat Chieu
         QTableWidgetItem* itSuat = new QTableWidgetItem(suatInfo);
         itSuat->setTextAlignment(Qt::AlignCenter);
         tableOrders->setItem(rowCount, 4, itSuat);
 
-        // Danh sach ghe
         QTableWidgetItem* itGhe = new QTableWidgetItem(seatsList.join(", "));
         itGhe->setTextAlignment(Qt::AlignCenter);
-        itGhe->setFont(QFont("Segoe UI", 9, QFont::Bold));
+        itGhe->setFont(boldFont);
         tableOrders->setItem(rowCount, 5, itGhe);
 
-        // Combo
-        tableOrders->setItem(rowCount, 6, new QTableWidgetItem(QString::fromStdString(rep.getMaCombo())));
+        QString comboText = rep.getMaCombo().empty() ? "—" : QString::fromStdString(rep.getMaCombo());
+        tableOrders->setItem(rowCount, 6, new QTableWidgetItem(comboText));
 
-        // Tong Tien
         QTableWidgetItem* itTien = new QTableWidgetItem(QString("%L1 VND").arg(totalGia, 0, 'f', 0));
         itTien->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
-        itTien->setFont(QFont("Segoe UI", 9, QFont::Bold));
-        itTien->setForeground(QBrush(QColor("#EAB02F")));
+        itTien->setFont(boldFont);
+        itTien->setForeground(QBrush(QColor("#FFD166")));
         tableOrders->setItem(rowCount, 7, itTien);
 
-        // Trang Thai
         QTableWidgetItem* itTT = new QTableWidgetItem("Đang chờ");
         itTT->setTextAlignment(Qt::AlignCenter);
-        itTT->setFont(QFont("Segoe UI", 9, QFont::Bold));
-        itTT->setForeground(QBrush(QColor("#EAB02F")));
+        itTT->setFont(boldFont);
+        itTT->setForeground(QBrush(QColor("#FFD166")));
         tableOrders->setItem(rowCount, 8, itTT);
 
         rowCount++;
@@ -270,13 +205,13 @@ void TicketApprovalWidget::loadPendingOrders() {
 void TicketApprovalWidget::onApproveClicked() {
     QString orderId = getSelectedOrderId();
     if (orderId.isEmpty()) {
-        QMessageBox::warning(this, "Thông báo", "Vui lòng chọn một đơn đặt vé cần duyệt!");
+        QMessageBox::warning(this, "Thông Báo", "Vui lòng chọn một đơn đặt vé cần duyệt!");
         return;
     }
 
     if (ticketManager->approveOrder(orderId.toStdString())) {
         ticketManager->save();
-        QMessageBox::information(this, "Thành công", 
+        QMessageBox::information(this, "Thành Công",
             QString("Đã duyệt đơn %1 thành công!\nToàn bộ vé trong đơn đã chuyển sang trạng thái HỢP LỆ (VALID).").arg(orderId));
         loadPendingOrders();
     } else {
@@ -287,11 +222,11 @@ void TicketApprovalWidget::onApproveClicked() {
 void TicketApprovalWidget::onCancelClicked() {
     QString orderId = getSelectedOrderId();
     if (orderId.isEmpty()) {
-        QMessageBox::warning(this, "Thông báo", "Vui lòng chọn một đơn đặt vé cần hủy!");
+        QMessageBox::warning(this, "Thông Báo", "Vui lòng chọn một đơn đặt vé cần hủy!");
         return;
     }
 
-    auto reply = QMessageBox::question(this, "Xác nhận hủy đơn", 
+    auto reply = QMessageBox::question(this, "Xác Nhận Hủy Đơn",
         QString("Bạn có chắc chắn muốn hủy đơn %1?\nCác ghế tương ứng trên sơ đồ sẽ được giải phóng về ghế trống.").arg(orderId),
         QMessageBox::Yes | QMessageBox::No);
 
@@ -300,7 +235,7 @@ void TicketApprovalWidget::onCancelClicked() {
             ticketManager->save();
             showtimeManager->save();
             showtimeManager->saveSeatMaps();
-            QMessageBox::information(this, "Đã Hủy Đơn", 
+            QMessageBox::information(this, "Đã Hủy Đơn",
                 QString("Đơn vé %1 đã được hủy và toàn bộ ghế đã được giải phóng.").arg(orderId));
             loadPendingOrders();
         } else {
@@ -312,20 +247,20 @@ void TicketApprovalWidget::onCancelClicked() {
 void TicketApprovalWidget::onPrintClicked() {
     QString orderId = getSelectedOrderId();
     if (orderId.isEmpty()) {
-        QMessageBox::warning(this, "Thông báo", "Vui lòng chọn một đơn vé để in hóa đơn!");
+        QMessageBox::warning(this, "Thông Báo", "Vui lòng chọn một đơn vé để in hóa đơn!");
         return;
     }
 
     auto tickets = ticketManager->getTicketsByOrder(orderId.toStdString());
     if (tickets.isEmpty()) {
-        QMessageBox::warning(this, "Thông báo", "Không tìm thấy thông tin vé của đơn này!");
+        QMessageBox::warning(this, "Thông Báo", "Không tìm thấy thông tin vé của đơn này!");
         return;
     }
 
     auto firstTicket = tickets[0];
     auto showtime = showtimeManager->findById(firstTicket.getMaSuatChieu());
-    QString tenPhim = "Unknown";
-    QString roomDate = "Unknown";
+    QString tenPhim = "Không xác định";
+    QString roomDate = "Không xác định";
     if (showtime) {
         auto movie = movieManager->findById(showtime->getMaPhim());
         if (movie) tenPhim = QString::fromStdString(movie->getTenPhim());
@@ -339,40 +274,43 @@ void TicketApprovalWidget::onPrintClicked() {
         total += tickets[i].getGiaVe();
     }
 
-    // Receipt Dialog
     QDialog dlg(this);
-    dlg.setWindowTitle("HÓA ĐƠN & VÉ XEM PHIM - " + orderId);
-    dlg.setFixedSize(480, 500);
+    dlg.setWindowTitle("Hóa Đơn & Vé Xem Phim — " + orderId);
+    dlg.setFixedSize(500, 520);
     dlg.setStyleSheet(R"(
         QDialog {
-            background: #101224;
-            border: 2px solid #EAB02F;
-            border-radius: 8px;
+            background-color: #1F2338;
+            border: 1px solid #353C61;
+            border-radius: 18px;
         }
     )");
 
     QVBoxLayout *dLayout = new QVBoxLayout(&dlg);
-    dLayout->setContentsMargins(20, 20, 20, 20);
-    dLayout->setSpacing(12);
+    dLayout->setContentsMargins(24, 22, 24, 22);
+    dLayout->setSpacing(14);
+
+    QLabel *lblHead = new QLabel("HÓA ĐƠN & VÉ XEM PHIM", &dlg);
+    lblHead->setAlignment(Qt::AlignCenter);
+    lblHead->setStyleSheet("color: #FFD166; font-size: 16px; font-weight: bold; letter-spacing: 2px;");
 
     QTextEdit *txtReceipt = new QTextEdit(&dlg);
     txtReceipt->setReadOnly(true);
     txtReceipt->setStyleSheet(R"(
         QTextEdit {
-            background-color: #2C2E6A;
-            color: #FFFFFF;
-            font-family: 'Consolas', monospace;
-            font-size: 13px;
-            border: 1px solid #4A4D94;
-            border-radius: 6px;
-            padding: 12px;
+            background-color: #171A2B;
+            color: #F3F4FA;
+            font-family: "Menlo", "Consolas", "Courier New", monospace;
+            font-size: 12px;
+            border: 1px solid #303654;
+            border-radius: 14px;
+            padding: 14px;
         }
     )");
 
-    QString receiptText = 
+    QString receiptText =
         "================================================\n"
-        "             HỆ THỐNG RẠP PHIM PBL2             \n"
-        "              HÓA ĐƠN ĐẶT VÉ XEM PHIM           \n"
+        "                 PBL2 CINEMA                    \n"
+        "            HÓA ĐƠN ĐẶT VÉ XEM PHIM             \n"
         "================================================\n"
         " Mã Đơn     : " + orderId + "\n"
         " Khách Hàng : " + QString::fromStdString(firstTicket.getMaKhachHang()) + "\n"
@@ -385,27 +323,17 @@ void TicketApprovalWidget::onPrintClicked() {
         " TỔNG TIỀN  : " + QString("%L1 VND").arg(total, 0, 'f', 0) + "\n"
         " TRẠNG THÁI : " + QString::fromStdString(firstTicket.getTrangThai()) + "\n"
         "================================================\n"
-        "      CẢM ƠN QUÝ KHÁCH VÀ HẸN GẶP LẠI!        \n";
+        "      CẢM ƠN QUÝ KHÁCH VÀ HẸN GẶP LẠI!          \n";
 
     txtReceipt->setText(receiptText);
 
-    QPushButton *btnClose = new QPushButton("Đóng / In Vé", &dlg);
-    btnClose->setStyleSheet(R"(
-        QPushButton {
-            background-color: #28A745;
-            color: #FFFFFF;
-            font-size: 14px;
-            font-weight: bold;
-            border-radius: 5px;
-            min-height: 38px;
-        }
-        QPushButton:hover {
-            background-color: #34C759;
-        }
-    )");
+    QPushButton *btnClose = new QPushButton("Đóng / Hoàn Tất In", &dlg);
+    btnClose->setCursor(Qt::PointingHandCursor);
+    btnClose->setStyleSheet(Theme::primaryButtonStyle(42, 14));
     connect(btnClose, &QPushButton::clicked, &dlg, &QDialog::accept);
 
-    dLayout->addWidget(txtReceipt);
+    dLayout->addWidget(lblHead);
+    dLayout->addWidget(txtReceipt, 1);
     dLayout->addWidget(btnClose);
 
     dlg.exec();

@@ -1,128 +1,112 @@
 #include "SeatSelectionWidget.h"
+#include "../common/Theme.h"
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QMessageBox>
 #include <QScrollArea>
+#include <QFrame>
 #include "models/SeatMap.h"
 
 SeatSelectionWidget::SeatSelectionWidget(ShowtimeManager* showtimeManager, TicketManager* ticketManager, QWidget *parent)
     : QWidget(parent), showtimeManager(showtimeManager), ticketManager(ticketManager)
 {
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
-    mainLayout->setContentsMargins(15, 12, 15, 12);
-    mainLayout->setSpacing(10);
+    mainLayout->setContentsMargins(26, 20, 26, 18);
+    mainLayout->setSpacing(14);
 
-    // 1. Legend
-    QHBoxLayout *legendLayout = new QHBoxLayout();
+    QHBoxLayout *headerRow = new QHBoxLayout();
+    QVBoxLayout *titleCol = new QVBoxLayout();
+    titleCol->setSpacing(2);
+    QLabel *lblEyebrow = new QLabel("BƯỚC 2 / 4 • PHÒNG CHIẾU", this);
+    lblEyebrow->setStyleSheet(Theme::sectionEyebrowStyle());
+    QLabel *lblTitle = new QLabel("CHỌN VỊ TRÍ GHẾ NGỒI", this);
+    lblTitle->setStyleSheet(Theme::sectionTitleStyle());
+    titleCol->addWidget(lblEyebrow);
+    titleCol->addWidget(lblTitle);
+    headerRow->addLayout(titleCol);
+    headerRow->addStretch();
+
+    QFrame *legendFrame = new QFrame(this);
+    legendFrame->setStyleSheet("QFrame { background-color: #22263C; border: 1px solid #323859; border-radius: 14px; }");
+    QHBoxLayout *legendLayout = new QHBoxLayout(legendFrame);
     legendLayout->setAlignment(Qt::AlignCenter);
+    legendLayout->setContentsMargins(16, 8, 16, 8);
     legendLayout->setSpacing(14);
 
-    auto createLegendItem = [this](const QString& text, const QString& style) {
-        QWidget* item = new QWidget(this);
+    auto createLegendItem = [legendFrame](const QString& text, int swatchType) {
+        QWidget* item = new QWidget(legendFrame);
+        item->setStyleSheet("background: transparent; border: none;");
         QHBoxLayout* l = new QHBoxLayout(item);
-        l->setContentsMargins(2, 2, 2, 2);
+        l->setContentsMargins(0, 0, 0, 0);
         l->setSpacing(6);
         QLabel* badge = new QLabel(item);
-        badge->setFixedSize(18, 18);
-        badge->setStyleSheet(style);
+        badge->setFixedSize(16, 16);
+        badge->setStyleSheet(Theme::seatLegendSwatchStyle(swatchType));
         QLabel* lbl = new QLabel(text, item);
-        lbl->setStyleSheet("color: #FFFFFF; font-size: 12px; font-weight: bold;");
+        lbl->setStyleSheet("color: #C8CEE8; font-size: 11px; font-weight: 600; background: transparent; border: none;");
         l->addWidget(badge);
         l->addWidget(lbl);
         return item;
     };
 
-    legendLayout->addWidget(createLegendItem("Thường trống", "background-color: #2E8B57; border-radius: 4px; border: 1px solid #1E5E3A;"));
-    legendLayout->addWidget(createLegendItem("Thường đã đặt", "background-color: #3D3D5C; border-radius: 4px; border: 1px solid #28283D;"));
-    legendLayout->addWidget(createLegendItem("VIP trống", "background-color: #EAB02F; border-radius: 4px; border: 1px solid #B88626;"));
-    legendLayout->addWidget(createLegendItem("VIP đã đặt", "background-color: #822017; border-radius: 4px; border: 1px solid #52100E;"));
-    legendLayout->addWidget(createLegendItem("Đang chọn", "background-color: #2980B9; border-radius: 4px; border: 1px solid #00D2D3;"));
-    mainLayout->addLayout(legendLayout);
+    legendLayout->addWidget(createLegendItem("Thường trống", 0));
+    legendLayout->addWidget(createLegendItem("Thường đã đặt", 1));
+    legendLayout->addWidget(createLegendItem("VIP trống", 2));
+    legendLayout->addWidget(createLegendItem("VIP đã đặt", 3));
+    legendLayout->addWidget(createLegendItem("Đang chọn", 4));
 
-    // 2. Simulated Screen Bar (Red Gradient)
-    QLabel *lblScreen = new QLabel("--- MÀN HÌNH CHIẾU PHIM ---", this);
+    headerRow->addWidget(legendFrame, 0, Qt::AlignVCenter);
+    mainLayout->addLayout(headerRow);
+
+    QLabel *lblScreen = new QLabel("MÀN HÌNH CHIẾU PHIM", this);
     lblScreen->setAlignment(Qt::AlignCenter);
     lblScreen->setFixedHeight(36);
-    lblScreen->setStyleSheet(R"(
-        QLabel {
-            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #B22824, stop:1 #7D1916);
-            color: #FFFFFF;
-            border: 1px solid #EAB02F;
-            border-radius: 6px;
-            font-weight: bold;
-            letter-spacing: 4px;
-            font-size: 13px;
-        }
-    )");
+    lblScreen->setStyleSheet(Theme::screenBannerStyle());
     mainLayout->addWidget(lblScreen);
 
-    // 3. Scroll Area for Seat Grid
-    scrollArea = new QScrollArea(this);
+    QFrame *auditoriumFrame = new QFrame(this);
+    auditoriumFrame->setObjectName("auditoriumBox");
+    auditoriumFrame->setStyleSheet("QFrame#auditoriumBox { background-color: #1D2034; border: 1px solid #303654; border-radius: 20px; }");
+    QVBoxLayout *auditoriumLayout = new QVBoxLayout(auditoriumFrame);
+    auditoriumLayout->setContentsMargins(12, 14, 12, 14);
+
+    scrollArea = new QScrollArea(auditoriumFrame);
     scrollArea->setWidgetResizable(true);
     scrollArea->setStyleSheet("QScrollArea { background: transparent; border: none; }");
 
     gridContainer = new QWidget(scrollArea);
     gridContainer->setStyleSheet("background: transparent;");
     seatGrid = new QGridLayout(gridContainer);
-    seatGrid->setSpacing(5);
+    seatGrid->setSpacing(7);
     seatGrid->setAlignment(Qt::AlignCenter);
 
     scrollArea->setWidget(gridContainer);
-    mainLayout->addWidget(scrollArea, 1);
+    auditoriumLayout->addWidget(scrollArea);
+    mainLayout->addWidget(auditoriumFrame, 1);
 
-    // 4. Bottom Info and Actions
-    QHBoxLayout *bottomLayout = new QHBoxLayout();
-    bottomLayout->setSpacing(15);
+    QFrame *bottomBar = new QFrame(this);
+    bottomBar->setStyleSheet("QFrame { background-color: #22263C; border: 1px solid #323859; border-radius: 16px; }");
+    QHBoxLayout *bottomLayout = new QHBoxLayout(bottomBar);
+    bottomLayout->setContentsMargins(20, 12, 20, 12);
+    bottomLayout->setSpacing(12);
 
-    lblSelectedInfo = new QLabel("Ghế đã chọn: 0 ghế", this);
-    lblSelectedInfo->setStyleSheet("font-size: 15px; font-weight: bold; color: #EAB02F;");
+    lblSelectedInfo = new QLabel("Ghế đã chọn: Chưa chọn ghế", bottomBar);
+    lblSelectedInfo->setStyleSheet("font-size: 14px; font-weight: bold; color: #FFD166; background: transparent; border: none;");
+    lblSelectedInfo->setWordWrap(true);
 
-    QString btnStyle = R"(
-        QPushButton {
-            background-color: #A52C20;
-            color: #FFFFFF;
-            font-size: 14px;
-            font-weight: bold;
-            border-radius: 6px;
-            border: none;
-            min-height: 38px;
-            padding: 6px 20px;
-        }
-        QPushButton:hover {
-            background-color: #BD362A;
-            border: 1px solid #EAB02F;
-        }
-    )";
-
-    btnContinue = new QPushButton("Tiếp Tục ->", this);
-    btnContinue->setCursor(Qt::PointingHandCursor);
-    btnContinue->setStyleSheet(R"(
-        QPushButton {
-            background-color: #28A745;
-            color: #FFFFFF;
-            font-size: 14px;
-            font-weight: bold;
-            border-radius: 6px;
-            border: none;
-            min-height: 38px;
-            padding: 6px 20px;
-        }
-        QPushButton:hover {
-            background-color: #34C759;
-            border: 1px solid #FFFFFF;
-        }
-    )");
-    
-    btnBack = new QPushButton("<- Quay Lại", this);
+    btnBack = new QPushButton("Quay Lại", bottomBar);
     btnBack->setCursor(Qt::PointingHandCursor);
-    btnBack->setStyleSheet(btnStyle);
+    btnBack->setStyleSheet(Theme::secondaryButtonStyle(42, 14));
 
-    bottomLayout->addWidget(lblSelectedInfo);
-    bottomLayout->addStretch();
+    btnContinue = new QPushButton("Tiếp Tục Chọn Combo", bottomBar);
+    btnContinue->setCursor(Qt::PointingHandCursor);
+    btnContinue->setStyleSheet(Theme::primaryButtonStyle(42, 14));
+
+    bottomLayout->addWidget(lblSelectedInfo, 1);
     bottomLayout->addWidget(btnBack);
     bottomLayout->addWidget(btnContinue);
 
-    mainLayout->addLayout(bottomLayout);
+    mainLayout->addWidget(bottomBar);
 
     connect(btnContinue, &QPushButton::clicked, this, &SeatSelectionWidget::onContinue);
     connect(btnBack, &QPushButton::clicked, this, &SeatSelectionWidget::goBack);
@@ -130,8 +114,7 @@ SeatSelectionWidget::SeatSelectionWidget(ShowtimeManager* showtimeManager, Ticke
 
 void SeatSelectionWidget::loadSeatMap(const QString& maSuatChieu) {
     currentMaSuatChieu = maSuatChieu;
-    
-    // Clear old grid items
+
     QLayoutItem* item;
     while ((item = seatGrid->takeAt(0)) != nullptr) {
         if (item->widget()) delete item->widget();
@@ -150,12 +133,17 @@ void SeatSelectionWidget::loadSeatMap(const QString& maSuatChieu) {
     int cols = seatMap->getSoCot();
 
     for (int r = 0; r < rows; ++r) {
+        QLabel *rowLblLeft = new QLabel(QString(QChar('A' + r)), gridContainer);
+        rowLblLeft->setFixedSize(22, 36);
+        rowLblLeft->setAlignment(Qt::AlignCenter);
+        rowLblLeft->setStyleSheet("color: #707899; font-size: 11px; font-weight: bold; background: transparent;");
+        seatGrid->addWidget(rowLblLeft, r, 0);
+
         for (int c = 0; c < cols; ++c) {
             QString seatName = QString(QChar('A' + r)) + QString::number(c + 1);
             QPushButton *btn = new QPushButton(seatName, gridContainer);
-            // STANDARD SEAT BUTTON SIZE: 38x36 px, prevents overflow on A14, K15
             btn->setFixedSize(38, 36);
-            
+
             btn->setProperty("row", r);
             btn->setProperty("col", c);
 
@@ -163,78 +151,30 @@ void SeatSelectionWidget::loadSeatMap(const QString& maSuatChieu) {
             btn->setProperty("status", status);
 
             updateSeatVisuals(btn, r, c, status);
-            
+
             if (status == 1 || status == 3) {
-                btn->setEnabled(false); // Booked or pending
+                btn->setEnabled(false);
                 btn->setCursor(Qt::ForbiddenCursor);
             } else {
                 btn->setCursor(Qt::PointingHandCursor);
                 connect(btn, &QPushButton::clicked, this, &SeatSelectionWidget::onSeatClicked);
             }
 
-            seatGrid->addWidget(btn, r, c);
+            seatGrid->addWidget(btn, r, c + 1);
         }
+
+        QLabel *rowLblRight = new QLabel(QString(QChar('A' + r)), gridContainer);
+        rowLblRight->setFixedSize(22, 36);
+        rowLblRight->setAlignment(Qt::AlignCenter);
+        rowLblRight->setStyleSheet("color: #707899; font-size: 11px; font-weight: bold; background: transparent;");
+        seatGrid->addWidget(rowLblRight, r, cols + 1);
     }
 }
 
 void SeatSelectionWidget::updateSeatVisuals(QPushButton* btn, int row, int col, int status) {
     (void)row;
     (void)col;
-    if (status == 0) { // Thuong trong
-        btn->setStyleSheet(R"(
-            QPushButton {
-                background-color: #2E8B57;
-                color: #FFFFFF;
-                border: 1px solid #1E5E3A;
-                border-radius: 4px;
-                font-weight: bold;
-                font-size: 10px;
-                padding: 0;
-            }
-            QPushButton:hover {
-                border: 1px solid #FFFFFF;
-            }
-        )");
-    } else if (status == 1) { // Thuong da dat
-        btn->setStyleSheet(R"(
-            QPushButton {
-                background-color: #3D3D5C;
-                color: #888899;
-                border: 1px solid #28283D;
-                border-radius: 4px;
-                font-weight: bold;
-                font-size: 10px;
-                padding: 0;
-            }
-        )");
-    } else if (status == 2) { // VIP trong
-        btn->setStyleSheet(R"(
-            QPushButton {
-                background-color: #EAB02F;
-                color: #1A1A1A;
-                border: 1px solid #B88626;
-                border-radius: 4px;
-                font-weight: bold;
-                font-size: 10px;
-                padding: 0;
-            }
-            QPushButton:hover {
-                border: 1px solid #FFFFFF;
-            }
-        )");
-    } else if (status == 3) { // VIP da dat
-        btn->setStyleSheet(R"(
-            QPushButton {
-                background-color: #822017;
-                color: #B37D7C;
-                border: 1px solid #52100E;
-                border-radius: 4px;
-                font-weight: bold;
-                font-size: 10px;
-                padding: 0;
-            }
-        )");
-    }
+    btn->setStyleSheet(Theme::seatButtonStyle(status, false));
 }
 
 void SeatSelectionWidget::onSeatClicked() {
@@ -245,7 +185,6 @@ void SeatSelectionWidget::onSeatClicked() {
     int c = btn->property("col").toInt();
     int status = btn->property("status").toInt();
 
-    // Check if already selected
     bool found = false;
     int foundIndex = -1;
     for (int i = 0; i < selectedSeats.size(); ++i) {
@@ -257,43 +196,39 @@ void SeatSelectionWidget::onSeatClicked() {
     }
 
     if (found) {
-        // Deselect
         selectedSeats.removeAt(foundIndex);
         updateSeatVisuals(btn, r, c, status);
     } else {
-        // Select
         SelectedSeat s = {r, c};
         selectedSeats.push_back(s);
-        btn->setStyleSheet(R"(
-            QPushButton {
-                background-color: #2980B9;
-                color: #FFFFFF;
-                border: 2px solid #00D2D3;
-                border-radius: 4px;
-                font-weight: bold;
-                font-size: 10px;
-                padding: 0;
-            }
-        )");
+        btn->setStyleSheet(Theme::seatButtonStyle(status, true));
     }
 
     updateSelectedInfo();
 }
 
 void SeatSelectionWidget::updateSelectedInfo() {
-    lblSelectedInfo->setText(QString("Ghế đã chọn: %1 ghế").arg(selectedSeats.size()));
+    if (selectedSeats.size() == 0) {
+        lblSelectedInfo->setText("Ghế đã chọn: Chưa chọn ghế");
+        return;
+    }
+    QStringList names;
+    for (int i = 0; i < selectedSeats.size(); ++i) {
+        names << QString(QChar('A' + selectedSeats[i].row)) + QString::number(selectedSeats[i].col + 1);
+    }
+    lblSelectedInfo->setText(QString("Đã chọn %1 ghế:  %2").arg(selectedSeats.size()).arg(names.join(", ")));
 }
 
 void SeatSelectionWidget::onContinue() {
     if (selectedSeats.size() == 0) {
-        QMessageBox::warning(this, "Cảnh báo", "Vui lòng chọn ít nhất 1 ghế!");
+        QMessageBox::warning(this, "Thông Báo", "Vui lòng chọn ít nhất 1 ghế!");
         return;
     }
-    
+
     QStringList seatStrs;
     for (int i = 0; i < selectedSeats.size(); ++i) {
         seatStrs << QString("%1,%2").arg(selectedSeats[i].row).arg(selectedSeats[i].col);
     }
-    
+
     emit seatsSelected(currentMaSuatChieu, seatStrs);
 }

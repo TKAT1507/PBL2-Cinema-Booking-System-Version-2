@@ -1,4 +1,5 @@
 #include "ComboSelectionWidget.h"
+#include "../common/Theme.h"
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QHeaderView>
@@ -10,13 +11,18 @@ ComboSelectionWidget::ComboSelectionWidget(ComboManager* comboManager, QWidget *
     : QWidget(parent), comboManager(comboManager)
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
-    layout->setContentsMargins(15, 15, 15, 15);
-    layout->setSpacing(15);
+    layout->setContentsMargins(26, 22, 26, 20);
+    layout->setSpacing(14);
 
+    QVBoxLayout *titleCol = new QVBoxLayout();
+    titleCol->setSpacing(2);
+    QLabel *lblEyebrow = new QLabel("BƯỚC 3 / 4 • QUẦY BẮP NƯỚC", this);
+    lblEyebrow->setStyleSheet(Theme::sectionEyebrowStyle());
     QLabel *lblTitle = new QLabel("CHỌN COMBO BẮP NƯỚC", this);
-    lblTitle->setAlignment(Qt::AlignCenter);
-    lblTitle->setStyleSheet("color: #EAB02F; font-size: 20px; font-weight: bold;");
-    layout->addWidget(lblTitle);
+    lblTitle->setStyleSheet(Theme::sectionTitleStyle());
+    titleCol->addWidget(lblEyebrow);
+    titleCol->addWidget(lblTitle);
+    layout->addLayout(titleCol);
 
     tableCombos = new QTableWidget(this);
     tableCombos->setColumnCount(5);
@@ -27,73 +33,28 @@ ComboSelectionWidget::ComboSelectionWidget(ComboManager* comboManager, QWidget *
     tableCombos->horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
     tableCombos->horizontalHeader()->setSectionResizeMode(4, QHeaderView::Fixed);
     tableCombos->setColumnWidth(4, 130);
-    tableCombos->verticalHeader()->setDefaultSectionSize(48);
+    tableCombos->verticalHeader()->setDefaultSectionSize(52);
     tableCombos->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     tableCombos->setSelectionBehavior(QAbstractItemView::SelectRows);
     tableCombos->setSelectionMode(QAbstractItemView::SingleSelection);
     tableCombos->setAlternatingRowColors(true);
     tableCombos->verticalHeader()->setVisible(false);
-    layout->addWidget(tableCombos);
+    layout->addWidget(tableCombos, 1);
 
-    // Bottom Action Buttons
     QHBoxLayout *bottomLayout = new QHBoxLayout();
-    bottomLayout->setSpacing(15);
+    bottomLayout->setSpacing(12);
 
-    btnSkip = new QPushButton("Bỏ Qua (Không mua)", this);
-    btnSkip->setCursor(Qt::PointingHandCursor);
-    btnSkip->setStyleSheet(R"(
-        QPushButton {
-            background-color: #EAB02F;
-            color: #1A1A1A;
-            font-size: 14px;
-            font-weight: bold;
-            border: 1px solid #C49129;
-            border-radius: 6px;
-            min-height: 38px;
-            padding: 6px 18px;
-        }
-        QPushButton:hover {
-            background-color: #EDB952;
-            border: 1px solid #FFFFFF;
-        }
-    )");
-
-    QPushButton *btnBack = new QPushButton("<- Quay Lại", this);
+    QPushButton *btnBack = new QPushButton("Quay Lại", this);
     btnBack->setCursor(Qt::PointingHandCursor);
-    btnBack->setStyleSheet(R"(
-        QPushButton {
-            background-color: #A52C20;
-            color: #FFFFFF;
-            font-size: 14px;
-            font-weight: bold;
-            border-radius: 6px;
-            border: none;
-            min-height: 38px;
-            padding: 6px 18px;
-        }
-        QPushButton:hover {
-            background-color: #BD362A;
-        }
-    )");
+    btnBack->setStyleSheet(Theme::secondaryButtonStyle(42, 14));
 
-    btnContinue = new QPushButton("Tiếp Tục ->", this);
+    btnSkip = new QPushButton("Bỏ Qua Combo", this);
+    btnSkip->setCursor(Qt::PointingHandCursor);
+    btnSkip->setStyleSheet(Theme::goldOutlineButtonStyle(42, 14));
+
+    btnContinue = new QPushButton("Tiếp Tục Xác Nhận", this);
     btnContinue->setCursor(Qt::PointingHandCursor);
-    btnContinue->setStyleSheet(R"(
-        QPushButton {
-            background-color: #28A745;
-            color: #FFFFFF;
-            font-size: 14px;
-            font-weight: bold;
-            border-radius: 6px;
-            border: none;
-            min-height: 38px;
-            padding: 6px 20px;
-        }
-        QPushButton:hover {
-            background-color: #34C759;
-            border: 1px solid #FFFFFF;
-        }
-    )");
+    btnContinue->setStyleSheet(Theme::primaryButtonStyle(42, 14));
 
     bottomLayout->addWidget(btnBack);
     bottomLayout->addWidget(btnSkip);
@@ -112,7 +73,7 @@ void ComboSelectionWidget::loadCombos() {
     tableCombos->setRowCount(combos.size());
     for (int i = 0; i < combos.size(); ++i) {
         auto c = combos[i];
-        
+
         QTableWidgetItem* itemIndex = new QTableWidgetItem(QString::number(i + 1));
         itemIndex->setTextAlignment(Qt::AlignCenter);
         itemIndex->setFlags(itemIndex->flags() & ~Qt::ItemIsEditable);
@@ -121,20 +82,25 @@ void ComboSelectionWidget::loadCombos() {
         QTableWidgetItem* itemTen = new QTableWidgetItem(QString::fromStdString(c.getTenCombo()));
         itemTen->setData(Qt::UserRole, QString::fromStdString(c.getMaCombo()));
         itemTen->setFlags(itemTen->flags() & ~Qt::ItemIsEditable);
-        itemTen->setFont(QFont("Segoe UI", 10, QFont::Bold));
+        QFont boldFont = itemTen->font();
+        boldFont.setBold(true);
+        itemTen->setFont(boldFont);
         tableCombos->setItem(i, 1, itemTen);
-        
+
         QTableWidgetItem* itemMoTa = new QTableWidgetItem(QString::fromStdString(c.getMoTa()));
         itemMoTa->setFlags(itemMoTa->flags() & ~Qt::ItemIsEditable);
+        itemMoTa->setForeground(QBrush(QColor("#A3ABC9")));
         tableCombos->setItem(i, 2, itemMoTa);
-        
+
         QTableWidgetItem* itemGia = new QTableWidgetItem(QString("%L1 VND").arg(c.getGia(), 0, 'f', 0));
         itemGia->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
         itemGia->setFlags(itemGia->flags() & ~Qt::ItemIsEditable);
-        itemGia->setForeground(QBrush(QColor("#EAB02F")));
+        itemGia->setFont(boldFont);
+        itemGia->setForeground(QBrush(QColor("#FFD166")));
         tableCombos->setItem(i, 3, itemGia);
 
         QWidget* pWidget = new QWidget();
+        pWidget->setStyleSheet("background: transparent;");
         QHBoxLayout* pLayout = new QHBoxLayout(pWidget);
         pLayout->setContentsMargins(4, 2, 4, 2);
         pLayout->setAlignment(Qt::AlignCenter);
@@ -143,21 +109,19 @@ void ComboSelectionWidget::loadCombos() {
         spinQty->setRange(0, 20);
         spinQty->setValue(0);
         spinQty->setAlignment(Qt::AlignCenter);
-        spinQty->setFixedSize(85, 30);
+        spinQty->setFixedSize(94, 34);
         spinQty->setStyleSheet(R"(
             QSpinBox {
-                background-color: #EAB02F;
-                color: #1A1A1A;
+                background-color: #1A1D2F;
+                color: #F3F4FA;
                 font-size: 13px;
                 font-weight: bold;
-                border: 1px solid #C49129;
-                border-radius: 4px;
-                padding: 0px 4px;
-                min-height: 26px;
-                max-height: 28px;
+                border: 1.5px solid #3D446B;
+                border-radius: 10px;
+                padding: 0px 6px;
             }
-            QSpinBox::up-button, QSpinBox::down-button {
-                width: 18px;
+            QSpinBox:focus {
+                border: 1.5px solid #FF6B6B;
             }
         )");
         pLayout->addWidget(spinQty);
@@ -175,7 +139,7 @@ void ComboSelectionWidget::onContinue() {
             selected << QString("%1,%2").arg(maCombo).arg(spin->value());
         }
     }
-    
+
     emit combosSelected(selected);
 }
 

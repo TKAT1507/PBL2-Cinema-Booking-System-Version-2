@@ -1,70 +1,55 @@
 #include "MovieListWidget.h"
+#include "../common/Theme.h"
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QFrame>
 #include <QPixmap>
-#include <QFileInfo>
-#include <QCoreApplication>
 #include <QCursor>
 
 MovieListWidget::MovieListWidget(MovieManager* movieManager, ShowtimeManager* showtimeManager, QWidget *parent)
     : QWidget(parent), movieManager(movieManager), showtimeManager(showtimeManager)
 {
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
-    mainLayout->setContentsMargins(10, 10, 10, 10);
-    mainLayout->setSpacing(12);
+    mainLayout->setContentsMargins(26, 22, 26, 18);
+    mainLayout->setSpacing(16);
 
-    // Top Bar: Title & Search Bar (Top Right)
     QHBoxLayout *topBar = new QHBoxLayout();
-    
-    QLabel *lblSectionTitle = new QLabel("DANH SÁCH PHIM ĐANG CHIẾU", this);
-    lblSectionTitle->setStyleSheet("color: #EAB02F; font-size: 18px; font-weight: bold;");
-    topBar->addWidget(lblSectionTitle);
+    topBar->setSpacing(12);
+
+    QVBoxLayout *titleCol = new QVBoxLayout();
+    titleCol->setSpacing(2);
+
+    QLabel *lblEyebrow = new QLabel("NOW SHOWING • PHÒNG VÉ TRỰC TUYẾN", this);
+    lblEyebrow->setStyleSheet(Theme::sectionEyebrowStyle());
+
+    QLabel *lblSectionTitle = new QLabel("PHIM ĐANG CHIẾU", this);
+    lblSectionTitle->setStyleSheet(Theme::sectionTitleStyle());
+
+    titleCol->addWidget(lblEyebrow);
+    titleCol->addWidget(lblSectionTitle);
+
+    topBar->addLayout(titleCol);
     topBar->addStretch();
 
     txtSearch = new QLineEdit(this);
-    txtSearch->setPlaceholderText("Tìm kiếm phim...");
-    txtSearch->setFixedWidth(240);
-    txtSearch->setStyleSheet(R"(
-        QLineEdit {
-            background-color: #EAB02F;
-            color: #1A1A1A;
-            font-size: 13px;
-            font-weight: bold;
-            border: 1px solid #C49129;
-            border-radius: 5px;
-            padding: 4px 10px;
-            min-height: 28px;
-        }
-        QLineEdit:focus {
-            border: 2px solid #FFFFFF;
-        }
-    )");
+    txtSearch->setPlaceholderText("Tìm kiếm tên phim...");
+    txtSearch->setFixedWidth(260);
+    txtSearch->setFixedHeight(40);
 
-    btnSearch = new QPushButton("Tìm", this);
+    btnSearch = new QPushButton("Tìm Kiếm", this);
     btnSearch->setCursor(Qt::PointingHandCursor);
-    btnSearch->setStyleSheet(R"(
-        QPushButton {
-            background-color: #A52C20;
-            color: #FFFFFF;
-            font-size: 13px;
-            font-weight: bold;
-            border-radius: 5px;
-            border: none;
-            min-height: 30px;
-            padding: 4px 14px;
-        }
-        QPushButton:hover {
-            background-color: #BD362A;
-        }
-    )");
+    btnSearch->setStyleSheet(Theme::primaryButtonStyle(38, 13));
 
-    topBar->addWidget(txtSearch);
-    topBar->addWidget(btnSearch);
+    topBar->addWidget(txtSearch, 0, Qt::AlignVCenter);
+    topBar->addWidget(btnSearch, 0, Qt::AlignVCenter);
     mainLayout->addLayout(topBar);
 
-    // Scroll Area for 2-column Movie Cards Grid
+    QFrame *divider = new QFrame(this);
+    divider->setFrameShape(QFrame::HLine);
+    divider->setStyleSheet("background-color: #2B304D; max-height: 1px; border: none;");
+    mainLayout->addWidget(divider);
+
     scrollArea = new QScrollArea(this);
     scrollArea->setWidgetResizable(true);
     scrollArea->setStyleSheet("QScrollArea { background: transparent; border: none; }");
@@ -72,11 +57,14 @@ MovieListWidget::MovieListWidget(MovieManager* movieManager, ShowtimeManager* sh
     cardsContainer = new QWidget(scrollArea);
     cardsContainer->setStyleSheet("background: transparent;");
     gridLayout = new QGridLayout(cardsContainer);
-    gridLayout->setSpacing(16);
-    gridLayout->setContentsMargins(0, 5, 0, 10);
+    gridLayout->setSpacing(18);
+    gridLayout->setContentsMargins(0, 4, 6, 16);
+    gridLayout->setAlignment(Qt::AlignTop);
+    gridLayout->setColumnStretch(0, 1);
+    gridLayout->setColumnStretch(1, 1);
 
     scrollArea->setWidget(cardsContainer);
-    mainLayout->addWidget(scrollArea);
+    mainLayout->addWidget(scrollArea, 1);
 
     connect(btnSearch, &QPushButton::clicked, this, &MovieListWidget::onSearch);
     connect(txtSearch, &QLineEdit::returnPressed, this, &MovieListWidget::onSearch);
@@ -100,7 +88,6 @@ void MovieListWidget::onSearch() {
 }
 
 void MovieListWidget::populateGrid(const DynamicArray<Movie>& movies) {
-    // Clear old items from grid layout
     QLayoutItem *item;
     while ((item = gridLayout->takeAt(0)) != nullptr) {
         if (item->widget()) {
@@ -110,8 +97,8 @@ void MovieListWidget::populateGrid(const DynamicArray<Movie>& movies) {
     }
 
     if (movies.isEmpty()) {
-        QLabel *lblEmpty = new QLabel("Không tìm thấy phim phù hợp.", cardsContainer);
-        lblEmpty->setStyleSheet("color: #FFFFFF; font-size: 16px; margin: 40px;");
+        QLabel *lblEmpty = new QLabel("Không tìm thấy bộ phim phù hợp với từ khóa của bạn.", cardsContainer);
+        lblEmpty->setStyleSheet("color: #9AA2C2; font-size: 15px; padding: 50px;");
         lblEmpty->setAlignment(Qt::AlignCenter);
         gridLayout->addWidget(lblEmpty, 0, 0, 1, 2);
         return;
@@ -133,115 +120,70 @@ void MovieListWidget::populateGrid(const DynamicArray<Movie>& movies) {
 QWidget* MovieListWidget::createMovieCard(const Movie& movie) {
     QFrame *card = new QFrame(cardsContainer);
     card->setObjectName("movieCard");
+    card->setFixedHeight(220);
     card->setStyleSheet(R"(
         QFrame#movieCard {
-            background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #2C2E6A, stop:1 #20224F);
-            border: 1px solid #4A4D94;
-            border-radius: 10px;
+            background-color: #22263C;
+            border: 1px solid #323859;
+            border-radius: 18px;
         }
         QFrame#movieCard:hover {
-            border: 1px solid #EAB02F;
+            background-color: #282D47;
+            border: 1.5px solid #FF6B6B;
         }
     )");
 
     QHBoxLayout *cardLayout = new QHBoxLayout(card);
-    cardLayout->setContentsMargins(12, 12, 12, 12);
-    cardLayout->setSpacing(14);
+    cardLayout->setContentsMargins(14, 14, 18, 14);
+    cardLayout->setSpacing(16);
 
-    // Left: Poster
     QLabel *lblPoster = new QLabel(card);
-    lblPoster->setFixedSize(130, 185);
+    lblPoster->setFixedSize(130, 190);
     lblPoster->setAlignment(Qt::AlignCenter);
-    lblPoster->setStyleSheet("background-color: #121330; border-radius: 6px; border: 1px solid #3D4080;");
+    lblPoster->setStyleSheet("background-color: #181B2C; border-radius: 14px; border: none;");
 
-    QString posterPath = QString::fromStdString(movie.getPoster());
-    QPixmap pixmap;
-    if (QFileInfo::exists(posterPath)) {
-        pixmap.load(posterPath);
-    } else {
-        QString alt1 = "posters/" + QFileInfo(posterPath).fileName();
-        if (QFileInfo::exists(alt1)) {
-            pixmap.load(alt1);
-        } else {
-            QString alt2 = QCoreApplication::applicationDirPath() + "/" + posterPath;
-            if (QFileInfo::exists(alt2)) {
-                pixmap.load(alt2);
-            }
-        }
-    }
-
+    QPixmap pixmap = Theme::loadPosterPixmap(QString::fromStdString(movie.getPoster()));
     if (!pixmap.isNull()) {
-        lblPoster->setPixmap(pixmap.scaled(130, 185, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
+        lblPoster->setPixmap(Theme::roundedCoverPixmap(pixmap, 130, 190, 14));
     } else {
         lblPoster->setText("POSTER\n" + QString::fromStdString(movie.getTenPhim()));
         lblPoster->setWordWrap(true);
-        lblPoster->setStyleSheet("color: #EAB02F; font-size: 11px; font-weight: bold; background-color: #101224; border-radius: 6px;");
+        lblPoster->setStyleSheet("color: #848DB0; font-size: 11px; font-weight: bold; background-color: #181B2C; border-radius: 14px; padding: 8px;");
     }
 
-    // Right: Info
     QVBoxLayout *infoLayout = new QVBoxLayout();
     infoLayout->setSpacing(6);
-    infoLayout->setContentsMargins(0, 0, 0, 0);
+    infoLayout->setContentsMargins(0, 4, 0, 2);
 
-    QString titleText = QString::fromStdString(movie.getTenPhim()).toUpper();
+    QString titleText = QString::fromStdString(movie.getTenPhim());
     QLabel *lblTitle = new QLabel(titleText, card);
-    lblTitle->setStyleSheet("color: #FFFFFF; font-size: 15px; font-weight: bold; background: transparent;");
+    lblTitle->setStyleSheet("color: #F3F4FA; font-size: 16px; font-weight: bold; background: transparent; border: none;");
     lblTitle->setWordWrap(true);
 
-    QLabel *lblGenre = new QLabel("🏷️ Thể loại: " + QString::fromStdString(movie.getTheLoai()), card);
-    lblGenre->setStyleSheet("color: #D6D6E6; font-size: 12px; background: transparent;");
+    QLabel *lblGenre = new QLabel("Thể loại:  " + QString::fromStdString(movie.getTheLoai()), card);
+    lblGenre->setStyleSheet("color: #A3ABC9; font-size: 12px; background: transparent; border: none;");
+    lblGenre->setWordWrap(true);
 
-    QLabel *lblDuration = new QLabel(QString("⏱️ Thời lượng: %1 phút").arg(movie.getThoiLuong()), card);
-    lblDuration->setStyleSheet("color: #D6D6E6; font-size: 12px; background: transparent;");
+    QLabel *lblDuration = new QLabel(QString("Thời lượng:  %1 phút").arg(movie.getThoiLuong()), card);
+    lblDuration->setStyleSheet("color: #A3ABC9; font-size: 12px; background: transparent; border: none;");
 
     QHBoxLayout *ageRow = new QHBoxLayout();
     ageRow->setSpacing(6);
-    QLabel *lblAgeTitle = new QLabel("Độ tuổi:", card);
-    lblAgeTitle->setStyleSheet("color: #D6D6E6; font-size: 12px; background: transparent;");
-
-    QLabel *lblAge = new QLabel(card);
-    if (movie.getDoTuoi() == 0) {
-        lblAge->setText(" P (Mọi lứa tuổi) ");
-        lblAge->setStyleSheet("color: #FFFFFF; font-size: 11px; font-weight: bold; background-color: #28A745; border-radius: 4px; padding: 2px 6px;");
-    } else if (movie.getDoTuoi() == 13) {
-        lblAge->setText(" C13 (Từ 13 tuổi) ");
-        lblAge->setStyleSheet("color: #1A1A1A; font-size: 11px; font-weight: bold; background-color: #EAB02F; border-radius: 4px; padding: 2px 6px;");
-    } else if (movie.getDoTuoi() == 16) {
-        lblAge->setText(" C16 (Từ 16 tuổi) ");
-        lblAge->setStyleSheet("color: #FFFFFF; font-size: 11px; font-weight: bold; background-color: #E06D14; border-radius: 4px; padding: 2px 6px;");
-    } else {
-        lblAge->setText(QString(" C%1 (Từ %1 tuổi) ").arg(movie.getDoTuoi()));
-        lblAge->setStyleSheet("color: #FFFFFF; font-size: 11px; font-weight: bold; background-color: #A52C20; border-radius: 4px; padding: 2px 6px;");
-    }
-    ageRow->addWidget(lblAgeTitle);
+    QLabel *lblAge = new QLabel(Theme::ageBadgeText(movie.getDoTuoi(), true), card);
+    lblAge->setStyleSheet(Theme::ageBadgeStyle(movie.getDoTuoi()));
     ageRow->addWidget(lblAge);
     ageRow->addStretch();
 
     infoLayout->addWidget(lblTitle);
     infoLayout->addWidget(lblGenre);
     infoLayout->addWidget(lblDuration);
+    infoLayout->addSpacing(2);
     infoLayout->addLayout(ageRow);
     infoLayout->addStretch();
 
-    // Button: Dat ve / Chi tiet
-    QPushButton *btnBook = new QPushButton("Đặt Vé / Chi Tiết", card);
+    QPushButton *btnBook = new QPushButton("Đặt Vé && Chi Tiết", card);
     btnBook->setCursor(Qt::PointingHandCursor);
-    btnBook->setStyleSheet(R"(
-        QPushButton {
-            background-color: #A52C20;
-            color: #FFFFFF;
-            font-size: 13px;
-            font-weight: bold;
-            border-radius: 5px;
-            border: none;
-            min-height: 32px;
-            padding: 4px 12px;
-        }
-        QPushButton:hover {
-            background-color: #BD362A;
-            border: 1px solid #EAB02F;
-        }
-    )");
+    btnBook->setStyleSheet(Theme::primaryButtonStyle(36, 13));
 
     QString maPhim = QString::fromStdString(movie.getMaPhim());
     connect(btnBook, &QPushButton::clicked, this, [this, maPhim]() {

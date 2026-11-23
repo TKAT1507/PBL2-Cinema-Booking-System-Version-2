@@ -12,6 +12,7 @@ class LoginWindow : public QWidget {
 
 public:
     explicit LoginWindow(UserManager *userManager, QWidget *parent = nullptr);
+    void resetFields();
 
 signals:
     void loginSuccess(const QString& role, const QString& userId);

@@ -1,4 +1,5 @@
 #include "ShowtimeListWidget.h"
+#include "../common/Theme.h"
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QHeaderView>
@@ -11,74 +12,70 @@ ShowtimeListWidget::ShowtimeListWidget(ShowtimeManager* showtimeManager, MovieMa
     : QWidget(parent), showtimeManager(showtimeManager), movieManager(movieManager), currentDayFilter(-1)
 {
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
-    mainLayout->setContentsMargins(15, 15, 15, 15);
-    mainLayout->setSpacing(12);
+    mainLayout->setContentsMargins(26, 22, 26, 20);
+    mainLayout->setSpacing(14);
 
-    // Header Title
-    lblMovieHeader = new QLabel("LỊCH CHIẾU PHIM", this);
-    lblMovieHeader->setAlignment(Qt::AlignCenter);
-    lblMovieHeader->setStyleSheet("color: #FFFFFF; font-size: 20px; font-weight: bold;");
-    mainLayout->addWidget(lblMovieHeader);
-
-    // Top Filter Bar: Movie Dropdown
     QHBoxLayout *topBar = new QHBoxLayout();
-    QLabel *lblFilter = new QLabel("Chọn phim:", this);
-    lblFilter->setStyleSheet("color: #EAB02F; font-size: 14px; font-weight: bold;");
+    topBar->setSpacing(12);
+
+    QVBoxLayout *titleCol = new QVBoxLayout();
+    titleCol->setSpacing(2);
+    QLabel *lblEyebrow = new QLabel("BƯỚC 1 / 4 • CHỌN LỊCH CHIẾU", this);
+    lblEyebrow->setStyleSheet(Theme::sectionEyebrowStyle());
+
+    lblMovieHeader = new QLabel("LỊCH CHIẾU PHIM", this);
+    lblMovieHeader->setStyleSheet(Theme::sectionTitleStyle());
+
+    titleCol->addWidget(lblEyebrow);
+    titleCol->addWidget(lblMovieHeader);
+
+    topBar->addLayout(titleCol);
+    topBar->addStretch();
+
+    QLabel *lblFilter = new QLabel("Lọc theo phim:", this);
+    lblFilter->setStyleSheet("color: #A3ABC9; font-size: 13px; font-weight: 600;");
 
     cbMovies = new QComboBox(this);
     cbMovies->addItem("Tất cả phim", "");
-    cbMovies->setMinimumWidth(250);
-    cbMovies->setStyleSheet(R"(
-        QComboBox {
-            background-color: #EAB02F;
-            color: #1A1A1A;
-            font-size: 13px;
-            font-weight: bold;
-            border-radius: 5px;
-            padding: 5px 10px;
-        }
-    )");
+    cbMovies->setMinimumWidth(260);
+    cbMovies->setFixedHeight(40);
 
     auto movies = movieManager->getActiveMovies();
     for (int i = 0; i < movies.size(); ++i) {
         cbMovies->addItem(QString::fromStdString(movies[i].getTenPhim()), QString::fromStdString(movies[i].getMaPhim()));
     }
 
-    topBar->addWidget(lblFilter);
-    topBar->addWidget(cbMovies);
-    topBar->addStretch();
+    topBar->addWidget(lblFilter, 0, Qt::AlignVCenter);
+    topBar->addWidget(cbMovies, 0, Qt::AlignVCenter);
     mainLayout->addLayout(topBar);
 
-    // Day Tabs: Tất Cả + 7 Ngày liên tiếp (bắt đầu từ Hôm nay)
     upcomingDates = SystemDate::getUpcoming7Days();
 
     QHBoxLayout *dayTabsLayout = new QHBoxLayout();
-    dayTabsLayout->setSpacing(6);
+    dayTabsLayout->setSpacing(8);
 
-    // Tab 0: "Tất Cả"
     QPushButton *btnAll = new QPushButton("Tất Cả\nLịch Chiếu", this);
     btnAll->setCursor(Qt::PointingHandCursor);
-    btnAll->setFixedHeight(46);
+    btnAll->setFixedHeight(50);
     dayButtons.append(btnAll);
     dayTabsLayout->addWidget(btnAll);
     connect(btnAll, &QPushButton::clicked, this, [this]() {
         onDayTabClicked(-1);
     });
 
-    // Tab 1..7: 7 ngày tới
     for (int i = 0; i < upcomingDates.size(); ++i) {
         const QDate& d = upcomingDates[i];
         QString dayName = SystemDate::getDayOfWeekVN(d);
         QString labelText;
         if (i == 0) {
-            labelText = QString("%1\n(Hôm nay - %2)").arg(dayName, d.toString("dd/MM"));
+            labelText = QString("%1\nHôm nay • %2").arg(dayName, d.toString("dd/MM"));
         } else {
-            labelText = QString("%1\n(%2)").arg(dayName, d.toString("dd/MM"));
+            labelText = QString("%1\n%2").arg(dayName, d.toString("dd/MM"));
         }
 
         QPushButton *btnDay = new QPushButton(labelText, this);
         btnDay->setCursor(Qt::PointingHandCursor);
-        btnDay->setFixedHeight(46);
+        btnDay->setFixedHeight(50);
         dayButtons.append(btnDay);
         dayTabsLayout->addWidget(btnDay);
 
@@ -89,7 +86,6 @@ ShowtimeListWidget::ShowtimeListWidget(ShowtimeManager* showtimeManager, MovieMa
     mainLayout->addLayout(dayTabsLayout);
     updateDayButtonStyles();
 
-    // Table of Showtimes
     tableShowtimes = new QTableWidget(this);
     tableShowtimes->setColumnCount(5);
     tableShowtimes->setHorizontalHeaderLabels(QStringList() << "Tên Phim" << "Phòng Chiếu" << "Ngày Chiếu" << "Giờ Chiếu" << "Ghế Trống");
@@ -98,41 +94,24 @@ ShowtimeListWidget::ShowtimeListWidget(ShowtimeManager* showtimeManager, MovieMa
     tableShowtimes->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
     tableShowtimes->horizontalHeader()->setSectionResizeMode(3, QHeaderView::ResizeToContents);
     tableShowtimes->horizontalHeader()->setSectionResizeMode(4, QHeaderView::ResizeToContents);
+    tableShowtimes->verticalHeader()->setDefaultSectionSize(46);
     tableShowtimes->setSelectionBehavior(QAbstractItemView::SelectRows);
     tableShowtimes->setSelectionMode(QAbstractItemView::SingleSelection);
     tableShowtimes->setEditTriggers(QAbstractItemView::NoEditTriggers);
     tableShowtimes->setAlternatingRowColors(true);
     tableShowtimes->verticalHeader()->setVisible(false);
-    mainLayout->addWidget(tableShowtimes);
+    mainLayout->addWidget(tableShowtimes, 1);
 
-    // Bottom Action Buttons
     QHBoxLayout *bottomLayout = new QHBoxLayout();
-    bottomLayout->setSpacing(15);
+    bottomLayout->setSpacing(12);
 
-    QString btnStyle = R"(
-        QPushButton {
-            background-color: #A52C20;
-            color: #FFFFFF;
-            font-size: 14px;
-            font-weight: bold;
-            border-radius: 6px;
-            border: none;
-            min-height: 38px;
-            padding: 6px 20px;
-        }
-        QPushButton:hover {
-            background-color: #BD362A;
-            border: 1px solid #EAB02F;
-        }
-    )";
-
-    btnSelect = new QPushButton("Chọn Suất Này ->", this);
-    btnSelect->setCursor(Qt::PointingHandCursor);
-    btnSelect->setStyleSheet(btnStyle);
-
-    btnBack = new QPushButton("<- Quay Lại", this);
+    btnBack = new QPushButton("Quay Lại", this);
     btnBack->setCursor(Qt::PointingHandCursor);
-    btnBack->setStyleSheet(btnStyle);
+    btnBack->setStyleSheet(Theme::secondaryButtonStyle(42, 14));
+
+    btnSelect = new QPushButton("Chọn Suất Chiếu Này", this);
+    btnSelect->setCursor(Qt::PointingHandCursor);
+    btnSelect->setStyleSheet(Theme::primaryButtonStyle(42, 14));
 
     bottomLayout->addWidget(btnBack);
     bottomLayout->addStretch();
@@ -149,32 +128,34 @@ ShowtimeListWidget::ShowtimeListWidget(ShowtimeManager* showtimeManager, MovieMa
 
 void ShowtimeListWidget::updateDayButtonStyles() {
     for (int i = 0; i < dayButtons.size(); ++i) {
-        int filterIndex = i - 1; // -1 is All, 0..6 is upcomingDates[0..6]
+        int filterIndex = i - 1;
         if (filterIndex == currentDayFilter) {
             dayButtons[i]->setStyleSheet(R"(
                 QPushButton {
-                    background-color: #A52C20;
+                    background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #FF6B6B, stop:1 #FF8E72);
                     color: #FFFFFF;
                     font-size: 11px;
                     font-weight: bold;
-                    border: 1px solid #EAB02F;
-                    border-radius: 6px;
-                    padding: 2px 4px;
+                    border: none;
+                    border-radius: 12px;
+                    padding: 4px 6px;
                 }
             )");
         } else {
             dayButtons[i]->setStyleSheet(R"(
                 QPushButton {
-                    background-color: #F9F1E5;
-                    color: #1A1A1A;
+                    background-color: #22263C;
+                    color: #B4BCE0;
                     font-size: 11px;
-                    font-weight: bold;
-                    border: 1px solid #333333;
-                    border-radius: 6px;
-                    padding: 2px 4px;
+                    font-weight: 600;
+                    border: 1px solid #323859;
+                    border-radius: 12px;
+                    padding: 4px 6px;
                 }
                 QPushButton:hover {
-                    background-color: #FFFFFF;
+                    background-color: #2D3252;
+                    border-color: #FF6B6B;
+                    color: #FFFFFF;
                 }
             )");
         }
@@ -182,7 +163,7 @@ void ShowtimeListWidget::updateDayButtonStyles() {
 }
 
 void ShowtimeListWidget::onDayTabClicked(int tabIndex) {
-    currentDayFilter = tabIndex; // -1 for all, 0..6 for specific day
+    currentDayFilter = tabIndex;
     updateDayButtonStyles();
     filterByMovie();
 }
@@ -206,7 +187,7 @@ void ShowtimeListWidget::setMovieFilter(const QString& maPhim) {
 
 void ShowtimeListWidget::filterByMovie() {
     QString maPhim = cbMovies->currentData().toString();
-    
+
     DynamicArray<Showtime> showtimes;
     if (maPhim.isEmpty()) {
         showtimes = showtimeManager->getActiveShowtimes();
@@ -219,7 +200,6 @@ void ShowtimeListWidget::filterByMovie() {
         }
     }
 
-    // Filter by specific date if selected (currentDayFilter: -1=All, 0..6=upcomingDates[0..6])
     DynamicArray<Showtime> filtered;
     for (int i = 0; i < showtimes.size(); ++i) {
         if (currentDayFilter >= 0 && currentDayFilter < upcomingDates.size()) {
@@ -237,29 +217,34 @@ void ShowtimeListWidget::filterByMovie() {
         filtered.push_back(showtimes[i]);
     }
 
+    QFont boldFont = tableShowtimes->font();
+    boldFont.setBold(true);
+
     tableShowtimes->setRowCount(filtered.size());
     for (int i = 0; i < filtered.size(); ++i) {
         auto s = filtered[i];
         auto movie = movieManager->findById(s.getMaPhim());
-        QString tenPhim = movie ? QString::fromStdString(movie->getTenPhim()) : "Unknown";
+        QString tenPhim = movie ? QString::fromStdString(movie->getTenPhim()) : "Không xác định";
 
         QTableWidgetItem* itemPhim = new QTableWidgetItem(tenPhim);
         itemPhim->setData(Qt::UserRole, QString::fromStdString(s.getMaSuatChieu()));
+        itemPhim->setFont(boldFont);
         tableShowtimes->setItem(i, 0, itemPhim);
-        
+
         QTableWidgetItem* roomItem = new QTableWidgetItem(QString::fromStdString(s.getMaPhong()));
         roomItem->setTextAlignment(Qt::AlignCenter);
         tableShowtimes->setItem(i, 1, roomItem);
-        
+
         QTableWidgetItem* dateItem = new QTableWidgetItem(QString::fromStdString(s.getNgayChieu()));
         dateItem->setTextAlignment(Qt::AlignCenter);
         tableShowtimes->setItem(i, 2, dateItem);
-        
+
         QTableWidgetItem* timeItem = new QTableWidgetItem(QString::fromStdString(s.getGioChieu()));
         timeItem->setTextAlignment(Qt::AlignCenter);
+        timeItem->setFont(boldFont);
+        timeItem->setForeground(QBrush(QColor("#FFD166")));
         tableShowtimes->setItem(i, 3, timeItem);
-        
-        // Calculate empty seats if seat map exists
+
         auto seatMap = showtimeManager->findSeatMap(s.getMaSuatChieu());
         int emptyCount = 0;
         int totalSeats = 0;
@@ -271,13 +256,14 @@ void ShowtimeListWidget::filterByMovie() {
                 }
             }
         }
-        
+
         QTableWidgetItem* seatItem = new QTableWidgetItem(QString("%1 / %2").arg(emptyCount).arg(totalSeats));
         seatItem->setTextAlignment(Qt::AlignCenter);
+        seatItem->setFont(boldFont);
         if (emptyCount > 0) {
-            seatItem->setForeground(QBrush(QColor("#5CD65C")));
+            seatItem->setForeground(QBrush(QColor("#34D399")));
         } else {
-            seatItem->setForeground(QBrush(QColor("#FF4D4D")));
+            seatItem->setForeground(QBrush(QColor("#FF858D")));
         }
         tableShowtimes->setItem(i, 4, seatItem);
     }
@@ -286,7 +272,7 @@ void ShowtimeListWidget::filterByMovie() {
 void ShowtimeListWidget::onSelectShowtime() {
     int row = tableShowtimes->currentRow();
     if (row < 0) {
-        QMessageBox::warning(this, "Thông báo", "Vui lòng chọn một suất chiếu!");
+        QMessageBox::warning(this, "Thông Báo", "Vui lòng chọn một suất chiếu!");
         return;
     }
     QString maSuatChieu = tableShowtimes->item(row, 0)->data(Qt::UserRole).toString();
